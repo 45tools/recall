@@ -3,213 +3,286 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f6f3ec">
+<meta name="theme-color" content="#E9EFEA">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="45 Recall">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap">
 <title>45 Recall</title>
 <style>
 :root{
-  --bg:#f6f3ec; --card:#fff; --line:#e4dfd3; --text:#22201b; --sub:#7a7468;
-  --accent:#2f6fde; --ok:#1f9d6b; --ng:#e0524a; --warn:#e8a33a; --chip:#efeadf;
+  --bg:#E9EFEA; --panel:#FFFFFF; --ink:#13241A; --muted:#5A6D61; --line:#CFDAD2; --accent:#1C6A43; --accent-ink:#FFFFFF;
+  --field:#2A7849; --soft:#E5EFE8; --strong:#13241A; --strong-ink:#FFFFFF; --danger:#D7263D; --star:#E0A100;
 }
-@media (prefers-color-scheme:dark){
-  :root{--bg:#16171a;--card:#212328;--line:#33363d;--text:#eceae5;--sub:#9b978e;--chip:#2b2e34}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0E1913; --panel:#17261D; --ink:#E5EFE8; --muted:#97AE9F; --line:#2A3D31; --accent:#58C389; --accent-ink:#0E1913; --soft:#1E3326; --strong:#E5EFE8; --strong-ink:#0E1913; --danger:#FF6B7A; --star:#FFD24D; }
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","PingFang SC",sans-serif}
-body{padding:env(safe-area-inset-top) env(safe-area-inset-right) calc(72px + env(safe-area-inset-bottom)) env(safe-area-inset-left)}
-header{display:flex;align-items:center;padding:12px 16px 6px}
-header h1{margin:0;font-size:18px}
-header h1 small{font-size:11px;color:var(--sub);font-weight:500;margin-left:6px}
-main{max-width:640px;margin:0 auto;padding:0 14px}
-section{display:none} section.on{display:block}
-h2{font-size:15px;margin:16px 2px 10px;color:var(--sub);font-weight:600}
-.box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{touch-action:manipulation;-webkit-text-size-adjust:100%;background:var(--bg)}
+html,body{margin:0}
+body{min-height:100vh;padding:calc(env(safe-area-inset-top,0px) + 8px) env(safe-area-inset-right) 0 env(safe-area-inset-left);background:var(--bg);color:var(--ink);
+  font-family:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN","PingFang TC","PingFang SC",system-ui,sans-serif;overscroll-behavior:none}
 button,select,input,textarea{font:inherit;color:inherit}
-.btn{border:none;border-radius:12px;padding:12px 16px;background:var(--chip);font-size:15px;font-weight:600}
-.btn.pri{background:var(--accent);color:#fff}
-.btn.ok{background:var(--ok);color:#fff}
-.btn.ng{background:var(--ng);color:#fff}
-.btn.full{width:100%}
+button,select,label{touch-action:manipulation;cursor:pointer}
+[hidden]{display:none!important}
+.num{font-family:"Barlow Condensed","Arial Narrow",sans-serif;font-weight:700}
+.ic{display:inline-flex;width:20px;height:20px;flex:none}
+.ic svg{width:100%;height:100%}
+button:focus-visible,select:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding:0 0 calc(100px + env(safe-area-inset-bottom))}
+
+.bar{display:flex;align-items:center;gap:6px;padding:8px 10px}
+.bar .sp{flex:1;min-width:4px}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:10px;min-height:44px;padding:0 14px;font-size:14px;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:none;color:var(--ink);text-decoration:none}
+.btn.icon{width:46px;padding:0;min-height:40px}
+.btn:active:not(:disabled){transform:translateY(1px)}
 .btn:disabled{opacity:.4}
-.btn:active:not(:disabled){transform:scale(.98)}
-.muted{color:var(--sub);font-size:13px;line-height:1.6}
-.big-num{font-size:44px;font-weight:800;line-height:1}
-.stats{display:flex;gap:10px}
-.stat{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
-.stat b{display:block;font-size:24px}
-.stat span{font-size:11px;color:var(--sub)}
+.btn.primary,.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700}
+.btn.strong{background:var(--strong);border-color:var(--strong);color:var(--strong-ink);font-weight:700}
+.btn.ng{color:var(--danger);border-color:var(--danger)}
+.btn[aria-expanded="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--panel);flex:none}
+.seg button{border:0;background:transparent;min-height:38px;padding:0 10px;font-size:13px;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:4px;color:var(--ink);position:relative}
+.seg button + button{border-left:1px solid var(--line)}
+.modes .ic{width:18px;height:18px}
+body[data-mode="review"] .modes [data-mode="review"],body[data-mode="add"] .modes [data-mode="add"],body[data-mode="list"] .modes [data-mode="list"]{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.badge{min-width:18px;height:18px;border-radius:9px;background:var(--danger);color:#fff;font-size:11px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;padding:0 5px;font-family:"Barlow Condensed",sans-serif}
 
-/* nav */
-nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom);z-index:10}
-nav button{flex:1;background:none;border:none;padding:8px 0 10px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--sub);position:relative}
-nav button .ic{font-size:21px;line-height:1.1}
-nav button.on{color:var(--accent);font-weight:700}
-nav .badge{position:absolute;top:4px;left:calc(50% + 6px);background:var(--ng);color:#fff;border-radius:10px;font-size:10px;padding:1px 6px;font-weight:700}
+.menu{position:fixed;right:max(10px,env(safe-area-inset-right,0px));top:calc(env(safe-area-inset-top,0px) + 64px);z-index:60;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 10px 30px rgba(10,30,18,.25);padding:6px;display:flex;flex-direction:column;min-width:260px;max-height:calc(100vh - 90px);overflow:auto}
+.menu hr{border:0;border-top:1px solid var(--line);margin:4px 8px}
+.mi{border:0;background:transparent;text-align:left;min-height:44px;padding:0 14px;font-size:15px;font-weight:500;border-radius:9px;display:flex;align-items:center;gap:10px;white-space:nowrap;color:var(--ink);text-decoration:none}
+.mi:active{background:var(--bg)}
+.mi:disabled{opacity:.4}
+.mi .v{margin-left:auto;color:var(--muted);font-size:13px}
+.mi.accent{color:var(--accent);font-weight:700}
+.mi select{margin-left:auto;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:4px 6px;font-size:13px;color:var(--ink)}
+.scrim{position:fixed;inset:0;z-index:55}
 
-/* add */
-.shot{display:flex;gap:10px}
-.shot label{flex:1;border:2px dashed var(--line);border-radius:14px;min-height:130px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--sub);font-size:13px;position:relative;overflow:hidden;background:var(--bg)}
-.shot label .ic{font-size:30px}
+.panel{margin:8px 10px 0;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+.panel h2{margin:0 0 10px;font-size:15px}
+.tip{margin:10px 14px 0;font-size:12px;line-height:1.6;color:var(--muted)}
+[data-pane]{display:none}
+body[data-mode="review"] [data-pane="review"],body[data-mode="add"] [data-pane="add"],body[data-mode="list"] [data-pane="list"]{display:block}
+
+/* 復習 */
+.today{display:flex;align-items:center;gap:16px}
+.today .ring{width:112px;height:112px;border-radius:56px;background:var(--field);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none}
+.today .ring b{font-size:52px;line-height:1}
+.today .ring span{font-size:12px;opacity:.9}
+.today p{margin:0;font-size:14px;line-height:1.6;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:14px;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stat{text-align:center;padding:8px 4px}
+.stat + .stat{border-left:1px solid var(--line)}
+.stat b{display:block;font-size:26px;line-height:1.1}
+.stat span{font-size:11px;color:var(--muted)}
+
+/* 追加 */
+.shot{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.shot label{border:2px dashed var(--line);border-radius:12px;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:13px;position:relative;overflow:hidden;background:var(--bg);text-align:center;padding:8px}
+.shot label .ic{width:30px;height:30px;color:var(--accent)}
 .shot label img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .shot input{display:none}
 .field{margin-top:12px}
-.field label{display:block;font-size:12px;color:var(--sub);margin-bottom:4px}
-.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px;font-size:15px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:10px;font-size:16px;color:var(--ink)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.chip{background:var(--chip);border:none;border-radius:16px;padding:5px 12px;font-size:13px}
-.chip.on{background:var(--accent);color:#fff}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:5px 12px;font-size:13px;color:var(--ink)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 
-/* review */
-#reviewer{position:fixed;inset:0;background:#0d0d0f;color:#fff;z-index:30;display:none;flex-direction:column;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-#reviewer.on{display:flex}
-.rv-top{display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:13px}
-.rv-top .sp{flex:1}
-.rv-top button{background:rgba(255,255,255,.12);border:none;border-radius:10px;padding:6px 12px;color:#fff}
-.rv-img{flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;touch-action:pan-x pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
-.rv-img img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:center;transition:transform .15s}
-.rv-img img.zoom{max-width:none;max-height:none;width:200%}
-.rv-meta{padding:6px 16px;font-size:14px;color:#ddd}
-.rv-meta .subj{display:inline-block;background:rgba(255,255,255,.15);border-radius:10px;padding:2px 10px;margin-right:6px;font-size:12px}
-.rv-btns{display:flex;gap:10px;padding:10px 14px 14px}
-.rv-btns .btn{flex:1;padding:16px 8px;font-size:16px}
-.rv-btns .btn small{display:block;font-size:11px;font-weight:500;opacity:.85;margin-top:2px}
-
-/* list */
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.tile{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:var(--chip);border:none;padding:0}
+/* 一覧 */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tile{position:relative;aspect-ratio:3/4;border-radius:10px;overflow:hidden;background:var(--soft);border:1px solid var(--line);padding:0}
 .tile img{width:100%;height:100%;object-fit:cover;display:block}
-.tile .lv{position:absolute;left:4px;bottom:4px;background:rgba(0,0,0,.6);color:#fff;font-size:10px;border-radius:6px;padding:1px 6px}
-.tile .due{position:absolute;right:4px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--ng);border:2px solid #fff}
-.tile.master::after{content:"★";position:absolute;right:6px;top:4px;color:#ffd24d;font-size:16px;text-shadow:0 0 3px #000}
+.tile .lv{position:absolute;left:4px;right:4px;bottom:4px;background:rgba(14,25,19,.75);color:#fff;font-size:10px;border-radius:6px;padding:2px 6px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile .due{position:absolute;right:5px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--danger);border:2px solid #fff}
+.tile.master::after{content:"★";position:absolute;right:6px;top:3px;color:#FFE14D;font-size:17px;text-shadow:0 0 3px #000}
+.empty{text-align:center;padding:24px 10px;color:var(--muted);font-size:14px}
+.empty .ic{width:40px;height:40px;color:var(--accent)}
 
-/* detail modal */
-#sheet{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center;z-index:40}
-#sheet.on{display:flex}
-#sheet .inner{background:var(--card);width:100%;max-width:640px;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto}
-#sheet img{width:100%;border-radius:12px;display:block;margin-bottom:8px}
+/* 下の浮いたバー */
+.dock{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;padding:8px 8px calc(14px + env(safe-area-inset-bottom));z-index:20;pointer-events:none}
+.dockbar{display:none;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px;box-shadow:0 2px 10px rgba(10,30,18,.14);pointer-events:auto;max-width:100%}
+.dockbar select{min-height:44px;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:0 8px;font-size:14px;color:var(--ink);max-width:150px}
+body[data-mode="review"] #dockReview,body[data-mode="add"] #dockAdd,body[data-mode="list"] #dockList{display:flex}
+
+/* 復習画面 */
+#reviewer{position:fixed;inset:0;background:var(--bg);z-index:40;display:none;flex-direction:column;padding:calc(env(safe-area-inset-top,0px) + 8px) 0 0}
+#reviewer.on{display:flex}
+.rv-top{display:flex;align-items:center;gap:6px;padding:8px 10px}
+.rv-top .count{font-size:22px;margin-left:4px}
+.rv-top .sp{flex:1}
+.rv-frame{flex:1;min-height:0;margin:6px 6px 0;background:var(--field);border-radius:12px;padding:8px;display:flex}
+.rv-img{flex:1;min-height:0;overflow:auto;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:6px;touch-action:pan-x pan-y pinch-zoom;-webkit-overflow-scrolling:touch}
+.rv-img img{max-width:100%;max-height:100%;object-fit:contain}
+.rv-img img.zoom{max-width:none;max-height:none;width:200%}
+.rv-meta{padding:8px 14px 0;font-size:14px;min-height:30px}
+.rv-meta .subj{display:inline-block;border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:1px 8px;margin-right:6px;font-size:12px}
+.rv-dock{display:flex;justify-content:center;padding:10px 8px calc(14px + env(safe-area-inset-bottom))}
+.rv-dock .dockbar{display:flex;width:100%;max-width:520px}
+.rv-dock .btn{flex:1;min-height:58px;flex-direction:column;gap:0;font-size:17px}
+.rv-dock .btn small{font-size:11px;font-weight:500;opacity:.85}
+
+/* シート・ダイアログ */
+.overlay{position:fixed;inset:0;background:rgba(10,30,18,.45);display:none;align-items:flex-end;justify-content:center;z-index:80}
+.overlay.on,.overlay.show{display:flex}
+.sheet,#sheet .inner{background:var(--panel);width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:18px 14px calc(16px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto;border:1px solid var(--line)}
+.sheet h2{margin:0 0 10px;font-size:18px}
+#sheet img{width:100%;border-radius:10px;display:block;margin-bottom:8px;border:1px solid var(--line)}
 .row{display:flex;gap:8px;margin-top:10px}
 .row .btn{flex:1}
-.toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#222;color:#fff;padding:10px 18px;border-radius:20px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:60;white-space:nowrap}
+.muted{color:var(--muted);font-size:13px;line-height:1.6}
+.closeb{display:flex;width:100%;margin-top:12px}
+.help{line-height:1.7;font-size:14px}
+.help b{color:var(--accent)}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--strong);color:var(--strong-ink);padding:10px 18px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:95;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
 .toast.on{opacity:1}
-.support{display:block;text-align:center;border:1px solid var(--accent);color:var(--accent);border-radius:20px;padding:10px;text-decoration:none;font-size:14px}
-.brand{text-align:center;color:var(--sub);font-size:11px;margin:14px 0}
-.empty{text-align:center;padding:30px 10px}
-.empty .ic{font-size:44px}
+.foot{text-align:center;color:var(--muted);font-size:11px;margin-top:20px}
 </style>
 </head>
-<body>
-<header><h1>45 Recall<small>by 45tools</small></h1></header>
-<main>
-  <!-- 今日 -->
-  <section id="tab-today" class="on">
-    <div class="box" style="text-align:center">
-      <div class="muted" data-i="dueToday"></div>
-      <div class="big-num" id="dueNum">0</div>
-      <div style="height:12px"></div>
-      <button class="btn pri full" id="startReview" data-i="start"></button>
-      <div style="height:8px"></div>
-      <button class="btn full" id="extraReview" data-i="extra"></button>
+<body data-mode="review">
+<div class="bar">
+  <div class="seg modes" role="group" aria-label="mode">
+    <button data-mode="review"><i class="ic" data-ic="repeat"></i><span data-i="mReview"></span><span class="badge num" id="navBadge" hidden>0</span></button>
+    <button data-mode="add"><i class="ic" data-ic="camera"></i><span data-i="mAdd"></span></button>
+    <button data-mode="list"><i class="ic" data-ic="grid"></i><span data-i="mList"></span></button>
+  </div>
+  <button class="btn icon" id="undoBtn" aria-label="undo"><i class="ic" data-ic="undo"></i></button>
+  <div class="sp"></div>
+  <button class="btn icon" id="menuBtn" aria-label="menu" aria-expanded="false"><i class="ic" data-ic="menu"></i></button>
+</div>
+
+<div class="scrim" id="scrim" hidden></div>
+<div class="menu" id="menu" role="menu" hidden>
+  <button class="mi" id="remMenuBtn" role="menuitem"><i class="ic" data-ic="bell"></i><span data-i="remindTitle"></span></button>
+  <button class="mi" id="intMenuBtn" role="menuitem"><i class="ic" data-ic="clock"></i><span data-i="intTitle"></span><span class="v num" id="intV"></span></button>
+  <label class="mi"><i class="ic" data-ic="image"></i><span data-i="qMenu"></span>
+    <select id="qSel"><option value="std" data-i="qStdShort"></option><option value="high" data-i="qHighShort"></option><option value="eco" data-i="qEcoShort"></option></select></label>
+  <button class="mi" id="delMastered" role="menuitem"></button>
+  <hr>
+  <button class="mi" id="backup" role="menuitem"><i class="ic" data-ic="download"></i><span data-i="backup"></span></button>
+  <label class="mi"><i class="ic" data-ic="upload"></i><span data-i="restore"></span><input type="file" id="restoreFile" accept=".json,application/json" hidden></label>
+  <hr>
+  <label class="mi"><span data-i="langLbl"></span>
+    <select id="lang" aria-label="Language"><option value="ja">日本語</option><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh">简体中文</option></select></label>
+  <button class="mi" id="helpBtn" role="menuitem"><i class="ic" data-ic="help"></i><span data-i="helpLong"></span></button>
+  <a class="mi accent" id="supportLink" role="menuitem" target="_blank" rel="noopener"><i class="ic" data-ic="heart"></i><span data-i="support"></span></a>
+</div>
+
+<div class="wrap">
+  <!-- 復習 -->
+  <section data-pane="review">
+    <div class="panel">
+      <div class="today">
+        <div class="ring"><b class="num" id="dueNum">0</b><span data-i="dueToday"></span></div>
+        <p id="todayText"></p>
+      </div>
+      <div class="stats">
+        <div class="stat"><b class="num" id="sTotal">0</b><span data-i="sTotal"></span></div>
+        <div class="stat"><b class="num" id="sTomorrow">0</b><span data-i="sTomorrow"></span></div>
+        <div class="stat"><b class="num" id="sMaster">0</b><span data-i="sMaster"></span></div>
+      </div>
     </div>
-    <div class="stats">
-      <div class="stat"><b id="sTotal">0</b><span data-i="sTotal"></span></div>
-      <div class="stat"><b id="sTomorrow">0</b><span data-i="sTomorrow"></span></div>
-      <div class="stat"><b id="sMaster">0</b><span data-i="sMaster"></span></div>
-    </div>
-    <h2 data-i="howTitle"></h2>
-    <div class="box muted" id="howText"></div>
+    <p class="tip" data-i="tipReview"></p>
   </section>
 
   <!-- 追加 -->
-  <section id="tab-add">
-    <h2 data-i="addTitle"></h2>
-    <div class="box">
+  <section data-pane="add">
+    <div class="panel">
       <div class="shot">
-        <label id="qLabel"><span class="ic">📷</span><span data-i="qPhoto"></span><input type="file" id="qFile" accept="image/*" capture="environment"></label>
-        <label id="aLabel"><span class="ic">💡</span><span data-i="aPhoto"></span><input type="file" id="aFile" accept="image/*" capture="environment"></label>
+        <label id="qLabel"><i class="ic" data-ic="camera"></i><span data-i="qPhoto"></span><input type="file" id="qFile" accept="image/*" capture="environment"></label>
+        <label id="aLabel"><i class="ic" data-ic="bulb"></i><span data-i="aPhoto"></span><input type="file" id="aFile" accept="image/*" capture="environment"></label>
       </div>
-      <div class="field"><label data-i="subject"></label>
+      <div class="field"><label for="subj" data-i="subject"></label>
         <input id="subj" list="subjList" autocomplete="off"><datalist id="subjList"></datalist>
         <div class="chips" id="subjChips"></div>
       </div>
-      <div class="field"><label data-i="memo"></label><textarea id="memo" rows="2"></textarea></div>
-      <div style="height:12px"></div>
-      <button class="btn pri full" id="saveCard" data-i="save" disabled></button>
-      <p class="muted" data-i="addNote" style="margin:10px 2px 0"></p>
+      <div class="field"><label for="memo" data-i="memo"></label><textarea id="memo" rows="2"></textarea></div>
     </div>
-    <div class="box">
-      <label class="btn full" style="display:block;text-align:center"><span data-i="bulk"></span><input type="file" id="bulkFile" accept="image/*" multiple hidden></label>
-    </div>
+    <p class="tip" data-i="addNote"></p>
   </section>
 
   <!-- 一覧 -->
-  <section id="tab-list">
-    <div class="field" style="margin-top:12px"><select id="filter"></select></div>
-    <div style="height:10px"></div>
-    <div class="grid" id="grid"></div>
-    <div class="empty" id="listEmpty"><div class="ic">🗂</div><p class="muted" data-i="noCards"></p></div>
+  <section data-pane="list">
+    <div class="panel">
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="listEmpty"><i class="ic" data-ic="grid"></i><p data-i="noCards"></p></div>
+    </div>
+    <p class="tip" data-i="tipList"></p>
   </section>
+  <div class="foot">© 45tools</div>
+</div>
 
-  <!-- 設定 -->
-  <section id="tab-set">
-    <h2 data-i="remindTitle"></h2>
-    <div class="box">
-      <p class="muted" data-i="remindText" style="margin-top:0"></p>
-      <div class="field"><label data-i="remindTime"></label><input type="time" id="remTime" value="20:00"></div>
-      <div style="height:12px"></div>
-      <button class="btn pri full" id="icsDaily" data-i="icsDaily"></button>
-      <div style="height:8px"></div>
-      <button class="btn full" id="icsDates" data-i="icsDates"></button>
-      <div style="height:8px"></div>
-      <button class="btn full" id="notifBtn" data-i="badge"></button>
-    </div>
-    <h2 data-i="intTitle"></h2>
-    <div class="box">
-      <div class="field" style="margin-top:0"><label data-i="intLabel"></label><input id="intervals" inputmode="numeric"></div>
-      <p class="muted" data-i="intText"></p>
-    </div>
-    <h2 data-i="dataTitle"></h2>
-    <div class="box">
-      <div class="field" style="margin-top:0"><label data-i="qLabel"></label>
-        <select id="qSel"><option value="std" data-i="qStd"></option><option value="high" data-i="qHigh"></option><option value="eco" data-i="qEco"></option></select></div>
-      <p class="muted" id="usage"></p>
-      <button class="btn full" id="delMastered"></button>
-      <div style="height:8px"></div>
-      <button class="btn full" id="backup" data-i="backup"></button>
-      <div style="height:8px"></div>
-      <label class="btn full" style="display:block;text-align:center"><span data-i="restore"></span><input type="file" id="restoreFile" accept=".json,application/json" hidden></label>
-      <p class="muted" data-i="dataText"></p>
-    </div>
-    <h2>Language / 言語 / 語言</h2>
-    <div class="box"><select id="lang" class="field" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg)">
-      <option value="ja">日本語</option><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh">简体中文</option></select></div>
-    <a class="support" id="supportLink" target="_blank" rel="noopener" data-i="support"></a>
-    <div class="brand">© 45tools</div>
-  </section>
-</main>
-
-<nav>
-  <button data-tab="today" class="on"><span class="ic">🔁</span><span data-i="navToday"></span><span class="badge" id="navBadge" hidden>0</span></button>
-  <button data-tab="add"><span class="ic">📷</span><span data-i="navAdd"></span></button>
-  <button data-tab="list"><span class="ic">🗂</span><span data-i="navList"></span></button>
-  <button data-tab="set"><span class="ic">⚙︎</span><span data-i="navSet"></span></button>
-</nav>
-
-<div id="reviewer">
-  <div class="rv-top"><span id="rvCount"></span><span class="sp"></span><button id="rvAnswer" data-i="showAns"></button><button id="rvClose" data-i="close"></button></div>
-  <div class="rv-img" id="rvImgWrap"><img id="rvImg" alt=""></div>
-  <div class="rv-meta" id="rvMeta"></div>
-  <div class="rv-btns">
-    <button class="btn ng" id="rvNg"><span data-i="ng"></span><small id="rvNgSub"></small></button>
-    <button class="btn ok" id="rvOk"><span data-i="ok"></span><small id="rvOkSub"></small></button>
+<!-- 下の浮いたバー -->
+<div class="dock">
+  <div class="dockbar" id="dockReview">
+    <button class="btn" id="extraReview"><i class="ic" data-ic="eye"></i><span data-i="extraShort"></span></button>
+    <button class="btn primary" id="startReview"><i class="ic" data-ic="play"></i><span data-i="start"></span></button>
+  </div>
+  <div class="dockbar" id="dockAdd">
+    <label class="btn"><i class="ic" data-ic="image"></i><span data-i="bulkShort"></span><input type="file" id="bulkFile" accept="image/*" multiple hidden></label>
+    <button class="btn strong" id="saveCard" disabled><i class="ic" data-ic="plus"></i><span data-i="saveShort"></span></button>
+  </div>
+  <div class="dockbar" id="dockList">
+    <select id="filter" aria-label="filter"></select>
+    <button class="btn primary" id="listReview"><i class="ic" data-ic="play"></i><span data-i="listReview"></span></button>
   </div>
 </div>
 
-<div id="sheet"><div class="inner" id="sheetInner"></div></div>
+<!-- 復習画面 -->
+<div id="reviewer">
+  <div class="rv-top">
+    <button class="btn icon" id="rvClose" aria-label="close"><i class="ic" data-ic="x"></i></button>
+    <span class="count num" id="rvCount"></span>
+    <span class="sp"></span>
+    <button class="btn icon" id="rvUndo" aria-label="undo"><i class="ic" data-ic="undo"></i></button>
+    <button class="btn" id="rvAnswer"></button>
+  </div>
+  <div class="rv-frame"><div class="rv-img" id="rvImgWrap"><img id="rvImg" alt=""></div></div>
+  <div class="rv-meta" id="rvMeta"></div>
+  <div class="rv-dock"><div class="dockbar">
+    <button class="btn ng" id="rvNg"><span data-i="ng"></span><small id="rvNgSub"></small></button>
+    <button class="btn primary" id="rvOk"><span data-i="ok"></span><small id="rvOkSub"></small></button>
+  </div></div>
+</div>
+
+<!-- カード詳細 -->
+<div id="sheet" class="overlay"><div class="inner" id="sheetInner"></div></div>
+
+<!-- リマインダー -->
+<div class="overlay" id="remSheet"><div class="sheet">
+  <h2 data-i="remindTitle"></h2>
+  <p class="muted" data-i="remindText" style="margin-top:0"></p>
+  <div class="field"><label for="remTime" data-i="remindTime"></label><input type="time" id="remTime" value="20:00"></div>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+    <button class="btn primary" id="icsDaily"><i class="ic" data-ic="bell"></i><span data-i="icsDaily"></span></button>
+    <button class="btn" id="icsDates" data-i="icsDates"></button>
+    <button class="btn" id="notifBtn" data-i="badge"></button>
+  </div>
+  <button class="btn closeb" data-close data-i="close"></button>
+</div></div>
+
+<!-- 復習の間隔 -->
+<div class="overlay" id="intSheet"><div class="sheet">
+  <h2 data-i="intTitle"></h2>
+  <div class="field" style="margin-top:0"><label for="intervals" data-i="intLabel"></label><input id="intervals" inputmode="numeric"></div>
+  <p class="muted" data-i="intText"></p>
+  <p class="muted" id="usage"></p>
+  <button class="btn closeb" data-close data-i="close"></button>
+</div></div>
+
+<!-- 使い方 -->
+<div class="overlay" id="helpSheet"><div class="sheet">
+  <h2 data-i="howTitle"></h2>
+  <div class="help" id="howText"></div>
+  <p class="muted" data-i="dataText" style="margin-top:12px"></p>
+  <button class="btn closeb" data-close data-i="close"></button>
+</div></div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -220,63 +293,87 @@ const DEFAULT_INTERVALS=[1,3,7,14,30,60];
 const QUALITY={std:[1400,0.72,false],high:[2000,0.85,false],eco:[1100,0.62,true]};
 const qset=()=>QUALITY[ls.get("pr_q")]||QUALITY.std;
 
+/* ===== アイコン ===== */
+const ICONS={
+ repeat:'<path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.6 4.6v3.8h-3.8"/>',
+ camera:'<rect x="3.5" y="7" width="17" height="12.5" rx="3"/><path d="M8.5 7l1.4-2.5h4.2L15.5 7"/><circle cx="12" cy="13.2" r="3.2"/>',
+ grid:'<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+ undo:'<path d="M9 13.5 4.5 9 9 4.5"/><path d="M4.8 9h9.7a5 5 0 0 1 0 10H11"/>',
+ menu:'<path d="M4 7h16M4 12h16M4 17h16"/>',
+ bell:'<path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+ clock:'<circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/>',
+ image:'<rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="M5 17l4.5-4.5 3 3 2.5-2.5L19.5 17"/>',
+ download:'<path d="M12 4v10.5"/><path d="M7.5 10.5 12 15l4.5-4.5"/><path d="M5 19.5h14"/>',
+ upload:'<path d="M12 15V4.5"/><path d="M7.5 8.5 12 4l4.5 4.5"/><path d="M5 19.5h14"/>',
+ help:'<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1.1.9-1.1 1.6v.4"/><circle cx="12" cy="16.8" r=".9" fill="currentColor"/>',
+ heart:'<path d="M12 19.5s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 6.8a4.3 4.3 0 0 1 7.5 2.7c0 5.6-7.5 10-7.5 10z"/>',
+ eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
+ play:'<path d="M8 5.2v13.6L19 12z" fill="currentColor"/>',
+ plus:'<path d="M12 5.5v13M5.5 12h13"/>',
+ x:'<path d="M7 7l10 10M17 7 7 17"/>',
+ bulb:'<path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/>',
+ trash:'<path d="M4.5 7h15"/><path d="M9.5 7V5.3c0-.7.6-1.3 1.3-1.3h2.4c.7 0 1.3.6 1.3 1.3V7"/><path d="M6.5 7l.9 11.4c.1 1 .9 1.6 1.8 1.6h5.6c1 0 1.7-.7 1.8-1.6L17.5 7"/>',
+};
+const ico=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]||""}</svg>`;
+document.querySelectorAll("[data-ic]").forEach(el=>{ el.innerHTML=ico(el.dataset.ic); });
+
 /* ===== 多言語 ===== */
 const I18N={
- ja:{dueToday:"今日の復習",start:"復習をはじめる",extra:"ぜんぶ見直す（予定に影響しない）",sTotal:"登録数",sTomorrow:"明日",sMaster:"習得済み",
-  howTitle:"使い方",how:"① 間違えた問題のページを「撮影」タブで撮ります（答えのページも撮っておくと便利）。<br>② 決まった間隔（1日後→3日後→7日後…）で、このアプリの「今日の復習」に出てきます。<br>③ 写真を見て、まず<b>自力で思い出して</b>から「できた／まだ」を押します。「まだ」は翌日にもう一度出ます。<br>④ 通知は「設定」から、iPhoneのカレンダーに毎日のリマインダーを登録できます。",
+ ja:{mReview:"復習",mAdd:"追加",mList:"一覧",qMenu:"写真の画質",qStdShort:"標準",qHighShort:"高画質",qEcoShort:"省容量",langLbl:"言語",helpLong:"使い方・このアプリについて",support:"このアプリを応援する",extraShort:"ぜんぶ見直す",bulkShort:"写真からまとめて",saveShort:"保存して追加",listReview:"この中で見直す",tipReview:"「ぜんぶ見直す」は予定に影響しません。間違えた直後の確認や、テスト前の総まとめに。",tipList:"写真をタップすると、科目やメモの直し・今すぐ復習・削除ができます。下のバーで科目ごとに絞り込めます。",todayText:"今日は{n}件です。写真を見て、まず自分で思い出してから答えを確認しましょう。",todayNone:"今日の復習はありません。間違えたページを「追加」から撮っておきましょう。",undone:"1つ前の採点を取り消しました",undoNone:"取り消せる採点がありません",delMasteredShort:"習得済みを削除（{n}件）",backup:"バックアップを保存",restore:"バックアップから復元",icsDaily:"毎日の復習リマインダーを登録",icsDates:"復習予定日だけ登録（今後30日）",badge:"ホーム画面アイコンに件数を表示",bulk:"写真ライブラリからまとめて追加",noCards:"まだ登録がありません。左上の「追加」から、間違えたページを撮りましょう。",how:"<b>① 追加</b>：間違えた問題のページを撮ります（答えのページも撮っておくと便利）。<br><b>② 復習</b>：決まった間隔（1日後→3日後→7日後…）で「復習」に出てきます。写真を見て、まず<b>自分で思い出して</b>から「できた／まだ」。「まだ」は翌日にもう一度出ます。押し間違えたら左上の「元に戻す」。<br><b>③ 一覧</b>：登録した写真の確認・修正・削除。<br><b>≡ メニュー</b>：リマインダー（iPhoneのカレンダーに毎日の通知を登録）、復習の間隔、写真の画質、バックアップ、言語など。",dueToday:"今日の復習",start:"復習をはじめる",extra:"ぜんぶ見直す（予定に影響しない）",sTotal:"登録数",sTomorrow:"明日",sMaster:"習得済み",
+  howTitle:"使い方",
   addTitle:"間違えたページを撮る",qPhoto:"問題（必須）",aPhoto:"答え（任意）",subject:"科目・教材",memo:"メモ（どこで間違えたか等）",save:"保存して復習に追加",
-  addNote:"最初の復習は明日です。写真はこの端末の中だけに保存されます。",bulk:"🖼 写真ライブラリからまとめて追加",
-  noCards:"まだ登録がありません。「撮影」タブから追加しましょう。",all:"すべて",dueOnly:"今日の復習のみ",masterOnly:"習得済み",
+  addNote:"最初の復習は明日です。写真はこの端末の中だけに保存されます。",
+  all:"すべて",dueOnly:"今日の復習のみ",masterOnly:"習得済み",
   remindTitle:"リマインダー",remindText:"このアプリはサーバーを使わないため、カレンダーのリマインダーで知らせます。登録すると毎日指定時刻に通知が来て、タップでこのアプリを開けます。",
-  remindTime:"通知する時刻",icsDaily:"📅 毎日の復習リマインダーを登録",icsDates:"📅 復習予定日だけ登録（今後30日）",badge:"🔴 ホーム画面アイコンに件数を表示",
+  remindTime:"通知する時刻",
   intTitle:"復習の間隔",intLabel:"日数（カンマ区切り）",intText:"「できた」を押すたびに次の間隔へ進みます。最後まで進むと習得済み（★）になります。",
-  dataTitle:"データ",qLabel:"写真の画質（これから撮る写真に適用）",qStd:"標準（おすすめ）",qHigh:"高画質（文字が細かい教材向け）",qEco:"省容量（白黒・小さめ）",usage:"保存中：{n}件・約{s} MB（写真はこの端末の中だけにあります）",delMastered:"習得済み（★）を削除して容量を空ける（{n}件）",confirmDelM:"習得済みの{n}件を削除しますか？（先にバックアップがおすすめです）",deletedN:"{n}件削除しました",backup:"⤓ バックアップを保存",restore:"⤒ バックアップから復元",dataText:"機種変更やブラウザのデータ削除に備えて、ときどきバックアップしてください。",
-  support:"☕ このアプリを応援する",navToday:"復習",navAdd:"撮影",navList:"一覧",navSet:"設定",
+  dataTitle:"データ",qLabel:"写真の画質（これから撮る写真に適用）",qStd:"標準（おすすめ）",qHigh:"高画質（文字が細かい教材向け）",qEco:"省容量（白黒・小さめ）",usage:"保存中：{n}件・約{s} MB（写真はこの端末の中だけにあります）",delMastered:"習得済み（★）を削除して容量を空ける（{n}件）",confirmDelM:"習得済みの{n}件を削除しますか？（先にバックアップがおすすめです）",deletedN:"{n}件削除しました",dataText:"機種変更やブラウザのデータ削除に備えて、ときどきバックアップしてください。",
+  navToday:"復習",navAdd:"撮影",navList:"一覧",navSet:"設定",
   showAns:"答え",showQ:"問題",close:"閉じる",ok:"できた",ng:"まだ",nextIn:"次は{n}日後",tomorrow:"明日もう一度",mastered:"習得！",
   saved:"保存しました（明日から復習）",doneAll:"今日の復習はおしまい！🎉",nothing:"今日の復習はありません",
   level:"段階",nextDue:"次回",del:"削除",confirmDel:"このカードを削除しますか？",reset:"最初から",reviewNow:"今すぐ復習",edit:"保存",
   restored:"{n}件を復元しました",badgeOk:"アイコンに件数を表示します",badgeNg:"この環境では使えません（iPhoneはホーム画面に追加して開いてください）",
   calTitle:"暗記の復習（45 Recall）",calDesc:"今日の復習を開く",count:"{a} / {b}",today:"今日",days:"{n}日後",overdue:"期限切れ"},
- en:{dueToday:"Due today",start:"Start review",extra:"Browse all (won't change schedule)",sTotal:"Cards",sTomorrow:"Tomorrow",sMaster:"Mastered",
-  howTitle:"How to use",how:"① Snap the page you got wrong in the “Snap” tab (an answer photo helps too).<br>② It comes back in “Review” on a spaced schedule (1 day → 3 → 7 …).<br>③ Look at the photo, <b>recall it yourself first</b>, then tap “Got it / Not yet”. “Not yet” brings it back tomorrow.<br>④ For notifications, add a daily reminder to your calendar in Settings.",
+ en:{mReview:"Review",mAdd:"Add",mList:"Cards",qMenu:"Photo quality",qStdShort:"Standard",qHighShort:"High",qEcoShort:"Saver",langLbl:"Language",helpLong:"How to use / About",support:"Support this app",extraShort:"Browse all",bulkShort:"From photos",saveShort:"Save card",listReview:"Review these",tipReview:"“Browse all” doesn't change the schedule — good for a quick check or a final run-through before a test.",tipList:"Tap a photo to edit the subject or note, review it now, or delete it. Filter by subject in the bar below.",todayText:"{n} cards today. Look at each photo and recall it yourself before checking the answer.",todayNone:"Nothing due today. Snap pages you got wrong from “Add”.",undone:"Undid the last answer",undoNone:"Nothing to undo",delMasteredShort:"Delete mastered ({n})",backup:"Save backup",restore:"Restore backup",icsDaily:"Add daily review reminder",icsDates:"Add only review days (next 30 days)",badge:"Show count on home-screen icon",bulk:"Add several from photo library",noCards:"No cards yet. Tap “Add” at the top left to snap a page you got wrong.",how:"<b>① Add</b>: snap the page you got wrong (an answer photo helps too).<br><b>② Review</b>: it comes back on a spaced schedule (1 day → 3 → 7 …). Recall it <b>yourself first</b>, then tap “Got it / Not yet”. “Not yet” brings it back tomorrow. Tapped the wrong one? Use Undo at the top left.<br><b>③ Cards</b>: check, edit or delete your photos.<br><b>≡ Menu</b>: reminders (a daily calendar alert), review intervals, photo quality, backup, language and more.",dueToday:"Due today",start:"Start review",extra:"Browse all (won't change schedule)",sTotal:"Cards",sTomorrow:"Tomorrow",sMaster:"Mastered",
+  howTitle:"How to use",
   addTitle:"Snap the page you missed",qPhoto:"Question (required)",aPhoto:"Answer (optional)",subject:"Subject / book",memo:"Note (what you got wrong)",save:"Save & schedule",
-  addNote:"First review is tomorrow. Photos stay on this device only.",bulk:"🖼 Add several from photo library",
-  noCards:"No cards yet. Add one from the “Snap” tab.",all:"All",dueOnly:"Due today",masterOnly:"Mastered",
+  addNote:"First review is tomorrow. Photos stay on this device only.",
+  all:"All",dueOnly:"Due today",masterOnly:"Mastered",
   remindTitle:"Reminders",remindText:"This app has no server, so it reminds you via your calendar. You'll get a notification at the set time; tap it to open this app.",
-  remindTime:"Reminder time",icsDaily:"📅 Add daily review reminder",icsDates:"📅 Add only review days (next 30 days)",badge:"🔴 Show count on home-screen icon",
+  remindTime:"Reminder time",
   intTitle:"Review intervals",intLabel:"Days (comma separated)",intText:"Each “Got it” moves to the next interval. After the last one, the card is mastered (★).",
-  dataTitle:"Data",qLabel:"Photo quality (applies to new photos)",qStd:"Standard (recommended)",qHigh:"High (for small print)",qEco:"Saver (B&W, smaller)",usage:"Stored: {n} cards · about {s} MB (photos stay on this device only)",delMastered:"Delete mastered (★) cards to free space ({n})",confirmDelM:"Delete {n} mastered cards? (Back up first if unsure.)",deletedN:"Deleted {n} cards",backup:"⤓ Save backup",restore:"⤒ Restore backup",dataText:"Back up now and then, in case you change phones or clear browser data.",
-  support:"☕ Support this app",navToday:"Review",navAdd:"Snap",navList:"Cards",navSet:"Settings",
+  dataTitle:"Data",qLabel:"Photo quality (applies to new photos)",qStd:"Standard (recommended)",qHigh:"High (for small print)",qEco:"Saver (B&W, smaller)",usage:"Stored: {n} cards · about {s} MB (photos stay on this device only)",delMastered:"Delete mastered (★) cards to free space ({n})",confirmDelM:"Delete {n} mastered cards? (Back up first if unsure.)",deletedN:"Deleted {n} cards",dataText:"Back up now and then, in case you change phones or clear browser data.",
+  navToday:"Review",navAdd:"Snap",navList:"Cards",navSet:"Settings",
   showAns:"Answer",showQ:"Question",close:"Close",ok:"Got it",ng:"Not yet",nextIn:"next in {n}d",tomorrow:"again tomorrow",mastered:"mastered!",
   saved:"Saved (review starts tomorrow)",doneAll:"All done for today! 🎉",nothing:"Nothing due today",
   level:"Stage",nextDue:"Next",del:"Delete",confirmDel:"Delete this card?",reset:"Restart",reviewNow:"Review now",edit:"Save",
   restored:"Restored {n} cards",badgeOk:"Count will show on the icon",badgeNg:"Not available here (on iPhone, open from the home screen)",
   calTitle:"Review time (45 Recall)",calDesc:"Open today's review",count:"{a} / {b}",today:"today",days:"in {n}d",overdue:"overdue"},
- zh:{dueToday:"今日复习",start:"开始复习",extra:"全部浏览（不影响计划）",sTotal:"总数",sTomorrow:"明天",sMaster:"已掌握",
-  howTitle:"使用方法",how:"① 在“拍照”页拍下做错的题目（顺便拍下答案更方便）。<br>② 按间隔（1天→3天→7天…）出现在“复习”中。<br>③ 看照片时先<b>自己回想</b>，再点“会了／还不会”。“还不会”明天再出现。<br>④ 在“设置”里可把每日提醒加入日历。",
+ zh:{mReview:"复习",mAdd:"添加",mList:"列表",qMenu:"照片画质",qStdShort:"标准",qHighShort:"高画质",qEcoShort:"省空间",langLbl:"语言",helpLong:"使用说明・关于本应用",support:"支持这个应用",extraShort:"全部浏览",bulkShort:"从相册添加",saveShort:"保存并添加",listReview:"复习这些",tipReview:"“全部浏览”不影响复习计划，适合刚做错时确认或考试前总复习。",tipList:"点照片可修改科目和备注、立即复习或删除。可在下方栏按科目筛选。",todayText:"今天有{n}张。看照片时先自己回想，再看答案。",todayNone:"今天没有要复习的。请从“添加”拍下做错的页面。",undone:"已撤销上一次评分",undoNone:"没有可撤销的评分",delMasteredShort:"删除已掌握（{n}张）",backup:"保存备份",restore:"从备份恢复",icsDaily:"添加每日复习提醒",icsDates:"只添加复习日（未来30天）",badge:"在主屏幕图标显示数量",bulk:"从相册批量添加",noCards:"还没有卡片。请点左上的“添加”拍下做错的页面。",how:"<b>① 添加</b>：拍下做错的题目（顺便拍下答案更方便）。<br><b>② 复习</b>：按间隔（1天→3天→7天…）出现在“复习”中。先<b>自己回想</b>，再点“会了／还不会”。“还不会”明天再出现。点错了可用左上的“撤销”。<br><b>③ 列表</b>：查看、修改、删除照片。<br><b>≡ 菜单</b>：提醒（在日历登记每日通知）、复习间隔、照片画质、备份、语言等。",dueToday:"今日复习",start:"开始复习",extra:"全部浏览（不影响计划）",sTotal:"总数",sTomorrow:"明天",sMaster:"已掌握",
+  howTitle:"使用方法",
   addTitle:"拍下做错的页面",qPhoto:"题目（必填）",aPhoto:"答案（可选）",subject:"科目・教材",memo:"备注（错在哪里等）",save:"保存并加入复习",
-  addNote:"首次复习在明天。照片只保存在本设备中。",bulk:"🖼 从相册批量添加",
-  noCards:"还没有卡片。请从“拍照”页添加。",all:"全部",dueOnly:"今日复习",masterOnly:"已掌握",
+  addNote:"首次复习在明天。照片只保存在本设备中。",
+  all:"全部",dueOnly:"今日复习",masterOnly:"已掌握",
   remindTitle:"提醒",remindText:"本应用不使用服务器，通过日历提醒你。到时间会收到通知，点按即可打开本应用。",
-  remindTime:"提醒时间",icsDaily:"📅 添加每日复习提醒",icsDates:"📅 只添加复习日（未来30天）",badge:"🔴 在主屏幕图标显示数量",
+  remindTime:"提醒时间",
   intTitle:"复习间隔",intLabel:"天数（逗号分隔）",intText:"每点一次“会了”就进入下一个间隔。全部完成后成为已掌握（★）。",
-  dataTitle:"数据",qLabel:"照片画质（适用于之后拍的照片）",qStd:"标准（推荐）",qHigh:"高画质（适合字小的教材）",qEco:"省空间（黑白・较小）",usage:"已保存：{n}张・约{s} MB（照片只保存在本设备中）",delMastered:"删除已掌握（★）的卡片以释放空间（{n}张）",confirmDelM:"删除已掌握的{n}张卡片吗？（建议先备份）",deletedN:"已删除{n}张",backup:"⤓ 保存备份",restore:"⤒ 从备份恢复",dataText:"为防更换手机或清除浏览器数据，请定期备份。",
-  support:"☕ 支持这个应用",navToday:"复习",navAdd:"拍照",navList:"列表",navSet:"设置",
+  dataTitle:"数据",qLabel:"照片画质（适用于之后拍的照片）",qStd:"标准（推荐）",qHigh:"高画质（适合字小的教材）",qEco:"省空间（黑白・较小）",usage:"已保存：{n}张・约{s} MB（照片只保存在本设备中）",delMastered:"删除已掌握（★）的卡片以释放空间（{n}张）",confirmDelM:"删除已掌握的{n}张卡片吗？（建议先备份）",deletedN:"已删除{n}张",dataText:"为防更换手机或清除浏览器数据，请定期备份。",
+  navToday:"复习",navAdd:"拍照",navList:"列表",navSet:"设置",
   showAns:"答案",showQ:"题目",close:"关闭",ok:"会了",ng:"还不会",nextIn:"{n}天后",tomorrow:"明天再来",mastered:"已掌握！",
   saved:"已保存（明天开始复习）",doneAll:"今天的复习完成了！🎉",nothing:"今天没有要复习的",
   level:"阶段",nextDue:"下次",del:"删除",confirmDel:"删除这张卡片吗？",reset:"重新开始",reviewNow:"立即复习",edit:"保存",
   restored:"已恢复 {n} 张",badgeOk:"将在图标上显示数量",badgeNg:"此环境不可用（iPhone 请从主屏幕打开）",
   calTitle:"背诵复习（45 Recall）",calDesc:"打开今日复习",count:"{a} / {b}",today:"今天",days:"{n}天后",overdue:"已过期"},
- "zh-Hant":{dueToday:"今日複習",start:"開始複習",extra:"全部瀏覽（不影響計劃）",sTotal:"總數",sTomorrow:"明天",sMaster:"已掌握",
-  howTitle:"使用方法",how:"① 在「拍照」頁拍下做錯的題目（順便拍下答案更方便）。<br>② 按間隔（1天→3天→7天…）出現在「複習」中。<br>③ 看照片時先<b>自己回想</b>，再點「會了／還不會」。「還不會」明天再出現。<br>④ 在「設定」裡可把每日提醒加入日曆。",
+ "zh-Hant":{mReview:"複習",mAdd:"新增",mList:"列表",qMenu:"照片畫質",qStdShort:"標準",qHighShort:"高畫質",qEcoShort:"省空間",langLbl:"語言",helpLong:"使用說明・關於本應用",support:"支援這個應用",extraShort:"全部瀏覽",bulkShort:"從相簿新增",saveShort:"儲存並新增",listReview:"複習這些",tipReview:"「全部瀏覽」不影響複習計劃，適合剛做錯時確認或考試前總複習。",tipList:"點照片可修改科目和備註、立即複習或刪除。可在下方欄按科目篩選。",todayText:"今天有{n}張。看照片時先自己回想，再看答案。",todayNone:"今天沒有要複習的。請從「新增」拍下做錯的頁面。",undone:"已復原上一次評分",undoNone:"沒有可復原的評分",delMasteredShort:"刪除已掌握（{n}張）",backup:"儲存備份",restore:"從備份恢復",icsDaily:"新增每日複習提醒",icsDates:"只新增複習日（未來30天）",badge:"在主螢幕圖示顯示數量",bulk:"從相簿批次新增",noCards:"還沒有卡片。請點左上的「新增」拍下做錯的頁面。",how:"<b>① 新增</b>：拍下做錯的題目（順便拍下答案更方便）。<br><b>② 複習</b>：按間隔（1天→3天→7天…）出現在「複習」中。先<b>自己回想</b>，再點「會了／還不會」。「還不會」明天再出現。點錯了可用左上的「復原」。<br><b>③ 列表</b>：檢視、修改、刪除照片。<br><b>≡ 選單</b>：提醒（在日曆登記每日通知）、複習間隔、照片畫質、備份、語言等。",dueToday:"今日複習",start:"開始複習",extra:"全部瀏覽（不影響計劃）",sTotal:"總數",sTomorrow:"明天",sMaster:"已掌握",
+  howTitle:"使用方法",
   addTitle:"拍下做錯的頁面",qPhoto:"題目（必填）",aPhoto:"答案（可選）",subject:"科目・教材",memo:"備註（錯在哪裡等）",save:"儲存並加入複習",
-  addNote:"首次複習在明天。照片只儲存在本裝置中。",bulk:"🖼 從相簿批次新增",
-  noCards:"還沒有卡片。請從「拍照」頁新增。",all:"全部",dueOnly:"今日複習",masterOnly:"已掌握",
+  addNote:"首次複習在明天。照片只儲存在本裝置中。",
+  all:"全部",dueOnly:"今日複習",masterOnly:"已掌握",
   remindTitle:"提醒",remindText:"本應用不使用伺服器，透過日曆提醒你。到時間會收到通知，點按即可開啟本應用。",
-  remindTime:"提醒時間",icsDaily:"📅 新增每日複習提醒",icsDates:"📅 只新增複習日（未來30天）",badge:"🔴 在主螢幕圖示顯示數量",
+  remindTime:"提醒時間",
   intTitle:"複習間隔",intLabel:"天數（逗號分隔）",intText:"每點一次「會了」就進入下一個間隔。全部完成後成為已掌握（★）。",
-  dataTitle:"資料",qLabel:"照片畫質（適用於之後拍的照片）",qStd:"標準（推薦）",qHigh:"高畫質（適合字小的教材）",qEco:"省空間（黑白・較小）",usage:"已儲存：{n}張・約{s} MB（照片只儲存在本裝置中）",delMastered:"刪除已掌握（★）的卡片以釋放空間（{n}張）",confirmDelM:"刪除已掌握的{n}張卡片嗎？（建議先備份）",deletedN:"已刪除{n}張",backup:"⤓ 儲存備份",restore:"⤒ 從備份恢復",dataText:"為防更換手機或清除瀏覽器資料，請定期備份。",
-  support:"☕ 支援這個應用",navToday:"複習",navAdd:"拍照",navList:"列表",navSet:"設定",
+  dataTitle:"資料",qLabel:"照片畫質（適用於之後拍的照片）",qStd:"標準（推薦）",qHigh:"高畫質（適合字小的教材）",qEco:"省空間（黑白・較小）",usage:"已儲存：{n}張・約{s} MB（照片只儲存在本裝置中）",delMastered:"刪除已掌握（★）的卡片以釋放空間（{n}張）",confirmDelM:"刪除已掌握的{n}張卡片嗎？（建議先備份）",deletedN:"已刪除{n}張",dataText:"為防更換手機或清除瀏覽器資料，請定期備份。",
+  navToday:"複習",navAdd:"拍照",navList:"列表",navSet:"設定",
   showAns:"答案",showQ:"題目",close:"關閉",ok:"會了",ng:"還不會",nextIn:"{n}天后",tomorrow:"明天再來",mastered:"已掌握！",
   saved:"已儲存（明天開始複習）",doneAll:"今天的複習完成了！🎉",nothing:"今天沒有要複習的",
   level:"階段",nextDue:"下次",del:"刪除",confirmDel:"刪除這張卡片嗎？",reset:"重新開始",reviewNow:"立即複習",edit:"儲存",
@@ -359,6 +456,9 @@ async function reload(){ cards=await dbAll(); cards.sort((a,b)=>b.created-a.crea
 function refreshAll(){
   const due=cards.filter(isDue);
   $("#dueNum").textContent=due.length;
+  $("#todayText").textContent=due.length?t("todayText",{n:due.length}):t("todayNone");
+  $("#intV").textContent=intervals().join("・");
+
   $("#startReview").disabled=!due.length;
   $("#extraReview").disabled=!cards.length;
   $("#sTotal").textContent=cards.length;
@@ -368,21 +468,30 @@ function refreshAll(){
   const nb=$("#navBadge"); nb.hidden=!due.length; nb.textContent=due.length;
   setBadge(due.length);
   renderSubjects(); renderFilter(); renderGrid();
+  $("#listReview").disabled=!filtered().length; $("#undoBtn").disabled=!gradeStack.length;
   $("#intervals").value=intervals().join(",");
   const bytes=cards.reduce((a,c)=>a+(c.q?c.q.size:0)+(c.a?c.a.size:0)+(c.thumb?c.thumb.length*0.75:0),0);
   $("#usage").textContent=t("usage",{n:cards.length,s:(bytes/1048576).toFixed(1)});
-  const nm=cards.filter(c=>c.mastered).length; $("#delMastered").textContent=t("delMastered",{n:nm}); $("#delMastered").disabled=!nm;
+  const nm=cards.filter(c=>c.mastered).length; $("#delMastered").innerHTML=`<i class="ic">${ico("trash")}</i><span></span><span class="v"></span>`; $("#delMastered").children[1].textContent=t("delMasteredShort",{n:nm}); $("#delMastered").children[2].textContent=(bytes/1048576).toFixed(1)+" MB"; $("#delMastered").disabled=!nm;
   $("#qSel").value=ls.get("pr_q")||"std";
 }
 function subjects(){ return [...new Set(cards.map(c=>c.subject).filter(Boolean))]; }
 
 /* ===== タブ ===== */
-document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
-function showTab(name){
-  document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===name));
-  document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id==="tab-"+name));
-  window.scrollTo(0,0);
-}
+function setMode(m){ document.body.dataset.mode=m; ls.set("pr_mode",m); window.scrollTo(0,0); }
+const showTab=n=>setMode({today:"review",add:"add",list:"list"}[n]||n);
+document.querySelectorAll(".modes button").forEach(b=>b.onclick=()=>setMode(b.dataset.mode));
+// メニュー（≡）とシート
+function openMenu(on){ $("#menu").hidden=!on; $("#scrim").hidden=!on; $("#menuBtn").setAttribute("aria-expanded",on?"true":"false"); }
+$("#menuBtn").onclick=()=>openMenu($("#menu").hidden);
+$("#scrim").onclick=()=>openMenu(false);
+$("#menu").addEventListener("click",e=>{ if(e.target.closest("button.mi,a.mi")) openMenu(false); });
+const openOv=id=>$(id).classList.add("show");
+document.querySelectorAll(".overlay:not(#sheet)").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o||e.target.closest("[data-close]")) o.classList.remove("show"); }));
+$("#remMenuBtn").onclick=()=>openOv("#remSheet");
+$("#intMenuBtn").onclick=()=>openOv("#intSheet");
+$("#helpBtn").onclick=()=>openOv("#helpSheet");
+$("#restoreFile").addEventListener("change",()=>openMenu(false));
 
 /* ===== 追加 ===== */
 let qBlob=null,aBlob=null;
@@ -463,12 +572,14 @@ function openSheet(c){
 
 /* ===== 復習 ===== */
 let queue=[], qi=0, practice=false, showingAns=false, curURL=null;
+const gradeStack=[];   // 押し間違いを取り消すための記録
 $("#startReview").onclick=()=>startReview(shuffle(cards.filter(isDue)),false);
+$("#listReview").onclick=()=>startReview(shuffle(filtered()),true);
 $("#extraReview").onclick=()=>startReview(shuffle(filtered().length?filtered():cards.slice()),true);
 function shuffle(a){a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a;}
 function startReview(list,isPractice){
   if(!list.length){toast(t("nothing")); return;}
-  queue=list; qi=0; practice=isPractice;
+  queue=list; qi=0; practice=isPractice; $("#rvUndo").disabled=true;
   $("#reviewer").classList.add("on"); showCard();
 }
 function showCard(){
@@ -491,6 +602,9 @@ $("#rvNg").onclick=()=>grade(false);
 $("#rvClose").onclick=endReview;
 async function grade(ok){
   const c=queue[qi];
+  gradeStack.push({c,qi,practice,prev:{level:c.level,due:c.due,mastered:c.mastered,reviews:c.reviews,last:c.last}});
+  if(gradeStack.length>50) gradeStack.shift();
+  $("#rvUndo").disabled=false;
   if(!practice){
     const n=nextInfo(c,ok); Object.assign(c,{level:n.level,due:n.due===Infinity?8.64e15:n.due,mastered:n.mastered,reviews:(c.reviews||0)+1,last:Date.now()});
     await dbPut(c);
@@ -498,6 +612,15 @@ async function grade(ok){
   qi++;
   if(qi>=queue.length){ endReview(); toast(t("doneAll")); } else showCard();
 }
+async function undoGrade(){
+  const g=gradeStack.pop(); if(!g){ toast(t("undoNone")); return false; }
+  if(!g.practice){ Object.assign(g.c,g.prev); await dbPut(g.c); }
+  $("#rvUndo").disabled=!gradeStack.length;
+  if($("#reviewer").classList.contains("on")&&queue[g.qi]===g.c){ qi=g.qi; showCard(); }
+  toast(t("undone")); return true;
+}
+$("#rvUndo").onclick=()=>undoGrade();
+$("#undoBtn").onclick=async()=>{ if(await undoGrade()) reload(); };
 function endReview(){ $("#reviewer").classList.remove("on"); if(curURL){URL.revokeObjectURL(curURL); curURL=null;} reload(); }
 
 /* ===== リマインダー（カレンダー .ics） ===== */
@@ -583,6 +706,7 @@ $("#subj").value=ls.get("pr_lastSubj")||"";
 (async()=>{
   await openDB();
   if(navigator.storage&&navigator.storage.persist) navigator.storage.persist().catch(()=>{});
+  setMode(ls.get("pr_mode")||"review");
   applyLang(); await reload();
   if(location.hash==="#review" && cards.some(isDue)) $("#startReview").click();
 })();
