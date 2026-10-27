@@ -192,6 +192,7 @@ label.btn{cursor:pointer}
   <label class="mi"><span data-i="langLbl"></span>
     <select id="lang" aria-label="Language"><option value="ja">日本語</option><option value="en">English</option><option value="zh-Hant">繁體中文</option><option value="zh">简体中文</option></select></label>
   <button class="mi" id="helpBtn" role="menuitem"><i class="ic" data-ic="help"></i><span data-i="helpLong"></span></button>
+  <div class="mi" style="min-height:32px;font-size:12px;color:var(--muted)" id="verLbl"></div>
   <a class="mi accent" id="supportLink" role="menuitem" target="_blank" rel="noopener"><i class="ic" data-ic="heart"></i><span data-i="support"></span></a>
 </div>
 
@@ -328,6 +329,7 @@ label.btn{cursor:pointer}
 <div class="toast" id="toast"></div>
 
 <script>
+const APP_VER="2026.10.27-3";
 /* ===== 設定 ===== */
 const SUPPORT_URL="https://ofuse.me/45tools"; // ← OFUSEのURLに差し替え
 const DEFAULT_INTERVALS=[1,3,7,14,30,60];
@@ -842,7 +844,7 @@ $("#restoreFile").onchange=async e=>{
 function toast(msg){const el=$("#toast"); el.textContent=msg; el.classList.add("on"); clearTimeout(el._t); el._t=setTimeout(()=>el.classList.remove("on"),2200);}
 
 /* ===== 起動 ===== */
-$("#supportLink").href=SUPPORT_URL;
+$("#supportLink").href=SUPPORT_URL; $("#verLbl").textContent="45tools · ver "+APP_VER;
 $("#subj").value=ls.get("pr_lastSubj")||"";
 (async()=>{
   await openDB();
@@ -852,7 +854,15 @@ $("#subj").value=ls.get("pr_lastSubj")||"";
   if(location.hash==="#review" && cards.some(isDue)) $("#startReview").click();
 })();
 document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&db) reload(); });
-if("serviceWorker" in navigator && location.protocol==="https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
+// 新しい版が出たらすぐ使う（アプリを開いたとき・戻ったときに確認。編集中は勝手に再読み込みしない）
+if("serviceWorker" in navigator && location.protocol==="https:"){
+  navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(reg=>{
+    reg.update().catch(()=>{});
+    document.addEventListener("visibilitychange",()=>{ if(!document.hidden) reg.update().catch(()=>{}); });
+  }).catch(()=>{});
+  let reloaded=false;
+  navigator.serviceWorker.addEventListener("controllerchange",()=>{ if(reloaded) return; if(!(document.querySelector("#reviewer.on,#cropper.on"))){ reloaded=true; location.reload(); } });
+}
 window.__pr={get cards(){return cards},reload,nextInfo,startOfDay};
 </script>
 </body>
