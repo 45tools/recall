@@ -126,6 +126,7 @@ body[data-mode="review"] #dockReview,body[data-mode="add"] #dockAdd,body[data-mo
 .rv-dock .dockbar{display:flex;width:100%;max-width:520px}
 .rv-dock .btn{flex:1;min-height:58px;flex-direction:column;gap:0;font-size:17px}
 .rv-dock .btn small{font-size:11px;font-weight:500;opacity:.85}
+#cropper .rv-dock .btn{flex-direction:row;gap:6px;min-height:52px;font-size:16px}
 
 /* 追加：ページを撮る */
 .shotbig{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;border:2px dashed var(--line);border-radius:12px;background:var(--bg);color:var(--ink);text-align:center;padding:12px}
@@ -163,6 +164,31 @@ label.btn{cursor:pointer}
 .help b{color:var(--accent)}
 .toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--strong);color:var(--strong-ink);padding:10px 18px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .25s;pointer-events:none;z-index:95;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}
 .toast.on{opacity:1}
+.qrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 4px;font-size:13px}
+.qrow .btn{min-height:34px;padding:0 10px;font-size:13px}
+.qrow .btn.icon{width:34px;min-height:34px}
+.qrow .lvname{min-width:4.2em;text-align:center;font-weight:700}
+.qrow .sp{flex:1}
+.qrow .chip{padding:5px 10px}
+.seg.sm button{min-height:34px;font-size:12px;padding:0 9px}
+.seg.sm button.on{background:var(--accent);color:var(--accent-ink);font-weight:700}
+.qsize{font-size:12px;color:var(--muted);margin:0 0 6px}
+.panelHead{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.panelHead h2{margin:0;flex:1;font-size:15px}
+.plans{margin-top:4px}
+.plan{display:flex;align-items:center;gap:6px;padding:10px 0;border-top:1px solid var(--line)}
+.plan:first-child{border-top:0}
+.plan .pt{flex:1;min-width:0}
+.plan .pt b{display:block;font-size:12px;color:var(--accent)}
+.plan .pt span{display:block;font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plan .pt small{display:block;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plan.past .pt b{color:var(--danger)}
+.plan .btn{min-height:40px;padding:0 10px}
+.plan .btn.icon{width:40px}
+.plansEmpty{font-size:13px;color:var(--muted);margin:6px 0 0}
+.urlRow{display:flex;gap:6px}
+.urlRow input{flex:1;min-width:0}
+.urlRow .btn{min-height:44px}
 .foot{text-align:center;color:var(--muted);font-size:11px;margin-top:20px}
 </style>
 </head>
@@ -183,7 +209,7 @@ label.btn{cursor:pointer}
   <button class="mi" id="remMenuBtn" role="menuitem"><i class="ic" data-ic="bell"></i><span data-i="remindTitle"></span></button>
   <button class="mi" id="intMenuBtn" role="menuitem"><i class="ic" data-ic="clock"></i><span data-i="intTitle"></span><span class="v num" id="intV"></span></button>
   <label class="mi"><i class="ic" data-ic="image"></i><span data-i="qMenu"></span>
-    <select id="qSel"><option value="std" data-i="qStdShort"></option><option value="high" data-i="qHighShort"></option><option value="eco" data-i="qEcoShort"></option></select></label>
+    <select id="qSel"><option value="1" data-i="lv1"></option><option value="2" data-i="lv2"></option><option value="3" data-i="lv3"></option><option value="4" data-i="lv4"></option><option value="5" data-i="lv5"></option></select></label>
   <button class="mi" id="delMastered" role="menuitem"></button>
   <hr>
   <button class="mi" id="backup" role="menuitem"><i class="ic" data-ic="download"></i><span data-i="backup"></span></button>
@@ -211,6 +237,11 @@ label.btn{cursor:pointer}
       </div>
     </div>
     <p class="tip" data-i="tipReview"></p>
+    <div class="panel" id="planPanel">
+      <div class="panelHead"><i class="ic" data-ic="audio" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2>
+        <button class="btn icon" id="planNew2" aria-label="add"><i class="ic" data-ic="plus"></i></button></div>
+      <div class="plans" id="plans"></div>
+    </div>
   </section>
 
   <!-- 追加 -->
@@ -224,6 +255,15 @@ label.btn{cursor:pointer}
       </div>
     </div>
     <p class="tip" data-i="tipAdd"></p>
+    <div class="panel">
+      <div class="panelHead"><i class="ic" data-ic="audio" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2></div>
+      <p class="muted" data-i="planD" style="margin:4px 0 10px"></p>
+      <div class="row" style="margin-top:0">
+        <label class="btn primary" for="qrFile"><i class="ic" data-ic="qr"></i><span data-i="scanQR"></span></label>
+        <button class="btn" id="planNew"><i class="ic" data-ic="link"></i><span data-i="pasteLink"></span></button>
+      </div>
+      <input type="file" id="qrFile" accept="image/*" capture="environment" hidden>
+    </div>
   </section>
 
   <!-- 一覧 -->
@@ -284,6 +324,14 @@ label.btn{cursor:pointer}
   </div>
   <div class="cropPrev">
     <div class="prevHead"><b data-i="cropPrev"></b><span id="cropInfo"></span></div>
+    <div class="qrow">
+      <span data-i="qShort"></span>
+      <button class="btn icon" id="lvDown" aria-label="-">−</button><span class="lvname" id="lvName"></span><button class="btn icon" id="lvUp" aria-label="+">＋</button>
+      <button class="chip" id="grayChip" data-i="gray"></button>
+      <span class="sp"></span>
+      <div class="seg sm" id="pvSeg"><button data-pv="crop" data-i="prevCrop"></button><button data-pv="page" data-i="prevPage"></button></div>
+    </div>
+    <div class="qsize" id="qSize"></div>
     <div class="prevBox"><canvas id="cropCanvas"></canvas></div>
     <input id="cropMemo" data-ph="memoPh" autocomplete="off">
   </div>
@@ -309,6 +357,23 @@ label.btn{cursor:pointer}
   <button class="btn closeb" data-close data-i="close"></button>
 </div></div>
 
+<!-- 学習予定 -->
+<div class="overlay" id="planSheet"><div class="sheet">
+  <h2 data-i="planEditTitle"></h2>
+  <div class="field" style="margin-top:0"><label for="plName" data-i="planName"></label><input id="plName" autocomplete="off"></div>
+  <div class="field"><label for="plUrl" data-i="planUrl"></label>
+    <div class="urlRow"><input id="plUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://"><label class="btn" for="qrFile" aria-label="QR"><i class="ic" data-ic="qr"></i></label></div></div>
+  <div class="field"><label for="plAt" data-i="planAt"></label><input id="plAt" type="datetime-local"></div>
+  <div class="field"><label for="plMemo" data-i="planMemo"></label><input id="plMemo" autocomplete="off"></div>
+  <p class="muted" data-i="planCalHint"></p>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
+    <button class="btn primary" id="plSaveCal"><i class="ic" data-ic="bell"></i><span data-i="planSaveCal"></span></button>
+    <button class="btn" id="plSave" data-i="planSave"></button>
+    <div class="row" id="plEditRow" style="margin-top:0"><button class="btn" id="plOpen"><i class="ic" data-ic="play"></i><span data-i="open"></span></button><button class="btn" id="plDone"></button><button class="btn ng" id="plDel" data-i="planDel"></button></div>
+  </div>
+  <button class="btn closeb" data-close data-i="close"></button>
+</div></div>
+
 <!-- 復習の間隔 -->
 <div class="overlay" id="intSheet"><div class="sheet">
   <h2 data-i="intTitle"></h2>
@@ -329,13 +394,17 @@ label.btn{cursor:pointer}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VER="2026.10.27-3";
+const APP_VER="2026.10.29-1";
 /* ===== 設定 ===== */
 const SUPPORT_URL="https://ofuse.me/45tools"; // ← OFUSEのURLに差し替え
 const DEFAULT_INTERVALS=[1,3,7,14,30,60];
 // 画質：[長辺px, JPEG品質, 白黒]
 const QUALITY={std:[1400,0.72,false],high:[2000,0.85,false],eco:[1100,0.62,true]};
 const qset=()=>QUALITY[ls.get("pr_q")]||QUALITY.std;
+// 保存の画質（5段階）：p=ページ全体、c=切り抜き [長辺px, JPEG品質]
+const LEVELS=[null,{p:[1000,.55],c:[1000,.6]},{p:[1200,.62],c:[1300,.7]},{p:[1400,.72],c:[1600,.82]},{p:[2000,.82],c:[2200,.88]},{p:[2800,.9],c:[2800,.92]}];
+const defLv=()=>{ const v=parseInt(ls.get("pr_lv"),10); return v>=1&&v<=5?v:({eco:2,std:3,high:4}[ls.get("pr_q")]||3); };
+const defGray=()=>{ const g=ls.get("pr_gray"); return g===null?ls.get("pr_q")==="eco":g==="1"; };
 
 /* ===== アイコン ===== */
 const ICONS={
@@ -354,6 +423,10 @@ const ICONS={
  eye:'<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/>',
  play:'<path d="M8 5.2v13.6L19 12z" fill="currentColor"/>',
  plus:'<path d="M12 5.5v13M5.5 12h13"/>',
+ audio:'<path d="M4.5 14.5v-2a7.5 7.5 0 0 1 15 0v2"/><rect x="4" y="14" width="4" height="6" rx="1.5"/><rect x="16" y="14" width="4" height="6" rx="1.5"/>',
+ qr:'<rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><path d="M14 14h2.5v2.5H14zM17.5 17.5H20V20h-2.5zM14 19.5h1.5M19.5 14v1.5"/>',
+ link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>',
+ edit:'<path d="M14.5 5.5l4 4L9 19H5v-4z"/>',
  x:'<path d="M7 7l10 10M17 7 7 17"/>',
  bulb:'<path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/>',
  trash:'<path d="M4.5 7h15"/><path d="M9.5 7V5.3c0-.7.6-1.3 1.3-1.3h2.4c.7 0 1.3.6 1.3 1.3V7"/><path d="M6.5 7l.9 11.4c.1 1 .9 1.6 1.8 1.6h5.6c1 0 1.7-.7 1.8-1.6L17.5 7"/>',
@@ -363,7 +436,7 @@ document.querySelectorAll("[data-ic]").forEach(el=>{ el.innerHTML=ico(el.dataset
 
 /* ===== 多言語 ===== */
 const I18N={
- ja:{shootPage:"ページを撮る",shootPageD:"間違えた問題があるページを丸ごと撮ります。\nこのあと、間違えた所だけを囲みます。",shootShort:"ページを撮る",bulkShort:"写真から選ぶ",cropTitle:"間違えた所を囲む",retake:"撮り直す",cropPrev:"復習ではこの大きさで出ます",cropDone:"完了",cropAdd:"この範囲を追加",memoPh:"メモ（任意）例：関係代名詞 what",cropSmall:"文字が小さめです。範囲を狭めるか、近づいて撮り直してください",cropOk:"{w}×{h}",cropAdded:"追加しました（{n}件目）。続けて別の所も囲めます",cropNext:"次の写真へ",page:"ページ全体",showCrop:"間違えた所",tipAdd:"1ページに間違いが何か所あっても、続けて囲んで追加できます。ページの写真は1枚だけ保存されるので容量は増えません。",mReview:"復習",mAdd:"追加",mList:"一覧",qMenu:"写真の画質",qStdShort:"標準",qHighShort:"高画質",qEcoShort:"省容量",langLbl:"言語",helpLong:"使い方・このアプリについて",support:"このアプリを応援する",extraShort:"ぜんぶ見直す",saveShort:"保存して追加",listReview:"この中で見直す",tipReview:"「ぜんぶ見直す」は予定に影響しません。間違えた直後の確認や、テスト前の総まとめに。",tipList:"写真をタップすると、科目やメモの直し・今すぐ復習・削除ができます。下のバーで科目ごとに絞り込めます。",todayText:"今日は{n}件です。写真を見て、まず自分で思い出してから答えを確認しましょう。",todayNone:"今日の復習はありません。間違えたページを「追加」から撮っておきましょう。",undone:"1つ前の採点を取り消しました",undoNone:"取り消せる採点がありません",delMasteredShort:"習得済みを削除（{n}件）",backup:"バックアップを保存",restore:"バックアップから復元",icsDaily:"毎日の復習リマインダーを登録",icsDates:"復習予定日だけ登録（今後30日）",badge:"ホーム画面アイコンに件数を表示",bulk:"写真ライブラリからまとめて追加",noCards:"まだ登録がありません。左上の「追加」から、間違えたページを撮りましょう。",how:"<b>① 追加</b>：間違えた問題のページを撮ります（答えのページも撮っておくと便利）。<br><b>② 復習</b>：決まった間隔（1日後→3日後→7日後…）で「復習」に出てきます。写真を見て、まず<b>自分で思い出して</b>から「できた／まだ」。「まだ」は翌日にもう一度出ます。押し間違えたら左上の「元に戻す」。<br><b>③ 一覧</b>：登録した写真の確認・修正・削除。<br><b>≡ メニュー</b>：リマインダー（iPhoneのカレンダーに毎日の通知を登録）、復習の間隔、写真の画質、バックアップ、言語など。",dueToday:"今日の復習",start:"復習をはじめる",extra:"ぜんぶ見直す（予定に影響しない）",sTotal:"登録数",sTomorrow:"明日",sMaster:"習得済み",
+ ja:{qMenu:"写真の画質（はじめの設定）",qShort:"画質",lv1:"最小",lv2:"省容量",lv3:"標準",lv4:"高画質",lv5:"最高",gray:"白黒",prevCrop:"切り抜き",prevPage:"ページ",sizeInfo:"保存 約{t}（ページ {p}＋切り抜き {c}）",sizeInfoCrop:"保存 約{c}（切り抜きのみ）",making:"ページを作っています…",planTitle:"音声の学習予定",planD:"教材のQRコードのリンクを登録して、決めた日時にカレンダーで知らせます。音声はアプリに取り込まず、教材のページを開きます。",scanQR:"QRコードを撮る",pasteLink:"リンクを入力",planNone:"予定はまだありません。教材のQRコードを「追加」から登録できます。",planEditTitle:"学習予定",planName:"タイトル（例：英単語 Unit 3）",planUrl:"リンク（QRコードのURL）",planAt:"日時",planMemo:"メモ（任意）",planCalHint:"「カレンダーに登録」すると、その日時にiPhoneの通知が届きます。予定の中のリンクを押すと教材の音声が開きます。",planSaveCal:"保存してカレンダーに登録",planSave:"保存だけ",open:"開く",planDone:"済みにする",planDel:"削除",planPast:"時間を過ぎています",planSaved:"予定を保存しました",urlNg:"リンク（https://…）を入れてください",atNg:"日時を入れてください",confirmPlanDel:"この予定を削除しますか？",reading:"QRコードを読み取っています…",qrNg:"QRコードを読み取れませんでした。明るい所で、QRコードが大きく写るように撮ってください",qrOk:"リンクを読み取りました。タイトルと日時を決めてください",planCalTitle:"🎧 {s}",planCalDesc:"45 Recall の学習予定",how2:"<br><b>画質</b>：囲む画面の「画質」で、文字が読めるか見ながら保存の画質を5段階で変えられます。下げるほど容量が減ります。赤字の答えがある教材は「白黒」にしないでください。「ページ」に切り替えると、ページ全体を拡大したときの見え方を確かめられます。<br><b>音声の学習予定</b>：「追加」で教材のQRコードを撮ると、リンクを読み取って日時を決められます。「カレンダーに登録」で、その日時に通知が届きます。音声は教材のページで聞きます（アプリには取り込みません）。",shootPage:"ページを撮る",shootPageD:"間違えた問題があるページを丸ごと撮ります。\nこのあと、間違えた所だけを囲みます。",shootShort:"ページを撮る",bulkShort:"写真から選ぶ",cropTitle:"間違えた所を囲む",retake:"撮り直す",cropPrev:"復習ではこの大きさで出ます",cropDone:"完了",cropAdd:"この範囲を追加",memoPh:"メモ（任意）例：関係代名詞 what",cropSmall:"文字が小さめです。範囲を狭めるか、近づいて撮り直してください",cropOk:"{w}×{h}",cropAdded:"追加しました（{n}件目）。続けて別の所も囲めます",cropNext:"次の写真へ",page:"ページ全体",showCrop:"間違えた所",tipAdd:"1ページに間違いが何か所あっても、続けて囲んで追加できます。ページの写真は1枚だけ保存されるので容量は増えません。",mReview:"復習",mAdd:"追加",mList:"一覧",qStdShort:"標準",qHighShort:"高画質",qEcoShort:"省容量",langLbl:"言語",helpLong:"使い方・このアプリについて",support:"このアプリを応援する",extraShort:"ぜんぶ見直す",saveShort:"保存して追加",listReview:"この中で見直す",tipReview:"「ぜんぶ見直す」は予定に影響しません。間違えた直後の確認や、テスト前の総まとめに。",tipList:"写真をタップすると、科目やメモの直し・今すぐ復習・削除ができます。下のバーで科目ごとに絞り込めます。",todayText:"今日は{n}件です。写真を見て、まず自分で思い出してから答えを確認しましょう。",todayNone:"今日の復習はありません。間違えたページを「追加」から撮っておきましょう。",undone:"1つ前の採点を取り消しました",undoNone:"取り消せる採点がありません",delMasteredShort:"習得済みを削除（{n}件）",backup:"バックアップを保存",restore:"バックアップから復元",icsDaily:"毎日の復習リマインダーを登録",icsDates:"復習予定日だけ登録（今後30日）",badge:"ホーム画面アイコンに件数を表示",bulk:"写真ライブラリからまとめて追加",noCards:"まだ登録がありません。左上の「追加」から、間違えたページを撮りましょう。",how:"<b>① 追加</b>：間違えた問題のページを撮ります（答えのページも撮っておくと便利）。<br><b>② 復習</b>：決まった間隔（1日後→3日後→7日後…）で「復習」に出てきます。写真を見て、まず<b>自分で思い出して</b>から「できた／まだ」。「まだ」は翌日にもう一度出ます。押し間違えたら左上の「元に戻す」。<br><b>③ 一覧</b>：登録した写真の確認・修正・削除。<br><b>≡ メニュー</b>：リマインダー（iPhoneのカレンダーに毎日の通知を登録）、復習の間隔、写真の画質、バックアップ、言語など。",dueToday:"今日の復習",start:"復習をはじめる",extra:"ぜんぶ見直す（予定に影響しない）",sTotal:"登録数",sTomorrow:"明日",sMaster:"習得済み",
   howTitle:"使い方",
   addTitle:"間違えたページを撮る",qPhoto:"問題（必須）",aPhoto:"答え（任意）",subject:"科目・教材",memo:"メモ（どこで間違えたか等）",save:"保存して復習に追加",
   addNote:"最初の復習は明日です。写真はこの端末の中だけに保存されます。",
@@ -378,7 +451,7 @@ const I18N={
   level:"段階",nextDue:"次回",del:"削除",confirmDel:"このカードを削除しますか？",reset:"最初から",reviewNow:"今すぐ復習",edit:"保存",
   restored:"{n}件を復元しました",badgeOk:"アイコンに件数を表示します",badgeNg:"この環境では使えません（iPhoneはホーム画面に追加して開いてください）",
   calTitle:"暗記の復習（45 Recall）",calDesc:"今日の復習を開く",count:"{a} / {b}",today:"今日",days:"{n}日後",overdue:"期限切れ"},
- en:{shootPage:"Snap the page",shootPageD:"Take a photo of the whole page with your mistake.\nNext, you'll box just the part you got wrong.",shootShort:"Snap page",bulkShort:"From photos",cropTitle:"Box your mistake",retake:"Retake",cropPrev:"This is how it shows in review",cropDone:"Done",cropAdd:"Add this part",memoPh:"Note (optional), e.g. relative pronoun what",cropSmall:"Text looks small. Tighten the box or retake closer",cropOk:"{w}×{h}",cropAdded:"Added (card {n}). You can box another part",cropNext:"Next photo",page:"Whole page",showCrop:"Mistake",tipAdd:"Box as many mistakes on a page as you like. The page photo is stored once, so it doesn't use extra space.",mReview:"Review",mAdd:"Add",mList:"Cards",qMenu:"Photo quality",qStdShort:"Standard",qHighShort:"High",qEcoShort:"Saver",langLbl:"Language",helpLong:"How to use / About",support:"Support this app",extraShort:"Browse all",saveShort:"Save card",listReview:"Review these",tipReview:"“Browse all” doesn't change the schedule — good for a quick check or a final run-through before a test.",tipList:"Tap a photo to edit the subject or note, review it now, or delete it. Filter by subject in the bar below.",todayText:"{n} cards today. Look at each photo and recall it yourself before checking the answer.",todayNone:"Nothing due today. Snap pages you got wrong from “Add”.",undone:"Undid the last answer",undoNone:"Nothing to undo",delMasteredShort:"Delete mastered ({n})",backup:"Save backup",restore:"Restore backup",icsDaily:"Add daily review reminder",icsDates:"Add only review days (next 30 days)",badge:"Show count on home-screen icon",bulk:"Add several from photo library",noCards:"No cards yet. Tap “Add” at the top left to snap a page you got wrong.",how:"<b>① Add</b>: snap the page you got wrong (an answer photo helps too).<br><b>② Review</b>: it comes back on a spaced schedule (1 day → 3 → 7 …). Recall it <b>yourself first</b>, then tap “Got it / Not yet”. “Not yet” brings it back tomorrow. Tapped the wrong one? Use Undo at the top left.<br><b>③ Cards</b>: check, edit or delete your photos.<br><b>≡ Menu</b>: reminders (a daily calendar alert), review intervals, photo quality, backup, language and more.",dueToday:"Due today",start:"Start review",extra:"Browse all (won't change schedule)",sTotal:"Cards",sTomorrow:"Tomorrow",sMaster:"Mastered",
+ en:{qMenu:"Photo quality (default)",qShort:"Quality",lv1:"Smallest",lv2:"Saver",lv3:"Standard",lv4:"High",lv5:"Best",gray:"B&W",prevCrop:"Box",prevPage:"Page",sizeInfo:"Saves about {t} (page {p} + box {c})",sizeInfoCrop:"Saves about {c} (box only)",making:"Preparing the page…",planTitle:"Listening plan",planD:"Save the link from your textbook's QR code and get a calendar alert at the time you choose. The audio isn't copied into the app — it opens the textbook's own page.",scanQR:"Snap QR code",pasteLink:"Enter link",planNone:"No plans yet. Add your textbook's QR code from “Add”.",planEditTitle:"Listening plan",planName:"Title (e.g. Vocabulary Unit 3)",planUrl:"Link (QR code URL)",planAt:"Date & time",planMemo:"Note (optional)",planCalHint:"“Add to Calendar” sends an iPhone alert at that time. Tap the link in the event to open the audio.",planSaveCal:"Save and add to Calendar",planSave:"Save only",open:"Open",planDone:"Mark as done",planDel:"Delete",planPast:"Time has passed",planSaved:"Plan saved",urlNg:"Enter a link (https://…)",atNg:"Enter a date and time",confirmPlanDel:"Delete this plan?",reading:"Reading the QR code…",qrNg:"Couldn't read the QR code. Try again in good light with the code large in the frame",qrOk:"Link found. Set a title and time",planCalTitle:"🎧 {s}",planCalDesc:"Listening plan from 45 Recall",how2:"<br><b>Quality</b>: in the box screen, change the save quality in 5 steps while checking the text is readable. Lower uses less space. Don't use “B&W” if answers are in red. Switch to “Page” to see how the whole page looks when zoomed.<br><b>Listening plan</b>: in “Add”, snap a textbook QR code to read its link, then pick a time. “Add to Calendar” alerts you then. You listen on the textbook's page (nothing is copied into the app).",shootPage:"Snap the page",shootPageD:"Take a photo of the whole page with your mistake.\nNext, you'll box just the part you got wrong.",shootShort:"Snap page",bulkShort:"From photos",cropTitle:"Box your mistake",retake:"Retake",cropPrev:"This is how it shows in review",cropDone:"Done",cropAdd:"Add this part",memoPh:"Note (optional), e.g. relative pronoun what",cropSmall:"Text looks small. Tighten the box or retake closer",cropOk:"{w}×{h}",cropAdded:"Added (card {n}). You can box another part",cropNext:"Next photo",page:"Whole page",showCrop:"Mistake",tipAdd:"Box as many mistakes on a page as you like. The page photo is stored once, so it doesn't use extra space.",mReview:"Review",mAdd:"Add",mList:"Cards",qStdShort:"Standard",qHighShort:"High",qEcoShort:"Saver",langLbl:"Language",helpLong:"How to use / About",support:"Support this app",extraShort:"Browse all",saveShort:"Save card",listReview:"Review these",tipReview:"“Browse all” doesn't change the schedule — good for a quick check or a final run-through before a test.",tipList:"Tap a photo to edit the subject or note, review it now, or delete it. Filter by subject in the bar below.",todayText:"{n} cards today. Look at each photo and recall it yourself before checking the answer.",todayNone:"Nothing due today. Snap pages you got wrong from “Add”.",undone:"Undid the last answer",undoNone:"Nothing to undo",delMasteredShort:"Delete mastered ({n})",backup:"Save backup",restore:"Restore backup",icsDaily:"Add daily review reminder",icsDates:"Add only review days (next 30 days)",badge:"Show count on home-screen icon",bulk:"Add several from photo library",noCards:"No cards yet. Tap “Add” at the top left to snap a page you got wrong.",how:"<b>① Add</b>: snap the page you got wrong (an answer photo helps too).<br><b>② Review</b>: it comes back on a spaced schedule (1 day → 3 → 7 …). Recall it <b>yourself first</b>, then tap “Got it / Not yet”. “Not yet” brings it back tomorrow. Tapped the wrong one? Use Undo at the top left.<br><b>③ Cards</b>: check, edit or delete your photos.<br><b>≡ Menu</b>: reminders (a daily calendar alert), review intervals, photo quality, backup, language and more.",dueToday:"Due today",start:"Start review",extra:"Browse all (won't change schedule)",sTotal:"Cards",sTomorrow:"Tomorrow",sMaster:"Mastered",
   howTitle:"How to use",
   addTitle:"Snap the page you missed",qPhoto:"Question (required)",aPhoto:"Answer (optional)",subject:"Subject / book",memo:"Note (what you got wrong)",save:"Save & schedule",
   addNote:"First review is tomorrow. Photos stay on this device only.",
@@ -393,7 +466,7 @@ const I18N={
   level:"Stage",nextDue:"Next",del:"Delete",confirmDel:"Delete this card?",reset:"Restart",reviewNow:"Review now",edit:"Save",
   restored:"Restored {n} cards",badgeOk:"Count will show on the icon",badgeNg:"Not available here (on iPhone, open from the home screen)",
   calTitle:"Review time (45 Recall)",calDesc:"Open today's review",count:"{a} / {b}",today:"today",days:"in {n}d",overdue:"overdue"},
- zh:{shootPage:"拍下整页",shootPageD:"把有错题的整页拍下来。\n接着只框出做错的地方。",shootShort:"拍下整页",bulkShort:"从相册选择",cropTitle:"框出做错的地方",retake:"重拍",cropPrev:"复习时会以这个大小显示",cropDone:"完成",cropAdd:"添加这个范围",memoPh:"备注（可选）例：关系代词 what",cropSmall:"文字偏小。请缩小范围或靠近重拍",cropOk:"{w}×{h}",cropAdded:"已添加（第{n}张）。可继续框出其他地方",cropNext:"下一张照片",page:"整页",showCrop:"做错的地方",tipAdd:"一页有几处错都可以连续框选添加。整页照片只保存一张，不会多占空间。",mReview:"复习",mAdd:"添加",mList:"列表",qMenu:"照片画质",qStdShort:"标准",qHighShort:"高画质",qEcoShort:"省空间",langLbl:"语言",helpLong:"使用说明・关于本应用",support:"支持这个应用",extraShort:"全部浏览",saveShort:"保存并添加",listReview:"复习这些",tipReview:"“全部浏览”不影响复习计划，适合刚做错时确认或考试前总复习。",tipList:"点照片可修改科目和备注、立即复习或删除。可在下方栏按科目筛选。",todayText:"今天有{n}张。看照片时先自己回想，再看答案。",todayNone:"今天没有要复习的。请从“添加”拍下做错的页面。",undone:"已撤销上一次评分",undoNone:"没有可撤销的评分",delMasteredShort:"删除已掌握（{n}张）",backup:"保存备份",restore:"从备份恢复",icsDaily:"添加每日复习提醒",icsDates:"只添加复习日（未来30天）",badge:"在主屏幕图标显示数量",bulk:"从相册批量添加",noCards:"还没有卡片。请点左上的“添加”拍下做错的页面。",how:"<b>① 添加</b>：拍下做错的题目（顺便拍下答案更方便）。<br><b>② 复习</b>：按间隔（1天→3天→7天…）出现在“复习”中。先<b>自己回想</b>，再点“会了／还不会”。“还不会”明天再出现。点错了可用左上的“撤销”。<br><b>③ 列表</b>：查看、修改、删除照片。<br><b>≡ 菜单</b>：提醒（在日历登记每日通知）、复习间隔、照片画质、备份、语言等。",dueToday:"今日复习",start:"开始复习",extra:"全部浏览（不影响计划）",sTotal:"总数",sTomorrow:"明天",sMaster:"已掌握",
+ zh:{qMenu:"照片画质（默认设置）",qShort:"画质",lv1:"最小",lv2:"省空间",lv3:"标准",lv4:"高画质",lv5:"最高",gray:"黑白",prevCrop:"框选",prevPage:"整页",sizeInfo:"保存约{t}（整页 {p}＋框选 {c}）",sizeInfoCrop:"保存约{c}（仅框选）",making:"正在生成整页…",planTitle:"音频学习计划",planD:"登记教材二维码的链接，在设定的时间用日历提醒你。音频不导入应用，而是打开教材的页面。",scanQR:"拍二维码",pasteLink:"输入链接",planNone:"还没有计划。可从“添加”登记教材的二维码。",planEditTitle:"学习计划",planName:"标题（例：英语单词 Unit 3）",planUrl:"链接（二维码的网址）",planAt:"日期和时间",planMemo:"备注（可选）",planCalHint:"“添加到日历”后，会在该时间收到iPhone通知。点日程里的链接即可打开教材音频。",planSaveCal:"保存并添加到日历",planSave:"仅保存",open:"打开",planDone:"标为已完成",planDel:"删除",planPast:"已过时间",planSaved:"已保存计划",urlNg:"请输入链接（https://…）",atNg:"请输入日期和时间",confirmPlanDel:"要删除这个计划吗？",reading:"正在读取二维码…",qrNg:"无法读取二维码。请在明亮处让二维码拍得大一些",qrOk:"已读取链接。请设定标题和时间",planCalTitle:"🎧 {s}",planCalDesc:"45 Recall 的学习计划",how2:"<br><b>画质</b>：在框选画面的“画质”里，可一边确认文字是否清楚，一边分5档调整保存画质。越低越省空间。答案是红字的教材请不要用“黑白”。切换到“整页”可确认整页放大时的效果。<br><b>音频学习计划</b>：在“添加”里拍教材的二维码即可读取链接并设定时间。“添加到日历”后会在该时间提醒。音频在教材页面收听（不导入应用）。",shootPage:"拍下整页",shootPageD:"把有错题的整页拍下来。\n接着只框出做错的地方。",shootShort:"拍下整页",bulkShort:"从相册选择",cropTitle:"框出做错的地方",retake:"重拍",cropPrev:"复习时会以这个大小显示",cropDone:"完成",cropAdd:"添加这个范围",memoPh:"备注（可选）例：关系代词 what",cropSmall:"文字偏小。请缩小范围或靠近重拍",cropOk:"{w}×{h}",cropAdded:"已添加（第{n}张）。可继续框出其他地方",cropNext:"下一张照片",page:"整页",showCrop:"做错的地方",tipAdd:"一页有几处错都可以连续框选添加。整页照片只保存一张，不会多占空间。",mReview:"复习",mAdd:"添加",mList:"列表",qStdShort:"标准",qHighShort:"高画质",qEcoShort:"省空间",langLbl:"语言",helpLong:"使用说明・关于本应用",support:"支持这个应用",extraShort:"全部浏览",saveShort:"保存并添加",listReview:"复习这些",tipReview:"“全部浏览”不影响复习计划，适合刚做错时确认或考试前总复习。",tipList:"点照片可修改科目和备注、立即复习或删除。可在下方栏按科目筛选。",todayText:"今天有{n}张。看照片时先自己回想，再看答案。",todayNone:"今天没有要复习的。请从“添加”拍下做错的页面。",undone:"已撤销上一次评分",undoNone:"没有可撤销的评分",delMasteredShort:"删除已掌握（{n}张）",backup:"保存备份",restore:"从备份恢复",icsDaily:"添加每日复习提醒",icsDates:"只添加复习日（未来30天）",badge:"在主屏幕图标显示数量",bulk:"从相册批量添加",noCards:"还没有卡片。请点左上的“添加”拍下做错的页面。",how:"<b>① 添加</b>：拍下做错的题目（顺便拍下答案更方便）。<br><b>② 复习</b>：按间隔（1天→3天→7天…）出现在“复习”中。先<b>自己回想</b>，再点“会了／还不会”。“还不会”明天再出现。点错了可用左上的“撤销”。<br><b>③ 列表</b>：查看、修改、删除照片。<br><b>≡ 菜单</b>：提醒（在日历登记每日通知）、复习间隔、照片画质、备份、语言等。",dueToday:"今日复习",start:"开始复习",extra:"全部浏览（不影响计划）",sTotal:"总数",sTomorrow:"明天",sMaster:"已掌握",
   howTitle:"使用方法",
   addTitle:"拍下做错的页面",qPhoto:"题目（必填）",aPhoto:"答案（可选）",subject:"科目・教材",memo:"备注（错在哪里等）",save:"保存并加入复习",
   addNote:"首次复习在明天。照片只保存在本设备中。",
@@ -408,7 +481,7 @@ const I18N={
   level:"阶段",nextDue:"下次",del:"删除",confirmDel:"删除这张卡片吗？",reset:"重新开始",reviewNow:"立即复习",edit:"保存",
   restored:"已恢复 {n} 张",badgeOk:"将在图标上显示数量",badgeNg:"此环境不可用（iPhone 请从主屏幕打开）",
   calTitle:"背诵复习（45 Recall）",calDesc:"打开今日复习",count:"{a} / {b}",today:"今天",days:"{n}天后",overdue:"已过期"},
- "zh-Hant":{shootPage:"拍下整頁",shootPageD:"把有錯題的整頁拍下來。\n接著只框出做錯的地方。",shootShort:"拍下整頁",bulkShort:"從相簿選擇",cropTitle:"框出做錯的地方",retake:"重拍",cropPrev:"複習時會以這個大小顯示",cropDone:"完成",cropAdd:"新增這個範圍",memoPh:"備註（可選）例：關係代詞 what",cropSmall:"文字偏小。請縮小範圍或靠近重拍",cropOk:"{w}×{h}",cropAdded:"已新增（第{n}張）。可繼續框出其他地方",cropNext:"下一張照片",page:"整頁",showCrop:"做錯的地方",tipAdd:"一頁有幾處錯都可以連續框選新增。整頁照片只儲存一張，不會多佔空間。",mReview:"複習",mAdd:"新增",mList:"列表",qMenu:"照片畫質",qStdShort:"標準",qHighShort:"高畫質",qEcoShort:"省空間",langLbl:"語言",helpLong:"使用說明・關於本應用",support:"支援這個應用",extraShort:"全部瀏覽",saveShort:"儲存並新增",listReview:"複習這些",tipReview:"「全部瀏覽」不影響複習計劃，適合剛做錯時確認或考試前總複習。",tipList:"點照片可修改科目和備註、立即複習或刪除。可在下方欄按科目篩選。",todayText:"今天有{n}張。看照片時先自己回想，再看答案。",todayNone:"今天沒有要複習的。請從「新增」拍下做錯的頁面。",undone:"已復原上一次評分",undoNone:"沒有可復原的評分",delMasteredShort:"刪除已掌握（{n}張）",backup:"儲存備份",restore:"從備份恢復",icsDaily:"新增每日複習提醒",icsDates:"只新增複習日（未來30天）",badge:"在主螢幕圖示顯示數量",bulk:"從相簿批次新增",noCards:"還沒有卡片。請點左上的「新增」拍下做錯的頁面。",how:"<b>① 新增</b>：拍下做錯的題目（順便拍下答案更方便）。<br><b>② 複習</b>：按間隔（1天→3天→7天…）出現在「複習」中。先<b>自己回想</b>，再點「會了／還不會」。「還不會」明天再出現。點錯了可用左上的「復原」。<br><b>③ 列表</b>：檢視、修改、刪除照片。<br><b>≡ 選單</b>：提醒（在日曆登記每日通知）、複習間隔、照片畫質、備份、語言等。",dueToday:"今日複習",start:"開始複習",extra:"全部瀏覽（不影響計劃）",sTotal:"總數",sTomorrow:"明天",sMaster:"已掌握",
+ "zh-Hant":{qMenu:"照片畫質（預設設定）",qShort:"畫質",lv1:"最小",lv2:"省空間",lv3:"標準",lv4:"高畫質",lv5:"最高",gray:"黑白",prevCrop:"框選",prevPage:"整頁",sizeInfo:"儲存約{t}（整頁 {p}＋框選 {c}）",sizeInfoCrop:"儲存約{c}（僅框選）",making:"正在生成整頁…",planTitle:"音訊學習計劃",planD:"登記教材二維碼的連結，在設定的時間用日曆提醒你。音訊不匯入應用，而是開啟教材的頁面。",scanQR:"拍二維碼",pasteLink:"輸入連結",planNone:"還沒有計劃。可從「新增」登記教材的二維碼。",planEditTitle:"學習計劃",planName:"標題（例：英語單詞 Unit 3）",planUrl:"連結（二維碼的網址）",planAt:"日期和時間",planMemo:"備註（可選）",planCalHint:"「新增到日曆」後，會在該時間收到iPhone通知。點日程裡的連結即可開啟教材音訊。",planSaveCal:"儲存並新增到日曆",planSave:"僅儲存",open:"開啟",planDone:"標為已完成",planDel:"刪除",planPast:"已過時間",planSaved:"已儲存計劃",urlNg:"請輸入連結（https://…）",atNg:"請輸入日期和時間",confirmPlanDel:"要刪除這個計劃嗎？",reading:"正在讀取二維碼…",qrNg:"無法讀取二維碼。請在明亮處讓二維碼拍得大一些",qrOk:"已讀取連結。請設定標題和時間",planCalTitle:"🎧 {s}",planCalDesc:"45 Recall 的學習計劃",how2:"<br><b>畫質</b>：在框選畫面的「畫質」裡，可一邊確認文字是否清楚，一邊分5檔調整儲存畫質。越低越省空間。答案是紅字的教材請不要用「黑白」。切換到「整頁」可確認整頁放大時的效果。<br><b>音訊學習計劃</b>：在「新增」裡拍教材的二維碼即可讀取連結並設定時間。「新增到日曆」後會在該時間提醒。音訊在教材頁面收聽（不匯入應用）。",shootPage:"拍下整頁",shootPageD:"把有錯題的整頁拍下來。\n接著只框出做錯的地方。",shootShort:"拍下整頁",bulkShort:"從相簿選擇",cropTitle:"框出做錯的地方",retake:"重拍",cropPrev:"複習時會以這個大小顯示",cropDone:"完成",cropAdd:"新增這個範圍",memoPh:"備註（可選）例：關係代詞 what",cropSmall:"文字偏小。請縮小範圍或靠近重拍",cropOk:"{w}×{h}",cropAdded:"已新增（第{n}張）。可繼續框出其他地方",cropNext:"下一張照片",page:"整頁",showCrop:"做錯的地方",tipAdd:"一頁有幾處錯都可以連續框選新增。整頁照片只儲存一張，不會多佔空間。",mReview:"複習",mAdd:"新增",mList:"列表",qStdShort:"標準",qHighShort:"高畫質",qEcoShort:"省空間",langLbl:"語言",helpLong:"使用說明・關於本應用",support:"支援這個應用",extraShort:"全部瀏覽",saveShort:"儲存並新增",listReview:"複習這些",tipReview:"「全部瀏覽」不影響複習計劃，適合剛做錯時確認或考試前總複習。",tipList:"點照片可修改科目和備註、立即複習或刪除。可在下方欄按科目篩選。",todayText:"今天有{n}張。看照片時先自己回想，再看答案。",todayNone:"今天沒有要複習的。請從「新增」拍下做錯的頁面。",undone:"已復原上一次評分",undoNone:"沒有可復原的評分",delMasteredShort:"刪除已掌握（{n}張）",backup:"儲存備份",restore:"從備份恢復",icsDaily:"新增每日複習提醒",icsDates:"只新增複習日（未來30天）",badge:"在主螢幕圖示顯示數量",bulk:"從相簿批次新增",noCards:"還沒有卡片。請點左上的「新增」拍下做錯的頁面。",how:"<b>① 新增</b>：拍下做錯的題目（順便拍下答案更方便）。<br><b>② 複習</b>：按間隔（1天→3天→7天…）出現在「複習」中。先<b>自己回想</b>，再點「會了／還不會」。「還不會」明天再出現。點錯了可用左上的「復原」。<br><b>③ 列表</b>：檢視、修改、刪除照片。<br><b>≡ 選單</b>：提醒（在日曆登記每日通知）、複習間隔、照片畫質、備份、語言等。",dueToday:"今日複習",start:"開始複習",extra:"全部瀏覽（不影響計劃）",sTotal:"總數",sTomorrow:"明天",sMaster:"已掌握",
   howTitle:"使用方法",
   addTitle:"拍下做錯的頁面",qPhoto:"題目（必填）",aPhoto:"答案（可選）",subject:"科目・教材",memo:"備註（錯在哪裡等）",save:"儲存並加入複習",
   addNote:"首次複習在明天。照片只儲存在本裝置中。",
@@ -433,7 +506,7 @@ function applyLang(){
   document.documentElement.lang=lang;
   document.querySelectorAll("[data-i]").forEach(el=>el.textContent=t(el.dataset.i));
   document.querySelectorAll("[data-ph]").forEach(el=>el.placeholder=t(el.dataset.ph));
-  $("#howText").innerHTML=t("how"); $("#lang").value=lang;
+  $("#howText").innerHTML=t("how")+t("how2"); $("#lang").value=lang;
   refreshAll();
 }
 
@@ -522,13 +595,13 @@ function refreshAll(){
   $("#sMaster").textContent=cards.filter(c=>c.mastered).length;
   const nb=$("#navBadge"); nb.hidden=!due.length; nb.textContent=due.length;
   setBadge(due.length);
-  renderSubjects(); renderFilter(); renderGrid();
+  renderSubjects(); renderFilter(); renderGrid(); renderPlans();
   $("#listReview").disabled=!filtered().length; $("#undoBtn").disabled=!gradeStack.length;
   $("#intervals").value=intervals().join(",");
   const bytes=cards.reduce((a,c)=>a+(c.q?c.q.size:0)+(c.a?c.a.size:0)+(c.thumb?c.thumb.length*0.75:0),0)+pageBytes;
   $("#usage").textContent=t("usage",{n:cards.length,s:(bytes/1048576).toFixed(1)});
   const nm=cards.filter(c=>c.mastered).length; $("#delMastered").innerHTML=`<i class="ic">${ico("trash")}</i><span></span><span class="v"></span>`; $("#delMastered").children[1].textContent=t("delMasteredShort",{n:nm}); $("#delMastered").children[2].textContent=(bytes/1048576).toFixed(1)+" MB"; $("#delMastered").disabled=!nm;
-  $("#qSel").value=ls.get("pr_q")||"std";
+  $("#qSel").value=String(defLv());
 }
 function subjects(){ return [...new Set(cards.map(c=>c.subject).filter(Boolean))]; }
 
@@ -563,7 +636,8 @@ async function nextCrop(){
   const f=cropQueue.shift(); if(!f){ closeCrop(); return; }
   let img; try{ img=await loadImage(f); }catch(e){ toast("Error"); return nextCrop(); }
   const W=img.naturalWidth, H=img.naturalHeight;
-  crop={img,file:f,pageId:null,added:0,box:{x:W*.1,y:H*.35,w:W*.8,h:H*.22}};
+  crop={img,file:f,pageId:null,added:0,box:{x:W*.1,y:H*.35,w:W*.8,h:H*.22},lv:defLv(),gray:defGray(),pv:"crop",pageEnc:null,savedKey:null};
+  renderQ();
   $("#cropImg").src=img.src; $("#cropMemo").value="";
   const n=cropQueue.total-cropQueue.length;
   $("#cropCount").textContent=cropQueue.total>1?` ${n}/${cropQueue.total}`:"";
@@ -587,7 +661,28 @@ function drawBox(){
   el.style.left=view.ox+b.x*view.s+"px"; el.style.top=view.oy+b.y*view.s+"px"; el.style.width=b.w*view.s+"px"; el.style.height=b.h*view.s+"px";
   drawPreview();
 }
-function cropOpts(){ return CROPQ[ls.get("pr_q")]||CROPQ.std; }
+function cropOpts(){ const L=LEVELS[crop?crop.lv:defLv()]; return [L.c[0],L.c[1],crop?crop.gray:defGray()]; }
+const qKey=()=>crop.lv+"|"+(crop.gray?1:0);
+// ページ全体を今の画質で作る（同じ設定なら作り直さない）
+async function encodePage(){
+  const k=qKey(); if(crop.pageEnc&&crop.pageEnc.key===k) return crop.pageEnc;
+  const L=LEVELS[crop.lv], blob=await compress(crop.file,L.p[0],L.p[1],crop.gray);
+  if(!crop||qKey()!==k) return null;
+  crop.pageEnc={key:k,blob,img:await blobImg(blob)}; return crop.pageEnc;
+}
+function blobImg(blob){ return new Promise((res,rej)=>{ const u=URL.createObjectURL(blob), im=new Image(); im.onload=()=>{res(im); setTimeout(()=>URL.revokeObjectURL(u),1000);}; im.onerror=rej; im.src=u; }); }
+const mb=n=>n>=1048576?(n/1048576).toFixed(2)+" MB":Math.max(1,Math.round(n/1024))+" KB";
+function renderQ(){
+  if(!crop) return;
+  $("#lvName").textContent=t("lv"+crop.lv); $("#lvDown").disabled=crop.lv<=1; $("#lvUp").disabled=crop.lv>=5;
+  $("#grayChip").classList.toggle("on",crop.gray);
+  document.querySelectorAll("#pvSeg button").forEach(b=>b.classList.toggle("on",b.dataset.pv===crop.pv));
+}
+function setQ(lv,gray){ crop.lv=Math.max(1,Math.min(5,lv)); crop.gray=gray; ls.set("pr_lv",String(crop.lv)); ls.set("pr_gray",gray?"1":"0"); renderQ(); drawPreview(); }
+$("#lvDown").onclick=()=>setQ(crop.lv-1,crop.gray);
+$("#lvUp").onclick=()=>setQ(crop.lv+1,crop.gray);
+$("#grayChip").onclick=()=>setQ(crop.lv,!crop.gray);
+document.querySelectorAll("#pvSeg button").forEach(b=>b.onclick=()=>{ crop.pv=b.dataset.pv; renderQ(); drawPreview(); });
 function cropCanvas(maxSide){
   const b=crop.box, [mx,,gray]=cropOpts(), k=Math.min(1,(maxSide||mx)/Math.max(b.w,b.h));
   const c=document.createElement("canvas"); c.width=Math.max(1,Math.round(b.w*k)); c.height=Math.max(1,Math.round(b.h*k));
@@ -596,16 +691,36 @@ function cropCanvas(maxSide){
   return c;
 }
 // 復習画面と同じ「画面幅に合わせた大きさ」で見せて、文字が読めるか確かめてもらう
-let prevTimer=null;
+let prevTimer=null, prevSeq=0;
 function drawPreview(){
-  clearTimeout(prevTimer); prevTimer=setTimeout(()=>{
+  clearTimeout(prevTimer); prevTimer=setTimeout(async()=>{
     if(!crop) return;
+    const seq=++prevSeq;
     const src=cropCanvas(), cv=$("#cropCanvas"), dpr=window.devicePixelRatio||1, cssW=$("#cropCanvas").parentElement.clientWidth||300;
     const reviewW=Math.min(window.innerWidth,720)-28;            // 復習画面での表示幅
-    const k=Math.min(1,reviewW*dpr/src.width);                    // 実際に見える解像度
-    cv.width=Math.round(src.width*k); cv.height=Math.round(src.height*k);
-    cv.getContext("2d").drawImage(src,0,0,cv.width,cv.height);
+    const [,q]=cropOpts(), cblob=await new Promise(r=>src.toBlob(r,"image/jpeg",q));
+    if(seq!==prevSeq||!crop) return;
+    let shown=src;
+    try{ shown=await blobImg(cblob); }catch(e){}
+    if(seq!==prevSeq||!crop) return;
+    if(crop.pv==="page"){
+      // ページ全体を拡大したときの見え方（囲んだ所を、保存されるページ画像から切り出す）
+      $("#qSize").textContent=t("making");
+      const pe=await encodePage(); if(seq!==prevSeq||!crop||!pe) return;
+      const s=pe.img.naturalWidth/crop.img.naturalWidth, b=crop.box;
+      cv.width=Math.max(1,Math.round(b.w*s)); cv.height=Math.max(1,Math.round(b.h*s));
+      cv.getContext("2d").drawImage(pe.img,b.x*s,b.y*s,b.w*s,b.h*s,0,0,cv.width,cv.height);
+    } else {
+      const k=Math.min(1,reviewW*dpr/src.width);                  // 実際に見える解像度
+      cv.width=Math.round(src.width*k); cv.height=Math.round(src.height*k);
+      cv.getContext("2d").drawImage(shown,0,0,cv.width,cv.height);
+    }
     cv.style.width=cssW+"px";
+    // 容量：このページ（初回のみ）＋この切り抜き
+    const showSize=pe=>{ if(seq!==prevSeq||!crop) return; const pb=pe&&crop.savedKey!==pe.key?pe.blob.size:0;
+      $("#qSize").textContent=t(pb?"sizeInfo":"sizeInfoCrop",{t:mb(pb+cblob.size),p:mb(pb),c:mb(cblob.size)}); };
+    if(crop.pageEnc&&crop.pageEnc.key===qKey()) showSize(crop.pageEnc);
+    else { $("#qSize").textContent=t("sizeInfoCrop",{c:mb(cblob.size)}); encodePage().then(showSize).catch(()=>{}); }
     // 文字の大きさの目安：切り抜きの幅が狭いほど拡大されて読みやすい。元画像で幅が広すぎる（=縮小される）と警告
     const shrink=src.width/(reviewW*dpr), info=$("#cropInfo");
     const small=crop.box.w/crop.img.naturalWidth>0.85&&crop.box.h/crop.img.naturalHeight>0.5;
@@ -643,11 +758,13 @@ $("#cropAdd").onclick=async()=>{
   $("#cropAdd").disabled=true;
   try{
     const [,q]=cropOpts(), c=cropCanvas(), blob=await new Promise(r=>c.toBlob(r,"image/jpeg",q));
-    if(!crop.pageId){ crop.pageId="p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6); await pagePut({id:crop.pageId,blob:await compress(crop.file),created:Date.now()}); }
+    const pe=await encodePage();
+    if(!crop.pageId) crop.pageId="p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+    if(crop.savedKey!==pe.key){ await pagePut({id:crop.pageId,blob:pe.blob,created:Date.now()}); crop.savedKey=pe.key; }   // 画質を変えたら、ページも同じ画質で保存し直す
     await dbPut(newCard(blob,await thumbOf(blob),crop.pageId,$("#cropMemo").value.trim()));
     ls.set("pr_lastSubj",$("#subj").value.trim());
     crop.added++; $("#cropMemo").value="";
-    toast(t("cropAdded",{n:crop.added}));
+    toast(t("cropAdded",{n:crop.added})); drawPreview();
   }finally{ $("#cropAdd").disabled=false; }
 };
 $("#cropDone").onclick=()=>{ if(cropQueue.length) nextCrop(); else closeCrop(); };
@@ -799,6 +916,96 @@ function saveFile(text,name,type){
   setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},30000);
 }
 
+/* ===== 音声の学習予定（教材のQRコードのリンク＋日時。カレンダーで知らせる） ===== */
+const plansGet=()=>{ try{ return JSON.parse(ls.get("pr_plans")||"[]"); }catch(e){ return []; } };
+const plansSet=a=>ls.set("pr_plans",JSON.stringify(a));
+function fmtAt(ms){ return new Date(ms).toLocaleString({ja:"ja-JP",en:"en-US",zh:"zh-CN","zh-Hant":"zh-TW"}[lang]||"ja-JP",{month:"numeric",day:"numeric",weekday:"short",hour:"2-digit",minute:"2-digit"}); }
+const toLocalInput=ms=>{ const d=new Date(ms); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`; };
+function renderPlans(){
+  const box=$("#plans"); if(!box) return;
+  const now=Date.now(), list=plansGet().filter(p=>!p.done).sort((a,b)=>a.at-b.at);
+  box.innerHTML="";
+  if(!list.length){ box.innerHTML=`<p class="plansEmpty">${esc(t("planNone"))}</p>`; return; }
+  list.forEach(p=>{
+    const el=document.createElement("div"); el.className="plan"+(p.at<now?" past":"");
+    el.innerHTML=`<div class="pt"><b>${esc(fmtAt(p.at))}${p.at<now?" ・"+esc(t("planPast")):""}</b><span>${esc(p.name||p.url)}</span>${p.memo?`<small>${esc(p.memo)}</small>`:""}</div>
+      <button class="btn primary" data-a="open"><i class="ic">${ico("play")}</i>${esc(t("open"))}</button>
+      <button class="btn icon" data-a="cal" aria-label="calendar"><i class="ic">${ico("bell")}</i></button>
+      <button class="btn icon" data-a="edit" aria-label="edit"><i class="ic">${ico("edit")}</i></button>`;
+    el.querySelector('[data-a="open"]').onclick=()=>openLink(p.url);
+    el.querySelector('[data-a="cal"]').onclick=()=>planCal(p);
+    el.querySelector('[data-a="edit"]').onclick=()=>openPlan(p);
+    box.appendChild(el);
+  });
+}
+function openLink(u){ const w=window.open(u,"_blank","noopener"); if(!w) location.href=u; }
+let editing=null;
+function openPlan(p,url){
+  editing=p||null;
+  const def=new Date(startOfDay()+DAY); const [h,m]=(ls.get("pr_time")||"20:00").split(":").map(Number); def.setHours(h,m,0,0);
+  $("#plName").value=p?p.name||"":""; $("#plUrl").value=p?p.url:(url||""); $("#plMemo").value=p?p.memo||"":"";
+  $("#plAt").value=toLocalInput(p?p.at:def.getTime());
+  $("#plEditRow").style.display=p?"flex":"none";
+  if(p) $("#plDone").textContent=t("planDone");
+  openOv("#planSheet");
+}
+function readPlan(){
+  let url=$("#plUrl").value.trim();
+  if(url&&!/^[a-z][a-z0-9+.-]*:/i.test(url)) url="https://"+url;
+  if(!/^https?:\/\/\S+$/i.test(url)){ toast(t("urlNg")); $("#plUrl").focus(); return null; }
+  const at=new Date($("#plAt").value).getTime();
+  if(!at){ toast(t("atNg")); return null; }
+  return {id:editing?editing.id:"pl"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),
+    name:$("#plName").value.trim(),url,at,memo:$("#plMemo").value.trim(),done:false,created:editing?editing.created:Date.now()};
+}
+function savePlan(withCal){
+  const p=readPlan(); if(!p) return;
+  const all=plansGet().filter(x=>x.id!==p.id); all.push(p); plansSet(all);
+  $("#planSheet").classList.remove("show"); renderPlans(); toast(t("planSaved"));
+  if(withCal) planCal(p);
+}
+$("#plSave").onclick=()=>savePlan(false);
+$("#plSaveCal").onclick=()=>savePlan(true);
+$("#plOpen").onclick=()=>{ const u=$("#plUrl").value.trim(); if(u) openLink(u); };
+$("#plDone").onclick=()=>{ if(!editing) return; plansSet(plansGet().map(x=>x.id===editing.id?{...x,done:true}:x)); $("#planSheet").classList.remove("show"); renderPlans(); };
+$("#plDel").onclick=()=>{ if(!editing||!confirm(t("confirmPlanDel"))) return; plansSet(plansGet().filter(x=>x.id!==editing.id)); $("#planSheet").classList.remove("show"); renderPlans(); };
+$("#planNew").onclick=()=>openPlan(null);
+$("#planNew2").onclick=()=>openPlan(null);
+// カレンダーに1件登録（その日時に通知。予定の中のリンクから教材の音声を開ける）
+function icsText(s){ return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n"); }
+function planCal(p){
+  const start=new Date(p.at), end=new Date(p.at+30*60000), title=t("planCalTitle",{s:p.name||t("planTitle")});
+  const ev=["BEGIN:VEVENT",`UID:${p.id}@45tools-recall`,`DTSTAMP:${icsStamp()}`,`DTSTART:${icsDate(start)}`,`DTEND:${icsDate(end)}`,
+    `SUMMARY:${icsText(title)}`,`DESCRIPTION:${icsText(p.url+(p.memo?"\n"+p.memo:"")+"\n\n"+t("planCalDesc"))}`,`URL:${p.url}`,
+    "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsText(title)}`,"TRIGGER:PT0M","END:VALARM","END:VEVENT"].join("\r\n");
+  saveFile(icsWrap([ev]),`45recall-plan-${toLocalInput(p.at).replace(/[-:T]/g,"")}.ics`,"text/calendar");
+}
+// QRコードの写真からリンクを読み取る（端末の中だけで処理）
+function loadJsQR(){ return window.jsQR?Promise.resolve():new Promise((res,rej)=>{ const sc=document.createElement("script"); sc.src="jsqr.js"; sc.onload=res; sc.onerror=rej; document.head.appendChild(sc); }); }
+async function decodeQR(file){
+  const img=await loadImage(file);
+  if("BarcodeDetector" in window){ try{ const r=await new BarcodeDetector({formats:["qr_code"]}).detect(img); if(r&&r[0]&&r[0].rawValue) return r[0].rawValue; }catch(e){} }
+  await loadJsQR();
+  const W=img.naturalWidth, H=img.naturalHeight;
+  for(const max of [1000,1600,700,2400]){
+    const k=Math.min(1,max/Math.max(W,H)), c=document.createElement("canvas"); c.width=Math.round(W*k); c.height=Math.round(H*k);
+    const ctx=c.getContext("2d",{willReadFrequently:true}); ctx.drawImage(img,0,0,c.width,c.height);
+    const r=window.jsQR(ctx.getImageData(0,0,c.width,c.height).data,c.width,c.height,{inversionAttempts:"attemptBoth"});
+    if(r&&r.data) return r.data;
+    if(k===1) break;
+  }
+  return null;
+}
+$("#qrFile").onchange=async e=>{
+  const f=e.target.files[0]; e.target.value=""; if(!f) return;
+  toast(t("reading"));
+  let txt=null; try{ txt=await decodeQR(f); }catch(err){}
+  if(!txt){ toast(t("qrNg")); return; }
+  txt=txt.trim();
+  if($("#planSheet").classList.contains("show")) $("#plUrl").value=txt; else openPlan(null,txt);
+  toast(t("qrOk"));
+};
+
 /* ===== アイコンバッジ ===== */
 function setBadge(n){ if(ls.get("pr_badge")!=="1"||!navigator.setAppBadge) return; (n?navigator.setAppBadge(n):navigator.clearAppBadge()).catch(()=>{}); }
 $("#notifBtn").onclick=async()=>{
@@ -812,7 +1019,7 @@ $("#intervals").onchange=e=>{
   const v=e.target.value.split(/[,、\s]+/).map(s=>parseInt(s,10)).filter(n=>n>0);
   ls.set("pr_int",(v.length?v:DEFAULT_INTERVALS).join(",")); refreshAll();
 };
-$("#qSel").onchange=e=>ls.set("pr_q",e.target.value);
+$("#qSel").onchange=e=>ls.set("pr_lv",e.target.value);
 $("#delMastered").onclick=async()=>{
   const ms=cards.filter(c=>c.mastered); if(!ms.length) return;
   if(!confirm(t("confirmDelM",{n:ms.length}))) return;
@@ -826,7 +1033,7 @@ $("#backup").onclick=async()=>{
   const out=[]; for(const c of cards) out.push({...c,q:await b2d(c.q),a:c.a?await b2d(c.a):null});
   const name=`45recall-backup-${new Date().toISOString().slice(0,10)}.json`;
   const pages=[]; for(const p of await pageAll()) pages.push({id:p.id,created:p.created,blob:await b2d(p.blob)});
-  const json=JSON.stringify({app:"photorecall",v:2,intervals:intervals(),cards:out,pages});
+  const json=JSON.stringify({app:"photorecall",v:3,intervals:intervals(),cards:out,pages,plans:plansGet()});
   const file=new File([json],name,{type:"application/json"});
   if(navigator.canShare&&navigator.canShare({files:[file]})){ try{ await navigator.share({files:[file]}); return; }catch(e){ if(e.name==="AbortError") return; } }
   saveFile(json,name,"application/json");
@@ -837,6 +1044,7 @@ $("#restoreFile").onchange=async e=>{
     const data=JSON.parse(await f.text()); let n=0;
     for(const p of data.pages||[]){ await pagePut({id:p.id,created:p.created,blob:await d2b(p.blob)}); }
     for(const c of data.cards||[]){ c.q=await d2b(c.q); c.a=c.a?await d2b(c.a):null; await dbPut(c); n++; }
+    if(Array.isArray(data.plans)){ const m=new Map(plansGet().map(x=>[x.id,x])); data.plans.forEach(x=>m.set(x.id,x)); plansSet([...m.values()]); }
     toast(t("restored",{n})); reload();
   }catch(err){ alert("Error: "+err.message); }
 };
