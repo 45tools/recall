@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#E9EFEA">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -155,7 +155,10 @@ label.btn{cursor:pointer}
 .overlay.on,.overlay.show{display:flex}
 .sheet,#sheet .inner{background:var(--panel);width:100%;max-width:560px;border-radius:18px 18px 0 0;padding:18px 14px calc(16px + env(safe-area-inset-bottom));max-height:90vh;overflow:auto;border:1px solid var(--line)}
 .sheet h2{margin:0 0 10px;font-size:18px}
-#sheet img{width:100%;border-radius:10px;display:block;margin-bottom:8px;border:1px solid var(--line)}
+#sheet img{width:100%;max-height:40vh;object-fit:contain;background:#fff;border-radius:10px;display:block;margin-bottom:8px;border:1px solid var(--line)}
+#sheet .shHead{position:sticky;top:-18px;z-index:2;background:var(--panel);display:flex;align-items:center;gap:6px;margin:-18px -14px 8px;padding:12px 14px 8px;border-bottom:1px solid var(--line)}
+#sheet .shHead b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px}
+#sheet .shHead .btn{min-height:40px}
 .row{display:flex;gap:8px;margin-top:10px}
 .row .btn{flex:1}
 .muted{color:var(--muted);font-size:13px;line-height:1.6}
@@ -176,6 +179,15 @@ label.btn{cursor:pointer}
 .chk{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:10px}
 .chk input{width:20px;height:20px;accent-color:var(--accent)}
 #prResult{display:none;margin-top:10px}
+.prBar{display:flex;align-items:center;gap:6px;margin-top:10px}
+.prBar b{flex:1;font-size:14px}
+.prBar .btn{min-height:36px;padding:0 10px;font-size:13px}
+.prGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:32vh;overflow:auto;margin-top:6px;padding:2px}
+.prT{position:relative;border:2px solid var(--line);border-radius:8px;overflow:hidden;aspect-ratio:1;padding:0;background:#fff;opacity:.45}
+.prT img{width:100%;height:100%;object-fit:cover;display:block}
+.prT.on{border-color:var(--accent);opacity:1}
+.prT .ck{position:absolute;right:3px;top:3px;width:22px;height:22px;border-radius:11px;background:var(--accent);color:var(--accent-ink);font-size:14px;line-height:22px;text-align:center;font-weight:700;display:none}
+.prT.on .ck{display:block}
 #prResult.on{display:block}
 .panelHead{display:flex;align-items:center;gap:8px;margin-bottom:4px}
 .panelHead h2{margin:0;flex:1;font-size:15px}
@@ -213,7 +225,7 @@ label.btn{cursor:pointer}
   <button class="mi" id="remMenuBtn" role="menuitem"><i class="ic" data-ic="bell"></i><span data-i="remindTitle"></span></button>
   <button class="mi" id="intMenuBtn" role="menuitem"><i class="ic" data-ic="clock"></i><span data-i="intTitle"></span><span class="v num" id="intV"></span></button>
   <label class="mi"><i class="ic" data-ic="image"></i><span data-i="qMenu"></span>
-    <select id="qSel"><option value="1" data-i="lv1"></option><option value="2" data-i="lv2"></option><option value="3" data-i="lv3"></option><option value="4" data-i="lv4"></option><option value="5" data-i="lv5"></option></select></label>
+    <select id="qSel"><option value="1" data-i="lv1"></option><option value="2" data-i="lv2"></option><option value="3" data-i="lv3"></option><option value="4" data-i="lv4"></option><option value="5" data-i="lv5"></option><option value="6" data-i="lv6"></option><option value="7" data-i="lv7"></option></select></label>
   <button class="mi" id="delMastered" role="menuitem"></button>
   <button class="mi" id="delPages" role="menuitem"></button>
   <hr>
@@ -243,7 +255,7 @@ label.btn{cursor:pointer}
     </div>
     <p class="tip" data-i="tipReview"></p>
     <div class="panel" id="planPanel">
-      <div class="panelHead"><i class="ic" data-ic="audio" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2>
+      <div class="panelHead"><i class="ic" data-ic="clock" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2>
         <button class="btn icon" id="planNew2" aria-label="add"><i class="ic" data-ic="plus"></i></button></div>
       <div class="plans" id="plans"></div>
     </div>
@@ -261,7 +273,7 @@ label.btn{cursor:pointer}
     </div>
     <p class="tip" data-i="tipAdd"></p>
     <div class="panel">
-      <div class="panelHead"><i class="ic" data-ic="audio" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2></div>
+      <div class="panelHead"><i class="ic" data-ic="clock" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2></div>
       <p class="muted" data-i="planD" style="margin:4px 0 10px"></p>
       <div class="row" style="margin-top:0">
         <label class="btn primary" for="qrFile"><i class="ic" data-ic="qr"></i><span data-i="scanQR"></span></label>
@@ -313,6 +325,7 @@ label.btn{cursor:pointer}
   <div class="rv-dock"><div class="dockbar">
     <button class="btn ng" id="rvNg"><span data-i="ng"></span><small id="rvNgSub"></small></button>
     <button class="btn primary" id="rvOk"><span data-i="ok"></span><small id="rvOkSub"></small></button>
+    <button class="btn" id="rvDone" style="flex:.8"><span data-i="doneBtn"></span><small data-i="doneSub"></small></button>
   </div></div>
 </div>
 
@@ -371,6 +384,7 @@ label.btn{cursor:pointer}
   <div class="field"><label for="plUrl" data-i="planUrl"></label>
     <div class="urlRow"><input id="plUrl" type="url" inputmode="url" autocomplete="off" placeholder="https://"><label class="btn" for="qrFile" aria-label="QR"><i class="ic" data-ic="qr"></i></label></div></div>
   <div class="field"><label for="plAt" data-i="planAt"></label><input id="plAt" type="datetime-local"></div>
+  <div class="field"><label for="plRep" data-i="planRep"></label><select id="plRep"><option value="once" data-i="repOnce"></option><option value="spaced" id="plRepSp"></option></select></div>
   <div class="field"><label for="plMemo" data-i="planMemo"></label><input id="plMemo" autocomplete="off"></div>
   <p class="muted" data-i="planCalHint"></p>
   <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px">
@@ -384,7 +398,9 @@ label.btn{cursor:pointer}
 <!-- まとめて印刷 -->
 <div class="overlay" id="printSheet"><div class="sheet">
   <h2 data-i="prTitle"></h2>
-  <p class="muted" id="prCount" style="margin-top:0"></p>
+  <p class="muted" data-i="prCount2" style="margin-top:0"></p>
+  <div class="prBar"><b id="prCount"></b><button class="btn" id="prAll" data-i="selAll"></button><button class="btn" id="prNone" data-i="selNone"></button></div>
+  <div class="prGrid" id="prGrid"></div>
   <div class="field" style="margin-top:6px"><label data-i="prCols"></label>
     <div class="seg sm" id="prColSeg"><button data-c="1">1</button><button data-c="2">2</button><button data-c="3">3</button><button data-c="4">4</button></div></div>
   <label class="chk"><input type="checkbox" id="prLabel" checked><span data-i="prLabel"></span></label>
@@ -416,7 +432,7 @@ label.btn{cursor:pointer}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VER="2026.10.29-2";
+const APP_VER="2026.10.29-3";
 /* ===== 設定 ===== */
 const SUPPORT_URL="https://ofuse.me/45tools"; // ← OFUSEのURLに差し替え
 const DEFAULT_INTERVALS=[1,3,7,14,30,60];
@@ -424,8 +440,11 @@ const DEFAULT_INTERVALS=[1,3,7,14,30,60];
 const QUALITY={std:[1400,0.72,false],high:[2000,0.85,false],eco:[1100,0.62,true]};
 const qset=()=>QUALITY[ls.get("pr_q")]||QUALITY.std;
 // 保存の画質（5段階）：p=ページ全体、c=切り抜き [長辺px, JPEG品質]
-const LEVELS=[null,{p:[1000,.55],c:[1000,.6]},{p:[1200,.62],c:[1300,.7]},{p:[1400,.72],c:[1600,.82]},{p:[2000,.82],c:[2200,.88]},{p:[2800,.9],c:[2800,.92]}];
-const defLv=()=>{ const v=parseInt(ls.get("pr_lv"),10); return v>=1&&v<=5?v:({eco:2,std:3,high:4}[ls.get("pr_q")]||3); };
+const LEVELS=[null,{p:[700,.38],c:[800,.42]},{p:[850,.45],c:[1000,.5]},{p:[1000,.55],c:[1100,.6]},{p:[1200,.62],c:[1300,.68]},{p:[1400,.72],c:[1600,.8]},{p:[2000,.82],c:[2200,.88]},{p:[2800,.9],c:[2800,.92]}];
+const LVMAX=LEVELS.length-1;
+const defLv=()=>{ const v=parseInt(ls.get("pr_lv7"),10); if(v>=1&&v<=LVMAX) return v;
+  const o=parseInt(ls.get("pr_lv"),10); if(o>=1&&o<=5) return o===3?4:o+2;      // 前の5段階からの引き継ぎ
+  return ({eco:3,std:4,high:6}[ls.get("pr_q")]||4); };
 const defKeep=()=>ls.get("pr_keep")!=="0";
 const defGray=()=>{ const g=ls.get("pr_gray"); return g===null?ls.get("pr_q")==="eco":g==="1"; };
 
@@ -460,7 +479,7 @@ document.querySelectorAll("[data-ic]").forEach(el=>{ el.innerHTML=ico(el.dataset
 
 /* ===== 多言語 ===== */
 const I18N={
- ja:{keepPage:"ページも保存",keepOn:"ページ全体も保存します",keepOff:"囲んだ所だけ保存します（ページ全体は保存しません）",delPagesShort:"ページ全体の写真を削除",confirmPageDel:"ページ全体の写真（{s}）をすべて削除して、囲んだ所だけ残しますか？復習で「ページ全体」は見られなくなります。",confirmPageDel1:"このカードのページ全体の写真を削除しますか？（囲んだ所は残ります）",pageDel:"ページ全体の写真を削除",pageDeleted:"ページ全体の写真を削除しました",prTitle:"まとめて印刷",prCount:"一覧で表示中の {n} 件を、A4に詰めて並べます（一覧の下のバーで科目などを絞り込めます）",prCols:"1行に並べる数（多いほど小さくなります）",prLabel:"科目・メモを入れる",prBW:"白黒にする",prHint:"PDFを作ったあと「共有・保存」を押すと、iPhoneでは共有メニューから「プリント」や「“ファイル”に保存」を選べます。",prMake:"PDFを作る",prMaking:"PDFを作っています…",prReady:"できました：{p}ページ・{n}件（{s}）",prShare:"共有・保存",how3:"<br><b>容量を減らす</b>：囲む画面の「ページも保存」を外すと、囲んだ所だけ保存します。すでに保存したページ全体の写真は、≡メニューの「ページ全体の写真を削除」で消せます。<br><b>まとめて印刷</b>：「一覧」の下のバーの印刷ボタンで、表示中の問題をA4に詰めたPDFを作れます。",qMenu:"写真の画質（はじめの設定）",qShort:"画質",lv1:"最小",lv2:"省容量",lv3:"標準",lv4:"高画質",lv5:"最高",gray:"白黒",prevCrop:"切り抜き",prevPage:"ページ",sizeInfo:"保存 約{t}（ページ {p}＋切り抜き {c}）",sizeInfoCrop:"保存 約{c}（切り抜きのみ）",making:"ページを作っています…",planTitle:"音声の学習予定",planD:"教材のQRコードのリンクを登録して、決めた日時にカレンダーで知らせます。音声はアプリに取り込まず、教材のページを開きます。",scanQR:"QRコードを撮る",pasteLink:"リンクを入力",planNone:"予定はまだありません。教材のQRコードを「追加」から登録できます。",planEditTitle:"学習予定",planName:"タイトル（例：英単語 Unit 3）",planUrl:"リンク（QRコードのURL）",planAt:"日時",planMemo:"メモ（任意）",planCalHint:"「カレンダーに登録」すると、その日時にiPhoneの通知が届きます。予定の中のリンクを押すと教材の音声が開きます。",planSaveCal:"保存してカレンダーに登録",planSave:"保存だけ",open:"開く",planDone:"済みにする",planDel:"削除",planPast:"時間を過ぎています",planSaved:"予定を保存しました",urlNg:"リンク（https://…）を入れてください",atNg:"日時を入れてください",confirmPlanDel:"この予定を削除しますか？",reading:"QRコードを読み取っています…",qrNg:"QRコードを読み取れませんでした。明るい所で、QRコードが大きく写るように撮ってください",qrOk:"リンクを読み取りました。タイトルと日時を決めてください",planCalTitle:"🎧 {s}",planCalDesc:"45 Recall の学習予定",how2:"<br><b>画質</b>：囲む画面の「画質」で、文字が読めるか見ながら保存の画質を5段階で変えられます。下げるほど容量が減ります。赤字の答えがある教材は「白黒」にしないでください。「ページ」に切り替えると、ページ全体を拡大したときの見え方を確かめられます。<br><b>音声の学習予定</b>：「追加」で教材のQRコードを撮ると、リンクを読み取って日時を決められます。「カレンダーに登録」で、その日時に通知が届きます。音声は教材のページで聞きます（アプリには取り込みません）。",shootPage:"ページを撮る",shootPageD:"間違えた問題があるページを丸ごと撮ります。\nこのあと、間違えた所だけを囲みます。",shootShort:"ページを撮る",bulkShort:"写真から選ぶ",cropTitle:"間違えた所を囲む",retake:"撮り直す",cropPrev:"復習ではこの大きさで出ます",cropDone:"完了",cropAdd:"この範囲を追加",memoPh:"メモ（任意）例：関係代名詞 what",cropSmall:"文字が小さめです。範囲を狭めるか、近づいて撮り直してください",cropOk:"{w}×{h}",cropAdded:"追加しました（{n}件目）。続けて別の所も囲めます",cropNext:"次の写真へ",page:"ページ全体",showCrop:"間違えた所",tipAdd:"1ページに間違いが何か所あっても、続けて囲んで追加できます。ページの写真は1枚だけ保存されるので容量は増えません。",mReview:"復習",mAdd:"追加",mList:"一覧",qStdShort:"標準",qHighShort:"高画質",qEcoShort:"省容量",langLbl:"言語",helpLong:"使い方・このアプリについて",support:"このアプリを応援する",extraShort:"ぜんぶ見直す",saveShort:"保存して追加",listReview:"この中で見直す",tipReview:"「ぜんぶ見直す」は予定に影響しません。間違えた直後の確認や、テスト前の総まとめに。",tipList:"写真をタップすると、科目やメモの直し・今すぐ復習・削除ができます。下のバーで科目ごとに絞り込めます。",todayText:"今日は{n}件です。写真を見て、まず自分で思い出してから答えを確認しましょう。",todayNone:"今日の復習はありません。間違えたページを「追加」から撮っておきましょう。",undone:"1つ前の採点を取り消しました",undoNone:"取り消せる採点がありません",delMasteredShort:"習得済みを削除（{n}件）",backup:"バックアップを保存",restore:"バックアップから復元",icsDaily:"毎日の復習リマインダーを登録",icsDates:"復習予定日だけ登録（今後30日）",badge:"ホーム画面アイコンに件数を表示",bulk:"写真ライブラリからまとめて追加",noCards:"まだ登録がありません。左上の「追加」から、間違えたページを撮りましょう。",how:"<b>① 追加</b>：間違えた問題のページを撮ります（答えのページも撮っておくと便利）。<br><b>② 復習</b>：決まった間隔（1日後→3日後→7日後…）で「復習」に出てきます。写真を見て、まず<b>自分で思い出して</b>から「できた／まだ」。「まだ」は翌日にもう一度出ます。押し間違えたら左上の「元に戻す」。<br><b>③ 一覧</b>：登録した写真の確認・修正・削除。<br><b>≡ メニュー</b>：リマインダー（iPhoneのカレンダーに毎日の通知を登録）、復習の間隔、写真の画質、バックアップ、言語など。",dueToday:"今日の復習",start:"復習をはじめる",extra:"ぜんぶ見直す（予定に影響しない）",sTotal:"登録数",sTomorrow:"明日",sMaster:"習得済み",
+ ja:{needName:"タイトルかリンクを入れてください",repSpaced:"復習の間隔でくり返す（{d}日後）",repOnce:"1回だけ",planRep:"くり返し",selNone:"すべて外す",selAll:"すべて選ぶ",prSel:"{n}件を選択中（{m}件中）",prCount2:"印刷する写真をタップで選べます（一覧で表示中の写真から）。",doneToast:"完了にしました（もう復習に出ません）",doneSub:"もう出さない",doneBtn:"完了",deleting:"削除しています…",pageShow:"ページ全体を表示",lv7:"最高",lv6:"高",keepPage:"ページも保存",keepOn:"ページ全体も保存します",keepOff:"囲んだ所だけ保存します（ページ全体は保存しません）",delPagesShort:"ページ全体の写真を削除",confirmPageDel:"ページ全体の写真（{s}）をすべて削除して、囲んだ所だけ残しますか？復習で「ページ全体」は見られなくなります。",confirmPageDel1:"このカードのページ全体の写真を削除しますか？（囲んだ所は残ります）",pageDel:"ページ全体の写真を削除",pageDeleted:"ページ全体の写真を削除しました",prTitle:"まとめて印刷",prCount:"一覧で表示中の {n} 件を、A4に詰めて並べます（一覧の下のバーで科目などを絞り込めます）",prCols:"1行に並べる数（多いほど小さくなります）",prLabel:"科目・メモを入れる",prBW:"白黒にする",prHint:"PDFを作ったあと「共有・保存」を押すと、iPhoneでは共有メニューから「プリント」や「“ファイル”に保存」を選べます。",prMake:"PDFを作る",prMaking:"PDFを作っています…",prReady:"できました：{p}ページ・{n}件（{s}）",prShare:"共有・保存",how3:"<br><b>容量を減らす</b>：囲む画面の「ページも保存」を外すと、囲んだ所だけ保存します。すでに保存したページ全体の写真は、≡メニューの「ページ全体の写真を削除」で消せます。<br><b>まとめて印刷</b>：「一覧」の下のバーの印刷ボタンで、表示中の問題をA4に詰めたPDFを作れます。",qMenu:"写真の画質（はじめの設定）",qShort:"画質",lv1:"極小",lv2:"最小",lv3:"小",lv4:"標準",lv5:"やや高",gray:"白黒",prevCrop:"切り抜き",prevPage:"ページ",sizeInfo:"保存 約{t}（ページ {p}＋切り抜き {c}）",sizeInfoCrop:"保存 約{c}（切り抜きのみ）",making:"ページを作っています…",planTitle:"学習予定",planD:"教材のQRコード、YouTubeやWebページのリンク、やること（メモだけでも可）を登録して、決めた日時にカレンダーで知らせます。復習の間隔でくり返すこともできます。音声や動画はアプリに取り込まず、リンク先を開きます。",scanQR:"QRコードを撮る",pasteLink:"予定を追加",planNone:"予定はまだありません。「追加」や右上の＋から登録できます。",planEditTitle:"学習予定",planName:"タイトル（例：英単語 Unit 3 を聞く）",planUrl:"リンク（任意：QRコード・YouTube・Webページなど）",planAt:"日時",planMemo:"メモ（任意）",planCalHint:"「カレンダーに登録」すると、その日時にiPhoneの通知が届きます。リンクがあれば、予定の中のリンクから開けます。くり返しにした場合は、くり返しの日時もまとめて登録されます。",planSaveCal:"保存してカレンダーに登録",planSave:"保存だけ",open:"開く",planDone:"済みにする",planDel:"削除",planPast:"時間を過ぎています",planSaved:"予定を保存しました",urlNg:"リンク（https://…）を入れてください",atNg:"日時を入れてください",confirmPlanDel:"この予定を削除しますか？",reading:"QRコードを読み取っています…",qrNg:"QRコードを読み取れませんでした。明るい所で、QRコードが大きく写るように撮ってください",qrOk:"リンクを読み取りました。タイトルと日時を決めてください",planCalTitle:"🎧 {s}",planCalDesc:"45 Recall の学習予定",how2:"<br><b>画質</b>：囲む画面の「画質」で、文字が読めるか見ながら保存の画質を7段階で変えられます。下げるほど容量が減ります。赤字の答えがある教材は「白黒」にしないでください。「ページ」に切り替えると、ページ全体を拡大したときの見え方を確かめられます。<br><b>学習予定</b>：教材のQRコード、YouTubeやWebページのリンク、やることを、決めた日時（または復習の間隔）にカレンダーで知らせます。音声や動画はリンク先で開きます（アプリには取り込みません）。<br><b>完了</b>：復習で「完了」を押すと、その問題はもう出ません（一覧の「最初から」で戻せます）。",shootPage:"ページを撮る",shootPageD:"間違えた問題があるページを丸ごと撮ります。\nこのあと、間違えた所だけを囲みます。",shootShort:"ページを撮る",bulkShort:"写真から選ぶ",cropTitle:"間違えた所を囲む",retake:"撮り直す",cropPrev:"復習ではこの大きさで出ます",cropDone:"完了",cropAdd:"この範囲を追加",memoPh:"メモ（任意）例：関係代名詞 what",cropSmall:"文字が小さめです。範囲を狭めるか、近づいて撮り直してください",cropOk:"{w}×{h}",cropAdded:"追加しました（{n}件目）。続けて別の所も囲めます",cropNext:"次の写真へ",page:"ページ全体",showCrop:"間違えた所",tipAdd:"1ページに間違いが何か所あっても、続けて囲んで追加できます。ページの写真は1枚だけ保存されるので容量は増えません。",mReview:"復習",mAdd:"追加",mList:"一覧",qStdShort:"標準",qHighShort:"高画質",qEcoShort:"省容量",langLbl:"言語",helpLong:"使い方・このアプリについて",support:"このアプリを応援する",extraShort:"ぜんぶ見直す",saveShort:"保存して追加",listReview:"この中で見直す",tipReview:"「ぜんぶ見直す」は予定に影響しません。間違えた直後の確認や、テスト前の総まとめに。",tipList:"写真をタップすると、科目やメモの直し・今すぐ復習・削除ができます。下のバーで科目ごとに絞り込めます。",todayText:"今日は{n}件です。写真を見て、まず自分で思い出してから答えを確認しましょう。",todayNone:"今日の復習はありません。間違えたページを「追加」から撮っておきましょう。",undone:"1つ前の採点を取り消しました",undoNone:"取り消せる採点がありません",delMasteredShort:"習得済みを削除（{n}件）",backup:"バックアップを保存",restore:"バックアップから復元",icsDaily:"毎日の復習リマインダーを登録",icsDates:"復習予定日だけ登録（今後30日）",badge:"ホーム画面アイコンに件数を表示",bulk:"写真ライブラリからまとめて追加",noCards:"まだ登録がありません。左上の「追加」から、間違えたページを撮りましょう。",how:"<b>① 追加</b>：間違えた問題のページを撮ります（答えのページも撮っておくと便利）。<br><b>② 復習</b>：決まった間隔（1日後→3日後→7日後…）で「復習」に出てきます。写真を見て、まず<b>自分で思い出して</b>から「できた／まだ」。「まだ」は翌日にもう一度出ます。押し間違えたら左上の「元に戻す」。<br><b>③ 一覧</b>：登録した写真の確認・修正・削除。<br><b>≡ メニュー</b>：リマインダー（iPhoneのカレンダーに毎日の通知を登録）、復習の間隔、写真の画質、バックアップ、言語など。",dueToday:"今日の復習",start:"復習をはじめる",extra:"ぜんぶ見直す（予定に影響しない）",sTotal:"登録数",sTomorrow:"明日",sMaster:"習得済み",
   howTitle:"使い方",
   addTitle:"間違えたページを撮る",qPhoto:"問題（必須）",aPhoto:"答え（任意）",subject:"科目・教材",memo:"メモ（どこで間違えたか等）",save:"保存して復習に追加",
   addNote:"最初の復習は明日です。写真はこの端末の中だけに保存されます。",
@@ -475,7 +494,7 @@ const I18N={
   level:"段階",nextDue:"次回",del:"削除",confirmDel:"このカードを削除しますか？",reset:"最初から",reviewNow:"今すぐ復習",edit:"保存",
   restored:"{n}件を復元しました",badgeOk:"アイコンに件数を表示します",badgeNg:"この環境では使えません（iPhoneはホーム画面に追加して開いてください）",
   calTitle:"暗記の復習（45 Recall）",calDesc:"今日の復習を開く",count:"{a} / {b}",today:"今日",days:"{n}日後",overdue:"期限切れ"},
- en:{keepPage:"Keep page",keepOn:"The whole page will be saved too",keepOff:"Only the boxed part will be saved (no whole page)",delPagesShort:"Delete whole-page photos",confirmPageDel:"Delete all whole-page photos ({s}) and keep only the boxed parts? “Whole page” won't be available in review.",confirmPageDel1:"Delete this card's whole-page photo? (The boxed part stays.)",pageDel:"Delete whole-page photo",pageDeleted:"Whole-page photos deleted",prTitle:"Print together",prCount:"Packs the {n} cards shown in the list onto A4 pages (filter by subject in the bar below the list)",prCols:"Per row (more = smaller)",prLabel:"Include subject and note",prBW:"Black & white",prHint:"After making the PDF, tap “Share / Save”. On iPhone you can choose Print or Save to Files.",prMake:"Make PDF",prMaking:"Making the PDF…",prReady:"Done: {p} page(s), {n} cards ({s})",prShare:"Share / Save",how3:"<br><b>Save space</b>: turn off “Keep page” in the box screen to save only the boxed part. Delete existing whole-page photos from the ≡ menu.<br><b>Print together</b>: the print button in the Cards bar makes an A4 PDF of the cards shown.",qMenu:"Photo quality (default)",qShort:"Quality",lv1:"Smallest",lv2:"Saver",lv3:"Standard",lv4:"High",lv5:"Best",gray:"B&W",prevCrop:"Box",prevPage:"Page",sizeInfo:"Saves about {t} (page {p} + box {c})",sizeInfoCrop:"Saves about {c} (box only)",making:"Preparing the page…",planTitle:"Listening plan",planD:"Save the link from your textbook's QR code and get a calendar alert at the time you choose. The audio isn't copied into the app — it opens the textbook's own page.",scanQR:"Snap QR code",pasteLink:"Enter link",planNone:"No plans yet. Add your textbook's QR code from “Add”.",planEditTitle:"Listening plan",planName:"Title (e.g. Vocabulary Unit 3)",planUrl:"Link (QR code URL)",planAt:"Date & time",planMemo:"Note (optional)",planCalHint:"“Add to Calendar” sends an iPhone alert at that time. Tap the link in the event to open the audio.",planSaveCal:"Save and add to Calendar",planSave:"Save only",open:"Open",planDone:"Mark as done",planDel:"Delete",planPast:"Time has passed",planSaved:"Plan saved",urlNg:"Enter a link (https://…)",atNg:"Enter a date and time",confirmPlanDel:"Delete this plan?",reading:"Reading the QR code…",qrNg:"Couldn't read the QR code. Try again in good light with the code large in the frame",qrOk:"Link found. Set a title and time",planCalTitle:"🎧 {s}",planCalDesc:"Listening plan from 45 Recall",how2:"<br><b>Quality</b>: in the box screen, change the save quality in 5 steps while checking the text is readable. Lower uses less space. Don't use “B&W” if answers are in red. Switch to “Page” to see how the whole page looks when zoomed.<br><b>Listening plan</b>: in “Add”, snap a textbook QR code to read its link, then pick a time. “Add to Calendar” alerts you then. You listen on the textbook's page (nothing is copied into the app).",shootPage:"Snap the page",shootPageD:"Take a photo of the whole page with your mistake.\nNext, you'll box just the part you got wrong.",shootShort:"Snap page",bulkShort:"From photos",cropTitle:"Box your mistake",retake:"Retake",cropPrev:"This is how it shows in review",cropDone:"Done",cropAdd:"Add this part",memoPh:"Note (optional), e.g. relative pronoun what",cropSmall:"Text looks small. Tighten the box or retake closer",cropOk:"{w}×{h}",cropAdded:"Added (card {n}). You can box another part",cropNext:"Next photo",page:"Whole page",showCrop:"Mistake",tipAdd:"Box as many mistakes on a page as you like. The page photo is stored once, so it doesn't use extra space.",mReview:"Review",mAdd:"Add",mList:"Cards",qStdShort:"Standard",qHighShort:"High",qEcoShort:"Saver",langLbl:"Language",helpLong:"How to use / About",support:"Support this app",extraShort:"Browse all",saveShort:"Save card",listReview:"Review these",tipReview:"“Browse all” doesn't change the schedule — good for a quick check or a final run-through before a test.",tipList:"Tap a photo to edit the subject or note, review it now, or delete it. Filter by subject in the bar below.",todayText:"{n} cards today. Look at each photo and recall it yourself before checking the answer.",todayNone:"Nothing due today. Snap pages you got wrong from “Add”.",undone:"Undid the last answer",undoNone:"Nothing to undo",delMasteredShort:"Delete mastered ({n})",backup:"Save backup",restore:"Restore backup",icsDaily:"Add daily review reminder",icsDates:"Add only review days (next 30 days)",badge:"Show count on home-screen icon",bulk:"Add several from photo library",noCards:"No cards yet. Tap “Add” at the top left to snap a page you got wrong.",how:"<b>① Add</b>: snap the page you got wrong (an answer photo helps too).<br><b>② Review</b>: it comes back on a spaced schedule (1 day → 3 → 7 …). Recall it <b>yourself first</b>, then tap “Got it / Not yet”. “Not yet” brings it back tomorrow. Tapped the wrong one? Use Undo at the top left.<br><b>③ Cards</b>: check, edit or delete your photos.<br><b>≡ Menu</b>: reminders (a daily calendar alert), review intervals, photo quality, backup, language and more.",dueToday:"Due today",start:"Start review",extra:"Browse all (won't change schedule)",sTotal:"Cards",sTomorrow:"Tomorrow",sMaster:"Mastered",
+ en:{needName:"Enter a title or a link",repSpaced:"On review intervals ({d} days later)",repOnce:"Once",planRep:"Repeat",selNone:"Clear",selAll:"Select all",prSel:"{n} of {m} selected",prCount2:"Tap photos to choose what to print (from the cards shown in the list).",doneToast:"Marked done (won't come back)",doneSub:"retire",doneBtn:"Done",deleting:"Deleting…",pageShow:"Show whole page",lv7:"Best",lv6:"High",keepPage:"Keep page",keepOn:"The whole page will be saved too",keepOff:"Only the boxed part will be saved (no whole page)",delPagesShort:"Delete whole-page photos",confirmPageDel:"Delete all whole-page photos ({s}) and keep only the boxed parts? “Whole page” won't be available in review.",confirmPageDel1:"Delete this card's whole-page photo? (The boxed part stays.)",pageDel:"Delete whole-page photo",pageDeleted:"Whole-page photos deleted",prTitle:"Print together",prCount:"Packs the {n} cards shown in the list onto A4 pages (filter by subject in the bar below the list)",prCols:"Per row (more = smaller)",prLabel:"Include subject and note",prBW:"Black & white",prHint:"After making the PDF, tap “Share / Save”. On iPhone you can choose Print or Save to Files.",prMake:"Make PDF",prMaking:"Making the PDF…",prReady:"Done: {p} page(s), {n} cards ({s})",prShare:"Share / Save",how3:"<br><b>Save space</b>: turn off “Keep page” in the box screen to save only the boxed part. Delete existing whole-page photos from the ≡ menu.<br><b>Print together</b>: the print button in the Cards bar makes an A4 PDF of the cards shown.",qMenu:"Photo quality (default)",qShort:"Quality",lv1:"Tiny",lv2:"Smallest",lv3:"Small",lv4:"Standard",lv5:"Higher",gray:"B&W",prevCrop:"Box",prevPage:"Page",sizeInfo:"Saves about {t} (page {p} + box {c})",sizeInfoCrop:"Saves about {c} (box only)",making:"Preparing the page…",planTitle:"Study plan",planD:"Save a textbook QR code, a YouTube or web link, or just a to-do, and get a calendar alert at the time you choose. It can also repeat on your review intervals. Audio and video aren't copied into the app — the link opens them.",scanQR:"Snap QR code",pasteLink:"Add plan",planNone:"No plans yet. Add one from “Add” or the + at the top right.",planEditTitle:"Listening plan",planName:"Title (e.g. Listen to Vocabulary Unit 3)",planUrl:"Link (optional: QR code, YouTube, web page…)",planAt:"Date & time",planMemo:"Note (optional)",planCalHint:"“Add to Calendar” sends an iPhone alert at that time. If there's a link, open it from the event. Repeating plans add all their dates at once.",planSaveCal:"Save and add to Calendar",planSave:"Save only",open:"Open",planDone:"Mark as done",planDel:"Delete",planPast:"Time has passed",planSaved:"Plan saved",urlNg:"Enter a link (https://…)",atNg:"Enter a date and time",confirmPlanDel:"Delete this plan?",reading:"Reading the QR code…",qrNg:"Couldn't read the QR code. Try again in good light with the code large in the frame",qrOk:"Link found. Set a title and time",planCalTitle:"🎧 {s}",planCalDesc:"Listening plan from 45 Recall",how2:"<br><b>Quality</b>: in the box screen, change the save quality in 7 steps while checking the text is readable. Lower uses less space. Don't use “B&W” if answers are in red. Switch to “Page” to see the whole page zoomed.<br><b>Study plan</b>: get calendar alerts for textbook QR codes, YouTube/web links or to-dos at a set time (or on your review intervals). Audio and video open from the link (nothing is copied into the app).<br><b>Done</b>: tap “Done” in review to retire a card (use “Start over” in Cards to bring it back).",shootPage:"Snap the page",shootPageD:"Take a photo of the whole page with your mistake.\nNext, you'll box just the part you got wrong.",shootShort:"Snap page",bulkShort:"From photos",cropTitle:"Box your mistake",retake:"Retake",cropPrev:"This is how it shows in review",cropDone:"Done",cropAdd:"Add this part",memoPh:"Note (optional), e.g. relative pronoun what",cropSmall:"Text looks small. Tighten the box or retake closer",cropOk:"{w}×{h}",cropAdded:"Added (card {n}). You can box another part",cropNext:"Next photo",page:"Whole page",showCrop:"Mistake",tipAdd:"Box as many mistakes on a page as you like. The page photo is stored once, so it doesn't use extra space.",mReview:"Review",mAdd:"Add",mList:"Cards",qStdShort:"Standard",qHighShort:"High",qEcoShort:"Saver",langLbl:"Language",helpLong:"How to use / About",support:"Support this app",extraShort:"Browse all",saveShort:"Save card",listReview:"Review these",tipReview:"“Browse all” doesn't change the schedule — good for a quick check or a final run-through before a test.",tipList:"Tap a photo to edit the subject or note, review it now, or delete it. Filter by subject in the bar below.",todayText:"{n} cards today. Look at each photo and recall it yourself before checking the answer.",todayNone:"Nothing due today. Snap pages you got wrong from “Add”.",undone:"Undid the last answer",undoNone:"Nothing to undo",delMasteredShort:"Delete mastered ({n})",backup:"Save backup",restore:"Restore backup",icsDaily:"Add daily review reminder",icsDates:"Add only review days (next 30 days)",badge:"Show count on home-screen icon",bulk:"Add several from photo library",noCards:"No cards yet. Tap “Add” at the top left to snap a page you got wrong.",how:"<b>① Add</b>: snap the page you got wrong (an answer photo helps too).<br><b>② Review</b>: it comes back on a spaced schedule (1 day → 3 → 7 …). Recall it <b>yourself first</b>, then tap “Got it / Not yet”. “Not yet” brings it back tomorrow. Tapped the wrong one? Use Undo at the top left.<br><b>③ Cards</b>: check, edit or delete your photos.<br><b>≡ Menu</b>: reminders (a daily calendar alert), review intervals, photo quality, backup, language and more.",dueToday:"Due today",start:"Start review",extra:"Browse all (won't change schedule)",sTotal:"Cards",sTomorrow:"Tomorrow",sMaster:"Mastered",
   howTitle:"How to use",
   addTitle:"Snap the page you missed",qPhoto:"Question (required)",aPhoto:"Answer (optional)",subject:"Subject / book",memo:"Note (what you got wrong)",save:"Save & schedule",
   addNote:"First review is tomorrow. Photos stay on this device only.",
@@ -490,7 +509,7 @@ const I18N={
   level:"Stage",nextDue:"Next",del:"Delete",confirmDel:"Delete this card?",reset:"Restart",reviewNow:"Review now",edit:"Save",
   restored:"Restored {n} cards",badgeOk:"Count will show on the icon",badgeNg:"Not available here (on iPhone, open from the home screen)",
   calTitle:"Review time (45 Recall)",calDesc:"Open today's review",count:"{a} / {b}",today:"today",days:"in {n}d",overdue:"overdue"},
- zh:{keepPage:"保存整页",keepOn:"整页也会保存",keepOff:"只保存框选的部分（不保存整页）",delPagesShort:"删除整页照片",confirmPageDel:"要删除所有整页照片（{s}），只保留框选部分吗？复习时将无法查看“整页”。",confirmPageDel1:"要删除这张卡片的整页照片吗？（框选部分会保留）",pageDel:"删除整页照片",pageDeleted:"已删除整页照片",prTitle:"合并打印",prCount:"把列表中显示的 {n} 张排进A4（可在列表下方栏按科目筛选）",prCols:"每行张数（越多越小）",prLabel:"包含科目和备注",prBW:"黑白",prHint:"生成PDF后点“分享・保存”，在iPhone上可从分享菜单选择“打印”或“存储到‘文件’”。",prMake:"生成PDF",prMaking:"正在生成PDF…",prReady:"完成：{p}页・{n}张（{s}）",prShare:"分享・保存",how3:"<br><b>减少空间</b>：在框选画面取消“保存整页”，就只保存框选部分。已保存的整页照片可在≡菜单“删除整页照片”中删除。<br><b>合并打印</b>：点“列表”下方栏的打印按钮，可把显示中的题目排成A4的PDF。",qMenu:"照片画质（默认设置）",qShort:"画质",lv1:"最小",lv2:"省空间",lv3:"标准",lv4:"高画质",lv5:"最高",gray:"黑白",prevCrop:"框选",prevPage:"整页",sizeInfo:"保存约{t}（整页 {p}＋框选 {c}）",sizeInfoCrop:"保存约{c}（仅框选）",making:"正在生成整页…",planTitle:"音频学习计划",planD:"登记教材二维码的链接，在设定的时间用日历提醒你。音频不导入应用，而是打开教材的页面。",scanQR:"拍二维码",pasteLink:"输入链接",planNone:"还没有计划。可从“添加”登记教材的二维码。",planEditTitle:"学习计划",planName:"标题（例：英语单词 Unit 3）",planUrl:"链接（二维码的网址）",planAt:"日期和时间",planMemo:"备注（可选）",planCalHint:"“添加到日历”后，会在该时间收到iPhone通知。点日程里的链接即可打开教材音频。",planSaveCal:"保存并添加到日历",planSave:"仅保存",open:"打开",planDone:"标为已完成",planDel:"删除",planPast:"已过时间",planSaved:"已保存计划",urlNg:"请输入链接（https://…）",atNg:"请输入日期和时间",confirmPlanDel:"要删除这个计划吗？",reading:"正在读取二维码…",qrNg:"无法读取二维码。请在明亮处让二维码拍得大一些",qrOk:"已读取链接。请设定标题和时间",planCalTitle:"🎧 {s}",planCalDesc:"45 Recall 的学习计划",how2:"<br><b>画质</b>：在框选画面的“画质”里，可一边确认文字是否清楚，一边分5档调整保存画质。越低越省空间。答案是红字的教材请不要用“黑白”。切换到“整页”可确认整页放大时的效果。<br><b>音频学习计划</b>：在“添加”里拍教材的二维码即可读取链接并设定时间。“添加到日历”后会在该时间提醒。音频在教材页面收听（不导入应用）。",shootPage:"拍下整页",shootPageD:"把有错题的整页拍下来。\n接着只框出做错的地方。",shootShort:"拍下整页",bulkShort:"从相册选择",cropTitle:"框出做错的地方",retake:"重拍",cropPrev:"复习时会以这个大小显示",cropDone:"完成",cropAdd:"添加这个范围",memoPh:"备注（可选）例：关系代词 what",cropSmall:"文字偏小。请缩小范围或靠近重拍",cropOk:"{w}×{h}",cropAdded:"已添加（第{n}张）。可继续框出其他地方",cropNext:"下一张照片",page:"整页",showCrop:"做错的地方",tipAdd:"一页有几处错都可以连续框选添加。整页照片只保存一张，不会多占空间。",mReview:"复习",mAdd:"添加",mList:"列表",qStdShort:"标准",qHighShort:"高画质",qEcoShort:"省空间",langLbl:"语言",helpLong:"使用说明・关于本应用",support:"支持这个应用",extraShort:"全部浏览",saveShort:"保存并添加",listReview:"复习这些",tipReview:"“全部浏览”不影响复习计划，适合刚做错时确认或考试前总复习。",tipList:"点照片可修改科目和备注、立即复习或删除。可在下方栏按科目筛选。",todayText:"今天有{n}张。看照片时先自己回想，再看答案。",todayNone:"今天没有要复习的。请从“添加”拍下做错的页面。",undone:"已撤销上一次评分",undoNone:"没有可撤销的评分",delMasteredShort:"删除已掌握（{n}张）",backup:"保存备份",restore:"从备份恢复",icsDaily:"添加每日复习提醒",icsDates:"只添加复习日（未来30天）",badge:"在主屏幕图标显示数量",bulk:"从相册批量添加",noCards:"还没有卡片。请点左上的“添加”拍下做错的页面。",how:"<b>① 添加</b>：拍下做错的题目（顺便拍下答案更方便）。<br><b>② 复习</b>：按间隔（1天→3天→7天…）出现在“复习”中。先<b>自己回想</b>，再点“会了／还不会”。“还不会”明天再出现。点错了可用左上的“撤销”。<br><b>③ 列表</b>：查看、修改、删除照片。<br><b>≡ 菜单</b>：提醒（在日历登记每日通知）、复习间隔、照片画质、备份、语言等。",dueToday:"今日复习",start:"开始复习",extra:"全部浏览（不影响计划）",sTotal:"总数",sTomorrow:"明天",sMaster:"已掌握",
+ zh:{needName:"请输入标题或链接",repSpaced:"按复习间隔重复（{d}天后）",repOnce:"只一次",planRep:"重复",selNone:"全不选",selAll:"全选",prSel:"已选 {n} 张（共 {m} 张）",prCount2:"点照片即可选择要打印的（从列表中显示的照片里选）。",doneToast:"已设为完成（不再出现在复习中）",doneSub:"不再出现",doneBtn:"完成",deleting:"正在删除…",pageShow:"显示整页",lv7:"最高",lv6:"高",keepPage:"保存整页",keepOn:"整页也会保存",keepOff:"只保存框选的部分（不保存整页）",delPagesShort:"删除整页照片",confirmPageDel:"要删除所有整页照片（{s}），只保留框选部分吗？复习时将无法查看“整页”。",confirmPageDel1:"要删除这张卡片的整页照片吗？（框选部分会保留）",pageDel:"删除整页照片",pageDeleted:"已删除整页照片",prTitle:"合并打印",prCount:"把列表中显示的 {n} 张排进A4（可在列表下方栏按科目筛选）",prCols:"每行张数（越多越小）",prLabel:"包含科目和备注",prBW:"黑白",prHint:"生成PDF后点“分享・保存”，在iPhone上可从分享菜单选择“打印”或“存储到‘文件’”。",prMake:"生成PDF",prMaking:"正在生成PDF…",prReady:"完成：{p}页・{n}张（{s}）",prShare:"分享・保存",how3:"<br><b>减少空间</b>：在框选画面取消“保存整页”，就只保存框选部分。已保存的整页照片可在≡菜单“删除整页照片”中删除。<br><b>合并打印</b>：点“列表”下方栏的打印按钮，可把显示中的题目排成A4的PDF。",qMenu:"照片画质（默认设置）",qShort:"画质",lv1:"极小",lv2:"最小",lv3:"小",lv4:"标准",lv5:"稍高",gray:"黑白",prevCrop:"框选",prevPage:"整页",sizeInfo:"保存约{t}（整页 {p}＋框选 {c}）",sizeInfoCrop:"保存约{c}（仅框选）",making:"正在生成整页…",planTitle:"学习计划",planD:"登记教材二维码、YouTube或网页链接、要做的事（只写备注也可以），在设定的时间用日历提醒。也可以按复习间隔重复。音频和视频不导入应用，而是打开链接。",scanQR:"拍二维码",pasteLink:"添加计划",planNone:"还没有计划。可从“添加”或右上的＋登记。",planEditTitle:"学习计划",planName:"标题（例：听英语单词 Unit 3）",planUrl:"链接（可选：二维码・YouTube・网页等）",planAt:"日期和时间",planMemo:"备注（可选）",planCalHint:"“添加到日历”后，会在该时间收到iPhone通知。有链接时可从日程里打开。设为重复时，重复的日期也会一起登记。",planSaveCal:"保存并添加到日历",planSave:"仅保存",open:"打开",planDone:"标为已完成",planDel:"删除",planPast:"已过时间",planSaved:"已保存计划",urlNg:"请输入链接（https://…）",atNg:"请输入日期和时间",confirmPlanDel:"要删除这个计划吗？",reading:"正在读取二维码…",qrNg:"无法读取二维码。请在明亮处让二维码拍得大一些",qrOk:"已读取链接。请设定标题和时间",planCalTitle:"🎧 {s}",planCalDesc:"45 Recall 的学习计划",how2:"<br><b>画质</b>：在框选画面的“画质”里，可一边确认文字是否清楚，一边分7档调整保存画质。越低越省空间。答案是红字的教材请不要用“黑白”。切换到“整页”可确认整页放大时的效果。<br><b>学习计划</b>：把教材二维码、YouTube或网页链接、要做的事，在设定时间（或按复习间隔）用日历提醒。音频和视频从链接打开（不导入应用）。<br><b>完成</b>：复习时点“完成”，这道题就不再出现（可在列表的“重新开始”恢复）。",shootPage:"拍下整页",shootPageD:"把有错题的整页拍下来。\n接着只框出做错的地方。",shootShort:"拍下整页",bulkShort:"从相册选择",cropTitle:"框出做错的地方",retake:"重拍",cropPrev:"复习时会以这个大小显示",cropDone:"完成",cropAdd:"添加这个范围",memoPh:"备注（可选）例：关系代词 what",cropSmall:"文字偏小。请缩小范围或靠近重拍",cropOk:"{w}×{h}",cropAdded:"已添加（第{n}张）。可继续框出其他地方",cropNext:"下一张照片",page:"整页",showCrop:"做错的地方",tipAdd:"一页有几处错都可以连续框选添加。整页照片只保存一张，不会多占空间。",mReview:"复习",mAdd:"添加",mList:"列表",qStdShort:"标准",qHighShort:"高画质",qEcoShort:"省空间",langLbl:"语言",helpLong:"使用说明・关于本应用",support:"支持这个应用",extraShort:"全部浏览",saveShort:"保存并添加",listReview:"复习这些",tipReview:"“全部浏览”不影响复习计划，适合刚做错时确认或考试前总复习。",tipList:"点照片可修改科目和备注、立即复习或删除。可在下方栏按科目筛选。",todayText:"今天有{n}张。看照片时先自己回想，再看答案。",todayNone:"今天没有要复习的。请从“添加”拍下做错的页面。",undone:"已撤销上一次评分",undoNone:"没有可撤销的评分",delMasteredShort:"删除已掌握（{n}张）",backup:"保存备份",restore:"从备份恢复",icsDaily:"添加每日复习提醒",icsDates:"只添加复习日（未来30天）",badge:"在主屏幕图标显示数量",bulk:"从相册批量添加",noCards:"还没有卡片。请点左上的“添加”拍下做错的页面。",how:"<b>① 添加</b>：拍下做错的题目（顺便拍下答案更方便）。<br><b>② 复习</b>：按间隔（1天→3天→7天…）出现在“复习”中。先<b>自己回想</b>，再点“会了／还不会”。“还不会”明天再出现。点错了可用左上的“撤销”。<br><b>③ 列表</b>：查看、修改、删除照片。<br><b>≡ 菜单</b>：提醒（在日历登记每日通知）、复习间隔、照片画质、备份、语言等。",dueToday:"今日复习",start:"开始复习",extra:"全部浏览（不影响计划）",sTotal:"总数",sTomorrow:"明天",sMaster:"已掌握",
   howTitle:"使用方法",
   addTitle:"拍下做错的页面",qPhoto:"题目（必填）",aPhoto:"答案（可选）",subject:"科目・教材",memo:"备注（错在哪里等）",save:"保存并加入复习",
   addNote:"首次复习在明天。照片只保存在本设备中。",
@@ -505,7 +524,7 @@ const I18N={
   level:"阶段",nextDue:"下次",del:"删除",confirmDel:"删除这张卡片吗？",reset:"重新开始",reviewNow:"立即复习",edit:"保存",
   restored:"已恢复 {n} 张",badgeOk:"将在图标上显示数量",badgeNg:"此环境不可用（iPhone 请从主屏幕打开）",
   calTitle:"背诵复习（45 Recall）",calDesc:"打开今日复习",count:"{a} / {b}",today:"今天",days:"{n}天后",overdue:"已过期"},
- "zh-Hant":{keepPage:"儲存整頁",keepOn:"整頁也會儲存",keepOff:"只儲存框選的部分（不儲存整頁）",delPagesShort:"刪除整頁照片",confirmPageDel:"要刪除所有整頁照片（{s}），只保留框選部分嗎？複習時將無法檢視「整頁」。",confirmPageDel1:"要刪除這張卡片的整頁照片嗎？（框選部分會保留）",pageDel:"刪除整頁照片",pageDeleted:"已刪除整頁照片",prTitle:"合併列印",prCount:"把列表中顯示的 {n} 張排進A4（可在列表下方欄按科目篩選）",prCols:"每行張數（越多越小）",prLabel:"包含科目和備註",prBW:"黑白",prHint:"生成PDF後點「分享・儲存」，在iPhone上可從分享選單選擇「列印」或「儲存到『檔案』」。",prMake:"生成PDF",prMaking:"正在生成PDF…",prReady:"完成：{p}頁・{n}張（{s}）",prShare:"分享・儲存",how3:"<br><b>減少空間</b>：在框選畫面取消「儲存整頁」，就只儲存框選部分。已儲存的整頁照片可在≡選單「刪除整頁照片」中刪除。<br><b>合併列印</b>：點「列表」下方欄的列印按鈕，可把顯示中的題目排成A4的PDF。",qMenu:"照片畫質（預設設定）",qShort:"畫質",lv1:"最小",lv2:"省空間",lv3:"標準",lv4:"高畫質",lv5:"最高",gray:"黑白",prevCrop:"框選",prevPage:"整頁",sizeInfo:"儲存約{t}（整頁 {p}＋框選 {c}）",sizeInfoCrop:"儲存約{c}（僅框選）",making:"正在生成整頁…",planTitle:"音訊學習計劃",planD:"登記教材二維碼的連結，在設定的時間用日曆提醒你。音訊不匯入應用，而是開啟教材的頁面。",scanQR:"拍二維碼",pasteLink:"輸入連結",planNone:"還沒有計劃。可從「新增」登記教材的二維碼。",planEditTitle:"學習計劃",planName:"標題（例：英語單詞 Unit 3）",planUrl:"連結（二維碼的網址）",planAt:"日期和時間",planMemo:"備註（可選）",planCalHint:"「新增到日曆」後，會在該時間收到iPhone通知。點日程裡的連結即可開啟教材音訊。",planSaveCal:"儲存並新增到日曆",planSave:"僅儲存",open:"開啟",planDone:"標為已完成",planDel:"刪除",planPast:"已過時間",planSaved:"已儲存計劃",urlNg:"請輸入連結（https://…）",atNg:"請輸入日期和時間",confirmPlanDel:"要刪除這個計劃嗎？",reading:"正在讀取二維碼…",qrNg:"無法讀取二維碼。請在明亮處讓二維碼拍得大一些",qrOk:"已讀取連結。請設定標題和時間",planCalTitle:"🎧 {s}",planCalDesc:"45 Recall 的學習計劃",how2:"<br><b>畫質</b>：在框選畫面的「畫質」裡，可一邊確認文字是否清楚，一邊分5檔調整儲存畫質。越低越省空間。答案是紅字的教材請不要用「黑白」。切換到「整頁」可確認整頁放大時的效果。<br><b>音訊學習計劃</b>：在「新增」裡拍教材的二維碼即可讀取連結並設定時間。「新增到日曆」後會在該時間提醒。音訊在教材頁面收聽（不匯入應用）。",shootPage:"拍下整頁",shootPageD:"把有錯題的整頁拍下來。\n接著只框出做錯的地方。",shootShort:"拍下整頁",bulkShort:"從相簿選擇",cropTitle:"框出做錯的地方",retake:"重拍",cropPrev:"複習時會以這個大小顯示",cropDone:"完成",cropAdd:"新增這個範圍",memoPh:"備註（可選）例：關係代詞 what",cropSmall:"文字偏小。請縮小範圍或靠近重拍",cropOk:"{w}×{h}",cropAdded:"已新增（第{n}張）。可繼續框出其他地方",cropNext:"下一張照片",page:"整頁",showCrop:"做錯的地方",tipAdd:"一頁有幾處錯都可以連續框選新增。整頁照片只儲存一張，不會多佔空間。",mReview:"複習",mAdd:"新增",mList:"列表",qStdShort:"標準",qHighShort:"高畫質",qEcoShort:"省空間",langLbl:"語言",helpLong:"使用說明・關於本應用",support:"支援這個應用",extraShort:"全部瀏覽",saveShort:"儲存並新增",listReview:"複習這些",tipReview:"「全部瀏覽」不影響複習計劃，適合剛做錯時確認或考試前總複習。",tipList:"點照片可修改科目和備註、立即複習或刪除。可在下方欄按科目篩選。",todayText:"今天有{n}張。看照片時先自己回想，再看答案。",todayNone:"今天沒有要複習的。請從「新增」拍下做錯的頁面。",undone:"已復原上一次評分",undoNone:"沒有可復原的評分",delMasteredShort:"刪除已掌握（{n}張）",backup:"儲存備份",restore:"從備份恢復",icsDaily:"新增每日複習提醒",icsDates:"只新增複習日（未來30天）",badge:"在主螢幕圖示顯示數量",bulk:"從相簿批次新增",noCards:"還沒有卡片。請點左上的「新增」拍下做錯的頁面。",how:"<b>① 新增</b>：拍下做錯的題目（順便拍下答案更方便）。<br><b>② 複習</b>：按間隔（1天→3天→7天…）出現在「複習」中。先<b>自己回想</b>，再點「會了／還不會」。「還不會」明天再出現。點錯了可用左上的「復原」。<br><b>③ 列表</b>：檢視、修改、刪除照片。<br><b>≡ 選單</b>：提醒（在日曆登記每日通知）、複習間隔、照片畫質、備份、語言等。",dueToday:"今日複習",start:"開始複習",extra:"全部瀏覽（不影響計劃）",sTotal:"總數",sTomorrow:"明天",sMaster:"已掌握",
+ "zh-Hant":{needName:"請輸入標題或連結",repSpaced:"按複習間隔重複（{d}天后）",repOnce:"只一次",planRep:"重複",selNone:"全不選",selAll:"全選",prSel:"已選 {n} 張（共 {m} 張）",prCount2:"點照片即可選擇要列印的（從列表中顯示的照片裡選）。",doneToast:"已設為完成（不再出現在複習中）",doneSub:"不再出現",doneBtn:"完成",deleting:"正在刪除…",pageShow:"顯示整頁",lv7:"最高",lv6:"高",keepPage:"儲存整頁",keepOn:"整頁也會儲存",keepOff:"只儲存框選的部分（不儲存整頁）",delPagesShort:"刪除整頁照片",confirmPageDel:"要刪除所有整頁照片（{s}），只保留框選部分嗎？複習時將無法檢視「整頁」。",confirmPageDel1:"要刪除這張卡片的整頁照片嗎？（框選部分會保留）",pageDel:"刪除整頁照片",pageDeleted:"已刪除整頁照片",prTitle:"合併列印",prCount:"把列表中顯示的 {n} 張排進A4（可在列表下方欄按科目篩選）",prCols:"每行張數（越多越小）",prLabel:"包含科目和備註",prBW:"黑白",prHint:"生成PDF後點「分享・儲存」，在iPhone上可從分享選單選擇「列印」或「儲存到『檔案』」。",prMake:"生成PDF",prMaking:"正在生成PDF…",prReady:"完成：{p}頁・{n}張（{s}）",prShare:"分享・儲存",how3:"<br><b>減少空間</b>：在框選畫面取消「儲存整頁」，就只儲存框選部分。已儲存的整頁照片可在≡選單「刪除整頁照片」中刪除。<br><b>合併列印</b>：點「列表」下方欄的列印按鈕，可把顯示中的題目排成A4的PDF。",qMenu:"照片畫質（預設設定）",qShort:"畫質",lv1:"極小",lv2:"最小",lv3:"小",lv4:"標準",lv5:"稍高",gray:"黑白",prevCrop:"框選",prevPage:"整頁",sizeInfo:"儲存約{t}（整頁 {p}＋框選 {c}）",sizeInfoCrop:"儲存約{c}（僅框選）",making:"正在生成整頁…",planTitle:"學習計劃",planD:"登記教材二維碼、YouTube或網頁連結、要做的事（只寫備註也可以），在設定的時間用日曆提醒。也可以按複習間隔重複。音訊和影片不匯入應用，而是開啟連結。",scanQR:"拍二維碼",pasteLink:"新增計劃",planNone:"還沒有計劃。可從「新增」或右上的＋登記。",planEditTitle:"學習計劃",planName:"標題（例：聽英語單詞 Unit 3）",planUrl:"連結（可選：二維碼・YouTube・網頁等）",planAt:"日期和時間",planMemo:"備註（可選）",planCalHint:"「新增到日曆」後，會在該時間收到iPhone通知。有連結時可從日程裡開啟。設為重複時，重複的日期也會一起登記。",planSaveCal:"儲存並新增到日曆",planSave:"僅儲存",open:"開啟",planDone:"標為已完成",planDel:"刪除",planPast:"已過時間",planSaved:"已儲存計劃",urlNg:"請輸入連結（https://…）",atNg:"請輸入日期和時間",confirmPlanDel:"要刪除這個計劃嗎？",reading:"正在讀取二維碼…",qrNg:"無法讀取二維碼。請在明亮處讓二維碼拍得大一些",qrOk:"已讀取連結。請設定標題和時間",planCalTitle:"🎧 {s}",planCalDesc:"45 Recall 的學習計劃",how2:"<br><b>畫質</b>：在框選畫面的「畫質」裡，可一邊確認文字是否清楚，一邊分7檔調整儲存畫質。越低越省空間。答案是紅字的教材請不要用「黑白」。切換到「整頁」可確認整頁放大時的效果。<br><b>學習計劃</b>：把教材二維碼、YouTube或網頁連結、要做的事，在設定時間（或按複習間隔）用日曆提醒。音訊和影片從連結開啟（不匯入應用）。<br><b>完成</b>：複習時點「完成」，這道題就不再出現（可在列表的「重新開始」恢復）。",shootPage:"拍下整頁",shootPageD:"把有錯題的整頁拍下來。\n接著只框出做錯的地方。",shootShort:"拍下整頁",bulkShort:"從相簿選擇",cropTitle:"框出做錯的地方",retake:"重拍",cropPrev:"複習時會以這個大小顯示",cropDone:"完成",cropAdd:"新增這個範圍",memoPh:"備註（可選）例：關係代詞 what",cropSmall:"文字偏小。請縮小範圍或靠近重拍",cropOk:"{w}×{h}",cropAdded:"已新增（第{n}張）。可繼續框出其他地方",cropNext:"下一張照片",page:"整頁",showCrop:"做錯的地方",tipAdd:"一頁有幾處錯都可以連續框選新增。整頁照片只儲存一張，不會多佔空間。",mReview:"複習",mAdd:"新增",mList:"列表",qStdShort:"標準",qHighShort:"高畫質",qEcoShort:"省空間",langLbl:"語言",helpLong:"使用說明・關於本應用",support:"支援這個應用",extraShort:"全部瀏覽",saveShort:"儲存並新增",listReview:"複習這些",tipReview:"「全部瀏覽」不影響複習計劃，適合剛做錯時確認或考試前總複習。",tipList:"點照片可修改科目和備註、立即複習或刪除。可在下方欄按科目篩選。",todayText:"今天有{n}張。看照片時先自己回想，再看答案。",todayNone:"今天沒有要複習的。請從「新增」拍下做錯的頁面。",undone:"已復原上一次評分",undoNone:"沒有可復原的評分",delMasteredShort:"刪除已掌握（{n}張）",backup:"儲存備份",restore:"從備份恢復",icsDaily:"新增每日複習提醒",icsDates:"只新增複習日（未來30天）",badge:"在主螢幕圖示顯示數量",bulk:"從相簿批次新增",noCards:"還沒有卡片。請點左上的「新增」拍下做錯的頁面。",how:"<b>① 新增</b>：拍下做錯的題目（順便拍下答案更方便）。<br><b>② 複習</b>：按間隔（1天→3天→7天…）出現在「複習」中。先<b>自己回想</b>，再點「會了／還不會」。「還不會」明天再出現。點錯了可用左上的「復原」。<br><b>③ 列表</b>：檢視、修改、刪除照片。<br><b>≡ 選單</b>：提醒（在日曆登記每日通知）、複習間隔、照片畫質、備份、語言等。",dueToday:"今日複習",start:"開始複習",extra:"全部瀏覽（不影響計劃）",sTotal:"總數",sTomorrow:"明天",sMaster:"已掌握",
   howTitle:"使用方法",
   addTitle:"拍下做錯的頁面",qPhoto:"題目（必填）",aPhoto:"答案（可選）",subject:"科目・教材",memo:"備註（錯在哪裡等）",save:"儲存並加入複習",
   addNote:"首次複習在明天。照片只儲存在本裝置中。",
@@ -548,6 +567,7 @@ function openDB(){
 const tx=(mode)=>db.transaction("cards",mode).objectStore("cards");
 const dbAll=()=>new Promise(r=>{const q=tx("readonly").getAll(); q.onsuccess=()=>r(q.result||[]);});
 const dbPut=c=>new Promise((r,j)=>{const q=tx("readwrite").put(c); q.onsuccess=()=>r(); q.onerror=()=>j(q.error);});
+const dbGet=id=>new Promise(r=>{const q=tx("readonly").get(id); q.onsuccess=()=>r(q.result||null); q.onerror=()=>r(null);});
 const dbDel=id=>new Promise(r=>{const q=tx("readwrite").delete(id); q.onsuccess=()=>r();});
 const ps=mode=>db.transaction("pages",mode).objectStore("pages");
 const pagePut=p=>new Promise((r,j)=>{const q=ps("readwrite").put(p); q.onsuccess=()=>r(); q.onerror=()=>j(q.error);});
@@ -555,7 +575,7 @@ const pageGet=id=>new Promise(r=>{ if(!id) return r(null); const q=ps("readonly"
 const pageAll=()=>new Promise(r=>{const q=ps("readonly").getAll(); q.onsuccess=()=>r(q.result||[]);});
 const pageDel=id=>new Promise(r=>{const q=ps("readwrite").delete(id); q.onsuccess=()=>r(); q.onerror=()=>r();});
 // ページ全体の写真を外す（囲んだ所だけ残す）。ほかのカードが使っていなければページも消す
-async function dropPage(c){ const pid=c.pageId; if(!pid) return; c.pageId=null; await dbPut(c); const left=(await dbAll()).some(x=>x.pageId===pid); if(!left) await pageDel(pid); }
+async function dropPage(c0){ const c=(await dbGet(c0.id))||c0, pid=c.pageId; if(!pid) return; c.pageId=null; await dbPut(c); const left=(await dbAll()).some(x=>x.pageId===pid); if(!left) await pageDel(pid); }
 // カードを消すとき、そのページを使うカードがもう無ければページも消す
 async function delCard(c){ await dbDel(c.id); if(c.pageId){ const left=(await dbAll()).some(x=>x.pageId===c.pageId); if(!left) await pageDel(c.pageId); } }
 
@@ -701,14 +721,14 @@ function blobImg(blob){ return new Promise((res,rej)=>{ const u=URL.createObject
 const mb=n=>n>=1048576?(n/1048576).toFixed(2)+" MB":Math.max(1,Math.round(n/1024))+" KB";
 function renderQ(){
   if(!crop) return;
-  $("#lvName").textContent=t("lv"+crop.lv); $("#lvDown").disabled=crop.lv<=1; $("#lvUp").disabled=crop.lv>=5;
+  $("#lvName").textContent=t("lv"+crop.lv); $("#lvDown").disabled=crop.lv<=1; $("#lvUp").disabled=crop.lv>=LVMAX;
   $("#grayChip").classList.toggle("on",crop.gray);
   $("#keepChip").classList.toggle("on",crop.keep);
   if(!crop.keep) crop.pv="crop";
   $('#pvSeg [data-pv="page"]').disabled=!crop.keep;
   document.querySelectorAll("#pvSeg button").forEach(b=>b.classList.toggle("on",b.dataset.pv===crop.pv));
 }
-function setQ(lv,gray){ crop.lv=Math.max(1,Math.min(5,lv)); crop.gray=gray; ls.set("pr_lv",String(crop.lv)); ls.set("pr_gray",gray?"1":"0"); renderQ(); drawPreview(); }
+function setQ(lv,gray){ crop.lv=Math.max(1,Math.min(LVMAX,lv)); crop.gray=gray; ls.set("pr_lv7",String(crop.lv)); ls.set("pr_gray",gray?"1":"0"); renderQ(); drawPreview(); }
 $("#lvDown").onclick=()=>setQ(crop.lv-1,crop.gray);
 $("#lvUp").onclick=()=>setQ(crop.lv+1,crop.gray);
 $("#grayChip").onclick=()=>setQ(crop.lv,!crop.gray);
@@ -837,20 +857,24 @@ function renderGrid(){
     b.onclick=()=>openSheet(c); g.appendChild(b);
   });
 }
-async function openSheet(c){
+async function openSheet(c0){
+  const c=(await dbGet(c0.id))||c0;    // いつも保存されている最新の写真を使う
   const pg=c.a?null:await pageGet(c.pageId);
   const qURL=URL.createObjectURL(c.q), aURL=c.a?URL.createObjectURL(c.a):(pg?URL.createObjectURL(pg.blob):null);
   const iv=intervals();
   $("#sheetInner").innerHTML=`
-    <img src="${qURL}" alt="">${aURL?`<img src="${aURL}" alt="">`:""}
+    <div class="shHead"><b>${esc(c.subject||"")}</b><button class="btn pri" id="eNow"><i class="ic">${ico("play")}</i>${t("reviewNow")}</button><button class="btn icon" id="eClose" aria-label="close"><i class="ic">${ico("x")}</i></button></div>
+    <img src="${qURL}" alt="">
+    ${aURL?`<button class="btn" id="eShowPage" style="width:100%;margin-bottom:8px"><i class="ic">${ico("image")}</i>${t(c.a?"showAns":"pageShow")}</button><img id="ePageImg" src="${aURL}" alt="" hidden>`:""}
+    <p class="muted" style="margin:0 0 4px">${t("level")}: ${c.mastered?"★":(c.level+1)+" / "+iv.length} ・ ${t("nextDue")}: ${dueLabel(c)}</p>
+    <div class="row"><button class="btn" id="eReset">${t("reset")}</button><button class="btn ng" id="eDel">${t("del")}</button></div>
+    ${c.pageId?`<div class="row"><button class="btn" id="ePageDel">${t("pageDel")}</button></div>`:""}
     <div class="field"><label>${t("subject")}</label><input id="eSubj" value="${esc(c.subject||"")}"></div>
     <div class="field"><label>${t("memo")}</label><textarea id="eMemo" rows="2">${esc(c.memo||"")}</textarea></div>
-    <p class="muted">${t("level")}: ${c.mastered?"★":(c.level+1)+" / "+iv.length} ・ ${t("nextDue")}: ${dueLabel(c)}</p>
-    <div class="row"><button class="btn" id="eSave">${t("edit")}</button><button class="btn pri" id="eNow">${t("reviewNow")}</button></div>
-    ${c.pageId?`<div class="row"><button class="btn" id="ePageDel">${t("pageDel")}</button></div>`:""}
-    <div class="row"><button class="btn" id="eReset">${t("reset")}</button><button class="btn ng" id="eDel">${t("del")}</button><button class="btn" id="eClose">${t("close")}</button></div>`;
-  $("#sheet").classList.add("on");
+    <div class="row"><button class="btn" id="eSave">${t("edit")}</button></div>`;
+  $("#sheet").classList.add("on"); $("#sheetInner").scrollTop=0;
   const close=()=>{$("#sheet").classList.remove("on"); URL.revokeObjectURL(qURL); aURL&&URL.revokeObjectURL(aURL);};
+  if($("#eShowPage")) $("#eShowPage").onclick=()=>{ const im=$("#ePageImg"); im.hidden=!im.hidden; };
   $("#eClose").onclick=close;
   $("#sheet").onclick=e=>{if(e.target.id==="sheet") close();};
   $("#eSave").onclick=async()=>{c.subject=$("#eSubj").value.trim(); c.memo=$("#eMemo").value.trim(); await dbPut(c); close(); reload();};
@@ -876,6 +900,7 @@ function showCard(){
   const c=queue[qi]; showingAns=false;
   $("#rvCount").textContent=t("count",{a:qi+1,b:queue.length});
   setImg(c.q);
+  $("#rvImg").onerror=async()=>{ $("#rvImg").onerror=null; const f=await dbGet(c.id); if(f&&queue[qi]===c){ Object.assign(c,f); setImg(f.q); } };
   $("#rvAnswer").style.display=(c.a||c.pageId)?"":"none"; $("#rvAnswer").textContent=t(c.a?"showAns":"page");
   $("#rvMeta").innerHTML=(c.subject?`<span class="subj">${esc(c.subject)}</span>`:"")+esc(c.memo||"");
   $("#rvOkSub").textContent=practice?"":nextInfo(c,true).label;
@@ -885,7 +910,7 @@ function setImg(blob){
   if(curURL) URL.revokeObjectURL(curURL); curURL=URL.createObjectURL(blob);
   const img=$("#rvImg"); img.classList.remove("zoom"); img.src=curURL; $("#rvImgWrap").scrollTo(0,0);
 }
-$("#rvImg").ondblclick=e=>e.target.classList.toggle("zoom");
+// 写真の拡大は2本指で（ダブルタップの拡大はしない）
 $("#rvAnswer").onclick=async()=>{
   const c=queue[qi]; showingAns=!showingAns;
   if(c.a){ setImg(showingAns?c.a:c.q); $("#rvAnswer").textContent=t(showingAns?"showQ":"showAns"); return; }
@@ -894,14 +919,17 @@ $("#rvAnswer").onclick=async()=>{
   $("#rvAnswer").textContent=t(showingAns?"showCrop":"page");
 };
 $("#rvOk").onclick=()=>grade(true);
+$("#rvDone").onclick=()=>grade(true,true);
 $("#rvNg").onclick=()=>grade(false);
 $("#rvClose").onclick=endReview;
-async function grade(ok){
+async function grade(ok,finish){
   const c=queue[qi];
-  gradeStack.push({c,qi,practice,prev:{level:c.level,due:c.due,mastered:c.mastered,reviews:c.reviews,last:c.last}});
+  gradeStack.push({c,qi,practice,finish:!!finish,prev:{level:c.level,due:c.due,mastered:c.mastered,reviews:c.reviews,last:c.last}});
   if(gradeStack.length>50) gradeStack.shift();
   $("#rvUndo").disabled=false;
-  if(!practice){
+  if(finish){   // 完了：もう復習に出さない（習得済み）
+    Object.assign(c,{level:intervals().length,due:8.64e15,mastered:true,reviews:(c.reviews||0)+1,last:Date.now()}); await dbPut(c); toast(t("doneToast"));
+  } else if(!practice){
     const n=nextInfo(c,ok); Object.assign(c,{level:n.level,due:n.due===Infinity?8.64e15:n.due,mastered:n.mastered,reviews:(c.reviews||0)+1,last:Date.now()});
     await dbPut(c);
   }
@@ -910,7 +938,7 @@ async function grade(ok){
 }
 async function undoGrade(){
   const g=gradeStack.pop(); if(!g){ toast(t("undoNone")); return false; }
-  if(!g.practice){ Object.assign(g.c,g.prev); await dbPut(g.c); }
+  if(!g.practice||g.finish){ Object.assign(g.c,g.prev); await dbPut(g.c); }
   $("#rvUndo").disabled=!gradeStack.length;
   if($("#reviewer").classList.contains("on")&&queue[g.qi]===g.c){ qi=g.qi; showCard(); }
   toast(t("undone")); return true;
@@ -961,16 +989,16 @@ function fmtAt(ms){ return new Date(ms).toLocaleString({ja:"ja-JP",en:"en-US",zh
 const toLocalInput=ms=>{ const d=new Date(ms); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`; };
 function renderPlans(){
   const box=$("#plans"); if(!box) return;
-  const now=Date.now(), list=plansGet().filter(p=>!p.done).sort((a,b)=>a.at-b.at);
+  const list=plansGet().filter(p=>!p.done).map(p=>({p,nx:planNext(p)})).sort((a,b)=>a.nx.at-b.nx.at);
   box.innerHTML="";
   if(!list.length){ box.innerHTML=`<p class="plansEmpty">${esc(t("planNone"))}</p>`; return; }
-  list.forEach(p=>{
-    const el=document.createElement("div"); el.className="plan"+(p.at<now?" past":"");
-    el.innerHTML=`<div class="pt"><b>${esc(fmtAt(p.at))}${p.at<now?" ・"+esc(t("planPast")):""}</b><span>${esc(p.name||p.url)}</span>${p.memo?`<small>${esc(p.memo)}</small>`:""}</div>
-      <button class="btn primary" data-a="open"><i class="ic">${ico("play")}</i>${esc(t("open"))}</button>
+  list.forEach(({p,nx})=>{
+    const el=document.createElement("div"); el.className="plan"+(nx.past?" past":"");
+    el.innerHTML=`<div class="pt"><b>${esc(fmtAt(nx.at))}${nx.n>1?` (${nx.i+1}/${nx.n})`:""}${nx.past?" ・"+esc(t("planPast")):""}</b><span>${esc(p.name||p.url)}</span>${p.memo?`<small>${esc(p.memo)}</small>`:""}</div>
+      ${p.url?`<button class="btn primary" data-a="open"><i class="ic">${ico("play")}</i>${esc(t("open"))}</button>`:""}
       <button class="btn icon" data-a="cal" aria-label="calendar"><i class="ic">${ico("bell")}</i></button>
       <button class="btn icon" data-a="edit" aria-label="edit"><i class="ic">${ico("edit")}</i></button>`;
-    el.querySelector('[data-a="open"]').onclick=()=>openLink(p.url);
+    if(p.url) el.querySelector('[data-a="open"]').onclick=()=>openLink(p.url);
     el.querySelector('[data-a="cal"]').onclick=()=>planCal(p);
     el.querySelector('[data-a="edit"]').onclick=()=>openPlan(p);
     box.appendChild(el);
@@ -983,6 +1011,7 @@ function openPlan(p,url){
   const def=new Date(startOfDay()+DAY); const [h,m]=(ls.get("pr_time")||"20:00").split(":").map(Number); def.setHours(h,m,0,0);
   $("#plName").value=p?p.name||"":""; $("#plUrl").value=p?p.url:(url||""); $("#plMemo").value=p?p.memo||"":"";
   $("#plAt").value=toLocalInput(p?p.at:def.getTime());
+  $("#plRep").value=p&&p.rep==="spaced"?"spaced":"once"; $("#plRepSp").textContent=t("repSpaced",{d:intervals().join("・")});
   $("#plEditRow").style.display=p?"flex":"none";
   if(p) $("#plDone").textContent=t("planDone");
   openOv("#planSheet");
@@ -990,12 +1019,17 @@ function openPlan(p,url){
 function readPlan(){
   let url=$("#plUrl").value.trim();
   if(url&&!/^[a-z][a-z0-9+.-]*:/i.test(url)) url="https://"+url;
-  if(!/^https?:\/\/\S+$/i.test(url)){ toast(t("urlNg")); $("#plUrl").focus(); return null; }
+  if(url&&!/^https?:\/\/\S+$/i.test(url)){ toast(t("urlNg")); $("#plUrl").focus(); return null; }
+  const name=$("#plName").value.trim();
+  if(!url&&!name){ toast(t("needName")); $("#plName").focus(); return null; }
   const at=new Date($("#plAt").value).getTime();
   if(!at){ toast(t("atNg")); return null; }
   return {id:editing?editing.id:"pl"+Date.now().toString(36)+Math.random().toString(36).slice(2,5),
-    name:$("#plName").value.trim(),url,at,memo:$("#plMemo").value.trim(),done:false,created:editing?editing.created:Date.now()};
+    name,url,at,rep:$("#plRep").value,memo:$("#plMemo").value.trim(),done:false,created:editing?editing.created:Date.now()};
 }
+// くり返す予定は、最初の日時から復習の間隔（1・3・7…日後）にも知らせる
+const planTimes=p=>p.rep==="spaced"?[0,...intervals()].map(d=>p.at+d*DAY):[p.at];
+function planNext(p){ const ts=planTimes(p), now=Date.now(), i=ts.findIndex(x=>x>now-60*60000); return i<0?{at:ts[ts.length-1],i:ts.length-1,n:ts.length,past:true}:{at:ts[i],i,n:ts.length,past:ts[i]<now}; }
 function savePlan(withCal){
   const p=readPlan(); if(!p) return;
   const all=plansGet().filter(x=>x.id!==p.id); all.push(p); plansSet(all);
@@ -1004,7 +1038,7 @@ function savePlan(withCal){
 }
 $("#plSave").onclick=()=>savePlan(false);
 $("#plSaveCal").onclick=()=>savePlan(true);
-$("#plOpen").onclick=()=>{ const u=$("#plUrl").value.trim(); if(u) openLink(u); };
+$("#plOpen").onclick=()=>{ const u=$("#plUrl").value.trim(); if(u) openLink(/^[a-z][a-z0-9+.-]*:/i.test(u)?u:"https://"+u); };
 $("#plDone").onclick=()=>{ if(!editing) return; plansSet(plansGet().map(x=>x.id===editing.id?{...x,done:true}:x)); $("#planSheet").classList.remove("show"); renderPlans(); };
 $("#plDel").onclick=()=>{ if(!editing||!confirm(t("confirmPlanDel"))) return; plansSet(plansGet().filter(x=>x.id!==editing.id)); $("#planSheet").classList.remove("show"); renderPlans(); };
 $("#planNew").onclick=()=>openPlan(null);
@@ -1012,11 +1046,13 @@ $("#planNew2").onclick=()=>openPlan(null);
 // カレンダーに1件登録（その日時に通知。予定の中のリンクから教材の音声を開ける）
 function icsText(s){ return String(s).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n"); }
 function planCal(p){
-  const start=new Date(p.at), end=new Date(p.at+30*60000), title=t("planCalTitle",{s:p.name||t("planTitle")});
-  const ev=["BEGIN:VEVENT",`UID:${p.id}@45tools-recall`,`DTSTAMP:${icsStamp()}`,`DTSTART:${icsDate(start)}`,`DTEND:${icsDate(end)}`,
-    `SUMMARY:${icsText(title)}`,`DESCRIPTION:${icsText(p.url+(p.memo?"\n"+p.memo:"")+"\n\n"+t("planCalDesc"))}`,`URL:${p.url}`,
-    "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsText(title)}`,"TRIGGER:PT0M","END:VALARM","END:VEVENT"].join("\r\n");
-  saveFile(icsWrap([ev]),`45recall-plan-${toLocalInput(p.at).replace(/[-:T]/g,"")}.ics`,"text/calendar");
+  const title=t("planCalTitle",{s:p.name||p.url||t("planTitle")}), app=location.href.split("#")[0].split("?")[0];
+  const desc=[p.url,p.memo,"",t("planCalDesc")+" "+app].filter((x,i)=>x||i===2).join("\n");
+  const times=planTimes(p).filter((x,i,a)=>x>Date.now()-60*60000||i===a.length-1);
+  const evs=times.map((at,i)=>["BEGIN:VEVENT",`UID:${p.id}-${i}@45tools-recall`,`DTSTAMP:${icsStamp()}`,`DTSTART:${icsDate(new Date(at))}`,`DTEND:${icsDate(new Date(at+30*60000))}`,
+    `SUMMARY:${icsText(title)}`,`DESCRIPTION:${icsText(desc)}`,`URL:${p.url||app}`,
+    "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsText(title)}`,"TRIGGER:PT0M","END:VALARM","END:VEVENT"].join("\r\n"));
+  saveFile(icsWrap(evs),`45recall-plan-${toLocalInput(p.at).replace(/[-:T]/g,"")}.ics`,"text/calendar");
 }
 // QRコードの写真からリンクを読み取る（端末の中だけで処理）
 function loadJsQR(){ return window.jsQR?Promise.resolve():new Promise((res,rej)=>{ const sc=document.createElement("script"); sc.src="jsqr.js"; sc.onload=res; sc.onerror=rej; document.head.appendChild(sc); }); }
@@ -1045,14 +1081,25 @@ $("#qrFile").onchange=async e=>{
 };
 
 /* ===== まとめて印刷（一覧の絞り込みどおりの切り抜きをA4に詰めてPDFにする） ===== */
-let prCols=parseInt(ls.get("pr_cols")||"2",10), prFile=null;
+let prCols=parseInt(ls.get("pr_cols")||"2",10), prFile=null, prSel=new Set();
+const prList=()=>filtered().filter(c=>prSel.has(c.id));
 function renderPrint(){
   document.querySelectorAll("#prColSeg button").forEach(b=>b.classList.toggle("on",+b.dataset.c===prCols));
-  $("#prCount").textContent=t("prCount",{n:filtered().length});
+  $("#prCount").textContent=t("prSel",{n:prList().length,m:filtered().length});
+  $("#prMake").disabled=!prList().length;
 }
+function renderPrGrid(){
+  const g=$("#prGrid"); g.innerHTML="";
+  filtered().forEach(c=>{ const b=document.createElement("button"); b.className="prT"+(prSel.has(c.id)?" on":"");
+    b.innerHTML=`<img src="${c.thumb}" alt=""><span class="ck">✓</span>`;
+    b.onclick=()=>{ prSel.has(c.id)?prSel.delete(c.id):prSel.add(c.id); b.classList.toggle("on"); prFile=null; $("#prResult").classList.remove("on"); renderPrint(); };
+    g.appendChild(b); });
+}
+$("#prAll").onclick=()=>{ filtered().forEach(c=>prSel.add(c.id)); renderPrGrid(); renderPrint(); };
+$("#prNone").onclick=()=>{ prSel.clear(); renderPrGrid(); renderPrint(); };
 document.querySelectorAll("#prColSeg button").forEach(b=>b.onclick=()=>{ prCols=+b.dataset.c; ls.set("pr_cols",String(prCols)); prFile=null; $("#prResult").classList.remove("on"); renderPrint(); });
 ["#prLabel","#prBW"].forEach(id=>$(id).onchange=()=>{ prFile=null; $("#prResult").classList.remove("on"); });
-$("#printBtn").onclick=()=>{ if(!filtered().length){ toast(t("nothing")); return; } prFile=null; $("#prResult").classList.remove("on"); renderPrint(); openOv("#printSheet"); };
+$("#printBtn").onclick=()=>{ if(!filtered().length){ toast(t("nothing")); return; } prFile=null; $("#prResult").classList.remove("on"); prSel=new Set(filtered().map(c=>c.id)); renderPrGrid(); renderPrint(); openOv("#printSheet"); };
 async function renderPrintPages(list,cols,label,bw){
   const PW=1654,PH=2339,M=96,GAP=30,HEAD=70,LH=label?40:0;     // A4・200dpi
   const colW=(PW-2*M-(cols-1)*GAP)/cols, top=M+HEAD, bottom=PH-M;
@@ -1098,7 +1145,7 @@ function makePDF(jpegs){
   return new Blob(parts,{type:"application/pdf"});
 }
 $("#prMake").onclick=async()=>{
-  const list=filtered(); if(!list.length) return;
+  const list=prList(); if(!list.length) return;
   $("#prMake").disabled=true; $("#prResult").classList.remove("on"); toast(t("prMaking"));
   try{
     const pages=await renderPrintPages(list,prCols,$("#prLabel").checked,$("#prBW").checked), jp=[];
@@ -1129,7 +1176,7 @@ $("#intervals").onchange=e=>{
   const v=e.target.value.split(/[,、\s]+/).map(s=>parseInt(s,10)).filter(n=>n>0);
   ls.set("pr_int",(v.length?v:DEFAULT_INTERVALS).join(",")); refreshAll();
 };
-$("#qSel").onchange=e=>ls.set("pr_lv",e.target.value);
+$("#qSel").onchange=e=>ls.set("pr_lv7",e.target.value);
 $("#delMastered").onclick=async()=>{
   const ms=cards.filter(c=>c.mastered); if(!ms.length) return;
   if(!confirm(t("confirmDelM",{n:ms.length}))) return;
@@ -1139,9 +1186,10 @@ $("#delMastered").onclick=async()=>{
 $("#delPages").onclick=async()=>{
   if(!pageBytes) return;
   if(!confirm(t("confirmPageDel",{s:(pageBytes/1048576).toFixed(1)+" MB"}))) return;
-  for(const c of cards) if(c.pageId){ c.pageId=null; await dbPut(c); }
+  toast(t("deleting"));
+  for(const c0 of await dbAll()) if(c0.pageId){ c0.pageId=null; await dbPut(c0); }   // 読み直したものを書き戻す
   for(const pg of await pageAll()) await pageDel(pg.id);
-  toast(t("pageDeleted")); reload();
+  await reload(); toast(t("pageDeleted"));
 };
 $("#lang").onchange=e=>{lang=e.target.value; ls.set("pr_lang",lang); applyLang();};
 const b2d=b=>new Promise(r=>{const fr=new FileReader(); fr.onload=()=>r(fr.result); fr.readAsDataURL(b);});
