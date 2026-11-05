@@ -455,6 +455,9 @@ body[data-mode="list"] .foot{display:none}
 .heroTxt .peek img,.heroTxt .peek .more{width:40px;height:40px;border-width:2px}
 .heroBtns > *{white-space:nowrap}
 .heroGo{flex:1 1 auto;justify-content:center}
+.heroBell{display:inline-flex;align-items:center;gap:3px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);color:#fff;border-radius:999px;min-height:28px;padding:0 9px 0 7px;font-size:11px;font-weight:700;font-family:inherit;margin-left:6px}
+.heroBell .ic{width:14px;height:14px}
+#lang{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:700;padding:6px 10px}
 @media (max-width:360px){ .tagline b{font-size:13px} .heroSub span{display:none} .heroSub{padding:0 12px} .hstats span:not(.hstar){display:none} }
 @media (max-height:600px){ .heroTxt .peek{display:none} }
 @media (prefers-reduced-motion: reduce){ .camCircle::before,.conf{animation:none;display:none} .celCard{animation:none} }
@@ -497,7 +500,7 @@ body[data-mode="list"] .foot{display:none}
   <section data-pane="review">
     <div class="bento">
       <div class="hero span2" id="hero">
-        <div class="heroTop2"><span class="heroK" data-i="heroK"></span><span class="sp"></span><span class="hstats"><span data-i="sTotal"></span><b class="num" id="sTotal">0</b><span data-i="sTomorrow"></span><b class="num" id="sTomorrow">0</b><span class="hstar">★</span><b class="num" id="sMaster">0</b></span></div>
+        <div class="heroTop2"><span class="heroK" data-i="heroK"></span><button class="heroBell" id="heroBell"><i class="ic" data-ic="bell"></i><span data-i="notifyShort"></span></button><span class="sp"></span><span class="hstats"><span data-i="sTotal"></span><b class="num" id="sTotal">0</b><span data-i="sTomorrow"></span><b class="num" id="sTomorrow">0</b><span class="hstar">★</span><b class="num" id="sMaster">0</b></span></div>
         <div class="heroMain">
           <div class="pring" id="pring"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" id="ringVal" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
             <div class="pc"><b class="num" id="dueNum">0</b><span id="dueLbl"></span></div></div>
@@ -698,7 +701,7 @@ body[data-mode="list"] .foot{display:none}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VER="2026.11.05-3";
+const APP_VER="2026.11.06-1";
 /* ===== 設定 ===== */
 const SUPPORT_URL="https://ofuse.me/45tools"; // ← OFUSEのURLに差し替え
 const DEFAULT_INTERVALS=[1,3,7,14,30,60];
@@ -814,10 +817,10 @@ Object.assign(I18N.ja,{streakU:"日連続",heroDue:"あと{n}枚！",heroClear:"
 Object.assign(I18N.en,{streakU:"-day streak",heroDue:"{n} to go!",heroClear:"All done today!",heroEmpty:"Let's get started",heroDoneN:"You reviewed {n} today. Keep it up tomorrow!",heroNext:"Next review: {d}",leftLbl:"left",clearLbl:"Clear!",step1:"Snap",step2:"Box",step3:"Review",recent:"Recently added",rotate:"Rotate",celTitle:"Nice work!",celText:"You reviewed {n} cards",celStreak:"{n}-day streak!",celOk:"Awesome!",cntN:"{n}"});
 Object.assign(I18N.zh,{streakU:"天连续",heroDue:"还剩{n}张！",heroClear:"今天完成了！",heroEmpty:"开始吧",heroDoneN:"今天复习了{n}张。明天继续加油！",heroNext:"下次复习：{d}",leftLbl:"剩下",clearLbl:"完成",step1:"拍照",step2:"框选",step3:"复习",recent:"最近添加",rotate:"旋转",celTitle:"辛苦了！",celText:"复习了 {n} 张",celStreak:"连续 {n} 天！",celOk:"太棒了！",cntN:"{n}张"});
 Object.assign(I18N["zh-Hant"],{streakU:"天連續",heroDue:"還剩{n}張！",heroClear:"今天完成了！",heroEmpty:"開始吧",heroDoneN:"今天複習了{n}張。明天繼續加油！",heroNext:"下次複習：{d}",leftLbl:"剩下",clearLbl:"完成",step1:"拍照",step2:"框選",step3:"複習",recent:"最近新增",rotate:"旋轉",celTitle:"辛苦了！",celText:"複習了 {n} 張",celStreak:"連續 {n} 天！",celOk:"太棒了！",cntN:"{n}張"});
-Object.assign(I18N.ja,{tagline:"間違えた所を写真で、くり返し復習",heroK:"今日の復習",camTile:"撮って追加",camTileD:"間違えた所・持ち物",weekLbl:"この1週間",rmTitle:"リマインド",rmEmpty:"持ち物や提出物を撮ると、決めた時間に写真で知らせます。",rmAdd:"リマインドを撮る",rmAddD:"持ち物・提出物を時間に知らせる",photoTileD:"まとめて選べます",kReview:"復習カード",kRemind:"リマインド",rmSaved:"リマインドを保存しました",rmCal:"カレンダーに登録（通知）",rmDone:"完了（消す）",rmDefault:"リマインド",q7:"明日の朝7時",q20:"今夜20時",q1h:"1時間後",rmMore:"ほか{n}件",rmPast:"時間が過ぎています"});
-Object.assign(I18N.en,{tagline:"Snap your mistakes, review them on repeat",heroK:"Today's review",camTile:"Snap & add",camTileD:"Mistakes or things to bring",weekLbl:"This week",rmTitle:"Reminders",rmEmpty:"Snap things to bring or hand in, and get the photo back at the time you choose.",rmAdd:"Snap a reminder",rmAddD:"Things to bring or hand in",photoTileD:"Pick several at once",kReview:"Review card",kRemind:"Reminder",rmSaved:"Reminder saved",rmCal:"Add to calendar (alert)",rmDone:"Done (delete)",rmDefault:"Reminder",q7:"Tomorrow 7:00",q20:"Tonight 20:00",q1h:"In 1 hour",rmMore:"+{n} more",rmPast:"Time has passed"});
-Object.assign(I18N.zh,{tagline:"把错题拍下来，反复复习",heroK:"今天的复习",camTile:"拍照添加",camTileD:"错题・要带的东西",weekLbl:"这一周",rmTitle:"提醒",rmEmpty:"拍下要带的东西或要交的作业，到时间用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要带的东西・要交的作业",photoTileD:"可一次选多张",kReview:"复习卡",kRemind:"提醒",rmSaved:"已保存提醒",rmCal:"加入日历（通知）",rmDone:"完成（删除）",rmDefault:"提醒",q7:"明早7点",q20:"今晚20点",q1h:"1小时后",rmMore:"还有{n}项",rmPast:"时间已过"});
-Object.assign(I18N["zh-Hant"],{tagline:"把錯題拍下來，反覆複習",heroK:"今天的複習",camTile:"拍照新增",camTileD:"錯題・要帶的東西",weekLbl:"這一週",rmTitle:"提醒",rmEmpty:"拍下要帶的東西或要交的作業，到時間用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要帶的東西・要交的作業",photoTileD:"可一次選多張",kReview:"複習卡",kRemind:"提醒",rmSaved:"已儲存提醒",rmCal:"加入行事曆（通知）",rmDone:"完成（刪除）",rmDefault:"提醒",q7:"明早7點",q20:"今晚20點",q1h:"1小時後",rmMore:"還有{n}項",rmPast:"時間已過"});
+Object.assign(I18N.ja,{notifyShort:"通知",tagline:"間違えた所を写真で、くり返し復習",heroK:"今日の復習",camTile:"撮って追加",camTileD:"間違えた所・持ち物",weekLbl:"この1週間",rmTitle:"リマインド",rmEmpty:"持ち物や提出物を撮ると、決めた時間に写真で知らせます。",rmAdd:"リマインドを撮る",rmAddD:"持ち物・提出物を時間に知らせる",photoTileD:"まとめて選べます",kReview:"復習カード",kRemind:"リマインド",rmSaved:"リマインドを保存しました",rmCal:"カレンダーに登録（通知）",rmDone:"完了（消す）",rmDefault:"リマインド",q7:"明日の朝7時",q20:"今夜20時",q1h:"1時間後",rmMore:"ほか{n}件",rmPast:"時間が過ぎています"});
+Object.assign(I18N.en,{notifyShort:"Alerts",tagline:"Snap your mistakes, review them on repeat",heroK:"Today's review",camTile:"Snap & add",camTileD:"Mistakes or things to bring",weekLbl:"This week",rmTitle:"Reminders",rmEmpty:"Snap things to bring or hand in, and get the photo back at the time you choose.",rmAdd:"Snap a reminder",rmAddD:"Things to bring or hand in",photoTileD:"Pick several at once",kReview:"Review card",kRemind:"Reminder",rmSaved:"Reminder saved",rmCal:"Add to calendar (alert)",rmDone:"Done (delete)",rmDefault:"Reminder",q7:"Tomorrow 7:00",q20:"Tonight 20:00",q1h:"In 1 hour",rmMore:"+{n} more",rmPast:"Time has passed"});
+Object.assign(I18N.zh,{notifyShort:"通知",tagline:"把错题拍下来，反复复习",heroK:"今天的复习",camTile:"拍照添加",camTileD:"错题・要带的东西",weekLbl:"这一周",rmTitle:"提醒",rmEmpty:"拍下要带的东西或要交的作业，到时间用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要带的东西・要交的作业",photoTileD:"可一次选多张",kReview:"复习卡",kRemind:"提醒",rmSaved:"已保存提醒",rmCal:"加入日历（通知）",rmDone:"完成（删除）",rmDefault:"提醒",q7:"明早7点",q20:"今晚20点",q1h:"1小时后",rmMore:"还有{n}项",rmPast:"时间已过"});
+Object.assign(I18N["zh-Hant"],{notifyShort:"通知",tagline:"把錯題拍下來，反覆複習",heroK:"今天的複習",camTile:"拍照新增",camTileD:"錯題・要帶的東西",weekLbl:"這一週",rmTitle:"提醒",rmEmpty:"拍下要帶的東西或要交的作業，到時間用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要帶的東西・要交的作業",photoTileD:"可一次選多張",kReview:"複習卡",kRemind:"提醒",rmSaved:"已儲存提醒",rmCal:"加入行事曆（通知）",rmDone:"完成（刪除）",rmDefault:"提醒",q7:"明早7點",q20:"今晚20點",q1h:"1小時後",rmMore:"還有{n}項",rmPast:"時間已過"});
 const ls={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 let lang=ls.get("pr_lang")||(()=>{ const n=(navigator.language||"ja").toLowerCase(); return n.startsWith("zh")?(/(tw|hk|mo|hant)/.test(n)?"zh-Hant":"zh"):n.startsWith("ja")?"ja":"en"; })();
 if(!I18N[lang]) lang="ja";
@@ -1004,6 +1007,7 @@ $("#menu").addEventListener("click",e=>{ if(e.target.closest("button.mi,a.mi")) 
 const openOv=id=>$(id).classList.add("show");
 document.querySelectorAll(".overlay:not(#sheet)").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o||e.target.closest("[data-close]")) o.classList.remove("show"); }));
 $("#remMenuBtn").onclick=()=>openOv("#remSheet");
+$("#heroBell").onclick=()=>openOv("#remSheet");
 $("#intMenuBtn").onclick=()=>openOv("#intSheet");
 $("#helpBtn").onclick=()=>openOv("#helpSheet");
 $("#restoreFile").addEventListener("change",()=>openMenu(false));
