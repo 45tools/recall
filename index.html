@@ -303,20 +303,109 @@ body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.3px);backg
 .celCard .btn{width:100%;margin-top:16px;min-height:50px;font-size:17px}
 .conf{position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;z-index:1;animation:fall linear forwards}
 @keyframes fall{to{transform:translate3d(var(--dx),110vh,0) rotate(var(--r))}}
+
+/* ===== 2026-11-05-2 タイル＋下のタブ ===== */
+.bar.top{padding:6px 12px 4px}
+.tagline{display:flex;flex-direction:column;min-width:0}
+.tagline b{font-size:15px;line-height:1.35;color:var(--ink)}
+.tagline span{font-size:12px;color:var(--muted)}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:center;padding:0 10px calc(10px + env(safe-area-inset-bottom));pointer-events:none}
+.tabbar .modes{pointer-events:auto;display:flex;align-items:flex-end;justify-content:space-around;width:100%;max-width:520px;height:66px;background:var(--panel);border:1px solid var(--line);border-radius:24px;box-shadow:0 6px 20px rgba(10,30,18,.14)}
+.tabbar button{border:0;background:transparent;flex:1;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;font-weight:700;color:var(--muted)}
+.tabbar .tbi{position:relative;display:inline-flex}
+.tabbar .ic{width:24px;height:24px}
+.tabbar .badge{position:absolute;right:-12px;top:-6px}
+body[data-mode="review"] .tabbar [data-mode="review"],body[data-mode="list"] .tabbar [data-mode="list"]{color:var(--accent);background:transparent;font-weight:900}
+.tabbar .camTab .tbi{width:60px;height:60px;margin-top:-30px;border-radius:50%;background:linear-gradient(135deg,var(--warm),var(--warm2));color:#fff;align-items:center;justify-content:center;border:4px solid var(--bg);box-shadow:0 4px 0 #C85A24}
+.tabbar .camTab .ic{width:28px;height:28px}
+body[data-mode="add"] .tabbar .camTab{color:var(--warm);background:transparent}
+body[data-mode="add"] .tabbar .camTab .tbi{box-shadow:0 0 0 4px rgba(255,122,61,.25),0 4px 0 #C85A24}
+.wrap{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+.dock{bottom:calc(104px + env(safe-area-inset-bottom));padding-bottom:0}
+.toast{bottom:calc(160px + env(safe-area-inset-bottom))}
+.bento{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:6px 10px 0}
+.span2{grid-column:span 2}
+.bento .hero{margin:0}
+.bt{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:0 2px 0 var(--line);color:var(--ink);text-align:left;font:inherit}
+label.bt{cursor:pointer;display:flex}
+label.bt:active{transform:translateY(2px);box-shadow:none}
+.bt small{display:block;font-size:12px;color:var(--muted);line-height:1.45}
+.bt b{display:block}
+.tHead{display:flex;align-items:center;gap:6px;font-size:15px}
+.tHead .ic{width:20px;height:20px;color:var(--sky)}
+.tHead .sp{flex:1}
+.tAdd{width:36px;height:36px;border-radius:50%;background:var(--soft);display:inline-flex;align-items:center;justify-content:center;color:var(--accent)}
+.tCam,.tShoot{background:linear-gradient(135deg,var(--warm),var(--warm2));border:0;color:#fff;box-shadow:0 4px 0 #C85A24;flex-direction:column;justify-content:space-between;min-height:130px}
+.tCam .ic{width:34px;height:34px}
+.tCam b,.tShoot b{font-size:18px}
+.tCam small,.tShoot small{color:#FFF1E8}
+.tShoot{flex-direction:row;align-items:center;gap:14px;min-height:150px}
+.tShoot .camCircle{width:78px;height:78px}
+.tShoot b{font-size:21px}
+.tPhoto,.tRemAdd{flex-direction:column;justify-content:space-between;gap:10px;min-height:120px}
+.tPhoto .ic{width:30px;height:30px;color:var(--accent)}
+.tRemAdd .ic{width:30px;height:30px;color:var(--sky)}
+.tPhoto b,.tRemAdd b{font-size:16px}
+.tStreak{display:flex;flex-direction:column;justify-content:space-between;gap:8px;min-height:130px}
+.stk{display:flex;align-items:center;gap:4px;color:#F76707;font-weight:900;font-size:13px}
+.stk .ic{width:22px;height:22px}
+.stk b{font-size:30px;line-height:1}
+.stk.zero{color:var(--muted)}
+.bento .week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;background:none;padding:0;margin:0}
+.bento .wd{height:22px;border-radius:6px;background:var(--soft);font-size:0;display:block}
+.bento .wd.on{background:var(--warm2)}
+.bento .wd.on.today{background:var(--warm)}
+.bento .wd.today:not(.on){outline:2px solid var(--line)}
+.heroMain{margin-top:0}
+.heroK{display:block;font-size:12px;font-weight:700;color:#BFEBD2}
+.heroBtns{display:flex;gap:8px;margin-top:12px;align-items:center}
+.heroGo{border:0;display:inline-flex;align-items:center;gap:6px;background:#FFE14D;color:var(--hero1);border-radius:999px;min-height:46px;padding:0 18px 0 14px;font-weight:900;font-size:15px;box-shadow:0 3px 0 rgba(0,0,0,.2);font-family:inherit}
+.heroGo:disabled{opacity:.5}
+.heroGo .ic,.heroSub .ic{width:18px;height:18px}
+.heroSub{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.1);color:#fff;border-radius:999px;min-height:46px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;font-family:inherit}
+.heroSub:disabled{opacity:.5}
+.minis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.mini{padding:10px 12px;border-radius:18px}
+.mini b{font-size:28px;line-height:1.1}
+.rmItem{display:flex;align-items:center;gap:12px;width:100%;border:0;background:transparent;padding:8px 0;border-top:1px solid var(--line);font:inherit;color:var(--ink);text-align:left}
+.rmItem:first-child{border-top:0}
+.rmItem img{width:46px;height:46px;border-radius:12px;object-fit:cover;flex:none;background:var(--soft)}
+.rmItem .rt{flex:1;min-width:0}
+.rmItem .rt b{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rmItem .tm{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:20px;color:var(--sky);white-space:nowrap}
+.rmItem.past .tm{color:var(--danger)}
+.rmEmpty{font-size:13px;color:var(--muted);margin:8px 0 2px;line-height:1.6}
+.tPlan .row .btn{min-height:42px;font-size:13px}
+.kindRow{margin:8px 0 0}
+.kindRow .seg{width:100%}
+.kindRow .seg button{flex:1;min-height:36px}
+.subjRow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+.subjRow input{flex:1 1 130px;min-width:0;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px;font-size:16px;color:var(--ink)}
+.subjRow .chips{margin:0}
+.subjRow .chip{padding:5px 10px}
+#cropper.rm .qrow,#cropper.rm #qSize,#cropper.rm .prevBox,#cropper.rm .prevHead{display:none}
+#cropper .prevBox{max-height:12vh}
+#cropRetake{width:46px;padding:0}#cropRetake span{display:none}
+#cropper .rv-top{gap:6px}
+#kindSeg button{min-height:40px;padding:0 10px}
+#kindSeg .ic{width:16px;height:16px}
+body:has(#cropper.on) .toast{bottom:calc(96px + env(safe-area-inset-bottom))}
+#rmSheet img{width:100%;max-height:55vh;object-fit:contain;background:#fff;border-radius:12px;border:1px solid var(--line)}
 @media (prefers-reduced-motion: reduce){ .camCircle::before,.conf{animation:none;display:none} .celCard{animation:none} }
 </style>
 </head>
 <body data-mode="review">
-<div class="bar">
-  <div class="seg modes" role="group" aria-label="mode">
-    <button data-mode="review"><i class="ic" data-ic="repeat"></i><span data-i="mReview"></span><span class="badge num" id="navBadge" hidden>0</span></button>
-    <button data-mode="add"><i class="ic" data-ic="camera"></i><span data-i="mAdd"></span></button>
-    <button data-mode="list"><i class="ic" data-ic="grid"></i><span data-i="mList"></span></button>
-  </div>
-  <button class="btn icon" id="undoBtn" aria-label="undo"><i class="ic" data-ic="undo"></i></button>
+<div class="bar top">
+  <div class="tagline"><b data-i="tagline"></b><span id="heroDate"></span></div>
   <div class="sp"></div>
+  <button class="btn icon" id="undoBtn" aria-label="undo"><i class="ic" data-ic="undo"></i></button>
   <button class="btn icon" id="menuBtn" aria-label="menu" aria-expanded="false"><i class="ic" data-ic="menu"></i></button>
 </div>
+<nav class="tabbar"><div class="modes">
+  <button data-mode="review"><span class="tbi"><i class="ic" data-ic="repeat"></i><span class="badge num" id="navBadge" hidden>0</span></span><span data-i="mReview"></span></button>
+  <button data-mode="add" class="camTab"><span class="tbi"><i class="ic" data-ic="camera"></i></span><span data-i="mAdd"></span></button>
+  <button data-mode="list"><span class="tbi"><i class="ic" data-ic="grid"></i></span><span data-i="mList"></span></button>
+</div></nav>
 
 <div class="scrim" id="scrim" hidden></div>
 <div class="menu" id="menu" role="menu" hidden>
@@ -340,22 +429,35 @@ body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.3px);backg
 <div class="wrap">
   <!-- 復習 -->
   <section data-pane="review">
-    <div class="hero" id="hero">
-      <div class="heroTop"><span class="streak" id="streak"><i class="ic" data-ic="flame"></i><b class="num" id="streakN">0</b><span data-i="streakU"></span></span><span class="sp"></span><span class="heroDate" id="heroDate"></span></div>
-      <div class="heroMain">
-        <div class="pring" id="pring"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" id="ringVal" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
-          <div class="pc"><b class="num" id="dueNum">0</b><span id="dueLbl"></span></div></div>
-        <div class="heroTxt"><h2 id="heroTitle"></h2><p id="todayText"></p><span class="heroGo" id="heroGo" hidden><i class="ic" data-ic="play"></i><span data-i="start"></span></span></div>
+    <div class="bento">
+      <div class="hero span2" id="hero">
+        <div class="heroMain">
+          <div class="pring" id="pring"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" id="ringVal" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
+            <div class="pc"><b class="num" id="dueNum">0</b><span id="dueLbl"></span></div></div>
+          <div class="heroTxt"><span class="heroK" data-i="heroK"></span><h2 id="heroTitle"></h2><p id="todayText"></p></div>
+        </div>
+        <div class="peek" id="peek"></div>
+        <div class="heroBtns">
+          <button class="heroGo" id="startReview"><i class="ic" data-ic="play"></i><span data-i="start"></span></button>
+          <button class="heroSub" id="extraReview"><i class="ic" data-ic="eye"></i><span data-i="extraShort"></span></button>
+        </div>
       </div>
-      <div class="peek" id="peek"></div>
-      <div class="week" id="week"></div>
+      <label class="bt tCam" for="camFile" data-kind="review"><i class="ic" data-ic="camera"></i><span><b data-i="camTile"></b><small data-i="camTileD"></small></span></label>
+      <div class="bt tStreak">
+        <div class="stk" id="streak"><i class="ic" data-ic="flame"></i><b class="num" id="streakN">0</b><span data-i="streakU"></span></div>
+        <div class="week" id="week"></div>
+        <small data-i="weekLbl"></small>
+      </div>
+      <div class="bt span2 tRem">
+        <div class="tHead"><i class="ic" data-ic="bell"></i><b data-i="rmTitle"></b><span class="sp"></span><label class="tAdd" for="camFile" data-kind="remind" aria-label="add"><i class="ic" data-ic="plus"></i></label></div>
+        <div id="rmList"></div>
+      </div>
+      <div class="span2 minis">
+        <div class="bt mini"><small data-i="sTotal"></small><b class="num" id="sTotal">0</b></div>
+        <div class="bt mini"><small data-i="sTomorrow"></small><b class="num" id="sTomorrow" style="color:var(--sky)">0</b></div>
+        <div class="bt mini"><small data-i="sMaster"></small><b class="num" id="sMaster" style="color:var(--gold)">0</b></div>
+      </div>
     </div>
-    <div class="statrow">
-      <div class="st s1"><i class="ic" data-ic="grid"></i><b class="num" id="sTotal">0</b><span data-i="sTotal"></span></div>
-      <div class="st s2"><i class="ic" data-ic="clock"></i><b class="num" id="sTomorrow">0</b><span data-i="sTomorrow"></span></div>
-      <div class="st s3"><i class="ic" data-ic="star"></i><b class="num" id="sMaster">0</b><span data-i="sMaster"></span></div>
-    </div>
-    <p class="tip" data-i="tipReview"></p>
     <div class="panel" id="planPanel">
       <div class="panelHead"><i class="ic" data-ic="clock" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2>
         <button class="btn icon" id="planNew2" aria-label="add"><i class="ic" data-ic="plus"></i></button></div>
@@ -365,28 +467,22 @@ body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.3px);backg
 
   <!-- 追加 -->
   <section data-pane="add">
-    <div class="camHero">
-      <label class="camBtn" for="camFile"><span class="camCircle"><i class="ic" data-ic="camera"></i></span><span><b data-i="shootPage"></b><small data-i="shootPageD"></small></span></label>
-      <div class="steps"><span><b>1</b><span data-i="step1"></span></span><span><b>2</b><span data-i="step2"></span></span><span><b>3</b><span data-i="step3"></span></span></div>
+    <div class="bento">
+      <label class="bt span2 tShoot" for="camFile" data-kind="review"><span class="camCircle"><i class="ic" data-ic="camera"></i></span><span><b data-i="shootPage"></b><small data-i="shootPageD"></small></span></label>
+      <label class="bt tPhoto" for="bulkFile" data-kind="review"><i class="ic" data-ic="image"></i><span><b data-i="bulkShort"></b><small data-i="photoTileD"></small></span></label>
+      <label class="bt tRemAdd" for="camFile" data-kind="remind"><i class="ic" data-ic="bell"></i><span><b data-i="rmAdd"></b><small data-i="rmAddD"></small></span></label>
+      <div class="bt span2 tPlan">
+        <div class="tHead"><i class="ic" data-ic="clock"></i><b data-i="planTitle"></b></div>
+        <div class="row" style="margin-top:8px">
+          <label class="btn" for="qrFile"><i class="ic" data-ic="qr"></i><span data-i="scanQR"></span></label>
+          <button class="btn" id="planNew"><i class="ic" data-ic="link"></i><span data-i="pasteLink"></span></button>
+        </div>
+      </div>
+      <div class="bt span2" id="recentPanel" hidden><div class="tHead"><i class="ic" data-ic="sparkle" style="color:var(--warm)"></i><b data-i="recent"></b><span class="sp"></span><span class="muted num" id="recentN"></span></div><div class="peek" id="recent"></div></div>
     </div>
     <input type="file" id="camFile" accept="image/*" capture="environment" hidden>
-    <div class="panel">
-      <div class="field" style="margin-top:0"><label for="subj" data-i="subject"></label>
-        <input id="subj" list="subjList" autocomplete="off"><datalist id="subjList"></datalist>
-        <div class="chips" id="subjChips"></div>
-      </div>
-    </div>
-    <div class="panel" id="recentPanel" hidden><div class="panelHead"><i class="ic" data-ic="sparkle" style="width:22px;height:22px;color:var(--warm)"></i><h2 data-i="recent"></h2><span class="muted num" id="recentN"></span></div><div class="peek" id="recent"></div></div>
-    <p class="tip" data-i="tipAdd"></p>
-    <div class="panel">
-      <div class="panelHead"><i class="ic" data-ic="clock" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2></div>
-      <p class="muted" data-i="planD" style="margin:4px 0 10px"></p>
-      <div class="row" style="margin-top:0">
-        <label class="btn primary" for="qrFile"><i class="ic" data-ic="qr"></i><span data-i="scanQR"></span></label>
-        <button class="btn" id="planNew"><i class="ic" data-ic="link"></i><span data-i="pasteLink"></span></button>
-      </div>
-      <input type="file" id="qrFile" accept="image/*" capture="environment" hidden>
-    </div>
+    <input type="file" id="bulkFile" accept="image/*" multiple hidden>
+    <input type="file" id="qrFile" accept="image/*" capture="environment" hidden>
   </section>
 
   <!-- 一覧 -->
@@ -402,14 +498,6 @@ body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.3px);backg
 
 <!-- 下の浮いたバー -->
 <div class="dock">
-  <div class="dockbar" id="dockReview">
-    <button class="btn" id="extraReview"><i class="ic" data-ic="eye"></i><span data-i="extraShort"></span></button>
-    <button class="btn primary" id="startReview"><i class="ic" data-ic="play"></i><span data-i="start"></span></button>
-  </div>
-  <div class="dockbar" id="dockAdd">
-    <label class="btn"><i class="ic" data-ic="image"></i><span data-i="bulkShort"></span><input type="file" id="bulkFile" accept="image/*" multiple hidden></label>
-    <label class="btn primary" for="camFile"><i class="ic" data-ic="camera"></i><span data-i="shootShort"></span></label>
-  </div>
   <div class="dockbar" id="dockList">
     <select id="filter" aria-label="filter"></select>
     <button class="btn icon" id="printBtn" aria-label="print"><i class="ic" data-ic="print"></i></button>
@@ -440,7 +528,7 @@ body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.3px);backg
 <div id="cropper">
   <div class="rv-top">
     <button class="btn icon" id="cropCancel" aria-label="close"><i class="ic" data-ic="x"></i></button>
-    <b data-i="cropTitle"></b><span class="num" id="cropCount" style="color:var(--muted)"></span>
+    <div class="seg sm" id="kindSeg"><button data-k="review"><i class="ic" data-ic="repeat"></i><span data-i="kReview"></span></button><button data-k="remind"><i class="ic" data-ic="bell"></i><span data-i="kRemind"></span></button></div><span class="num" id="cropCount" style="color:var(--muted)"></span>
     <span class="sp"></span>
     <button class="btn icon" id="cropRotate" aria-label="rotate"><i class="ic" data-ic="rotate"></i></button>
     <button class="btn" id="cropRetake"><i class="ic" data-ic="camera"></i><span data-i="retake"></span></button>
@@ -461,6 +549,8 @@ body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.3px);backg
     </div>
     <div class="qsize" id="qSize"></div>
     <div class="prevBox"><canvas id="cropCanvas"></canvas></div>
+    <div id="subjRow" class="subjRow"><input id="subj" list="subjList" data-ph="subject" autocomplete="off"><datalist id="subjList"></datalist><div class="chips" id="subjChips"></div></div>
+    <div id="remRow" class="subjRow" hidden><input type="datetime-local" id="remAt" aria-label="time"><div class="chips" id="remQuick"></div></div>
     <input id="cropMemo" data-ph="memoPh" autocomplete="off">
   </div>
   <div class="rv-dock"><div class="dockbar">
@@ -538,10 +628,20 @@ body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.3px);backg
 </div></div>
 
 <div id="celebrate"><div class="celCard"><div class="celBig">🎉</div><h2 data-i="celTitle"></h2><p id="celText"></p><span class="streak" id="celStreak"><i class="ic" data-ic="flame"></i><span></span></span><button class="btn primary" id="celOk" data-i="celOk"></button></div></div>
+<div class="overlay" id="rmSheet"><div class="sheet">
+  <h2 id="rmSTitle"></h2>
+  <p class="muted" id="rmSTime" style="margin-top:0"></p>
+  <img id="rmSImg" alt="">
+  <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+    <button class="btn primary" id="rmSCal"><i class="ic" data-ic="bell"></i><span data-i="rmCal"></span></button>
+    <button class="btn" id="rmSDone" data-i="rmDone"></button>
+  </div>
+  <button class="btn closeb" data-close data-i="close"></button>
+</div></div>
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VER="2026.11.05-1";
+const APP_VER="2026.11.05-2";
 /* ===== 設定 ===== */
 const SUPPORT_URL="https://ofuse.me/45tools"; // ← OFUSEのURLに差し替え
 const DEFAULT_INTERVALS=[1,3,7,14,30,60];
@@ -657,6 +757,10 @@ Object.assign(I18N.ja,{streakU:"日連続",heroDue:"あと{n}枚！",heroClear:"
 Object.assign(I18N.en,{streakU:"-day streak",heroDue:"{n} to go!",heroClear:"All done today!",heroEmpty:"Let's get started",heroDoneN:"You reviewed {n} today. Keep it up tomorrow!",heroNext:"Next review: {d}",leftLbl:"left",clearLbl:"Clear!",step1:"Snap",step2:"Box",step3:"Review",recent:"Recently added",rotate:"Rotate",celTitle:"Nice work!",celText:"You reviewed {n} cards",celStreak:"{n}-day streak!",celOk:"Awesome!",cntN:"{n}"});
 Object.assign(I18N.zh,{streakU:"天连续",heroDue:"还剩{n}张！",heroClear:"今天完成了！",heroEmpty:"开始吧",heroDoneN:"今天复习了{n}张。明天继续加油！",heroNext:"下次复习：{d}",leftLbl:"剩下",clearLbl:"完成",step1:"拍照",step2:"框选",step3:"复习",recent:"最近添加",rotate:"旋转",celTitle:"辛苦了！",celText:"复习了 {n} 张",celStreak:"连续 {n} 天！",celOk:"太棒了！",cntN:"{n}张"});
 Object.assign(I18N["zh-Hant"],{streakU:"天連續",heroDue:"還剩{n}張！",heroClear:"今天完成了！",heroEmpty:"開始吧",heroDoneN:"今天複習了{n}張。明天繼續加油！",heroNext:"下次複習：{d}",leftLbl:"剩下",clearLbl:"完成",step1:"拍照",step2:"框選",step3:"複習",recent:"最近新增",rotate:"旋轉",celTitle:"辛苦了！",celText:"複習了 {n} 張",celStreak:"連續 {n} 天！",celOk:"太棒了！",cntN:"{n}張"});
+Object.assign(I18N.ja,{tagline:"間違えた所を写真で、くり返し復習",heroK:"今日の復習",camTile:"撮って追加",camTileD:"間違えた所・持ち物",weekLbl:"この1週間",rmTitle:"リマインド",rmEmpty:"持ち物や提出物を撮ると、決めた時間に写真で知らせます。",rmAdd:"リマインドを撮る",rmAddD:"持ち物・提出物を時間に知らせる",photoTileD:"まとめて選べます",kReview:"復習カード",kRemind:"リマインド",rmSaved:"リマインドを保存しました",rmCal:"カレンダーに登録（通知）",rmDone:"完了（消す）",rmDefault:"リマインド",q7:"明日の朝7時",q20:"今夜20時",q1h:"1時間後",rmMore:"ほか{n}件",rmPast:"時間が過ぎています"});
+Object.assign(I18N.en,{tagline:"Snap your mistakes, review them on repeat",heroK:"Today's review",camTile:"Snap & add",camTileD:"Mistakes or things to bring",weekLbl:"This week",rmTitle:"Reminders",rmEmpty:"Snap things to bring or hand in, and get the photo back at the time you choose.",rmAdd:"Snap a reminder",rmAddD:"Things to bring or hand in",photoTileD:"Pick several at once",kReview:"Review card",kRemind:"Reminder",rmSaved:"Reminder saved",rmCal:"Add to calendar (alert)",rmDone:"Done (delete)",rmDefault:"Reminder",q7:"Tomorrow 7:00",q20:"Tonight 20:00",q1h:"In 1 hour",rmMore:"+{n} more",rmPast:"Time has passed"});
+Object.assign(I18N.zh,{tagline:"把错题拍下来，反复复习",heroK:"今天的复习",camTile:"拍照添加",camTileD:"错题・要带的东西",weekLbl:"这一周",rmTitle:"提醒",rmEmpty:"拍下要带的东西或要交的作业，到时间用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要带的东西・要交的作业",photoTileD:"可一次选多张",kReview:"复习卡",kRemind:"提醒",rmSaved:"已保存提醒",rmCal:"加入日历（通知）",rmDone:"完成（删除）",rmDefault:"提醒",q7:"明早7点",q20:"今晚20点",q1h:"1小时后",rmMore:"还有{n}项",rmPast:"时间已过"});
+Object.assign(I18N["zh-Hant"],{tagline:"把錯題拍下來，反覆複習",heroK:"今天的複習",camTile:"拍照新增",camTileD:"錯題・要帶的東西",weekLbl:"這一週",rmTitle:"提醒",rmEmpty:"拍下要帶的東西或要交的作業，到時間用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要帶的東西・要交的作業",photoTileD:"可一次選多張",kReview:"複習卡",kRemind:"提醒",rmSaved:"已儲存提醒",rmCal:"加入行事曆（通知）",rmDone:"完成（刪除）",rmDefault:"提醒",q7:"明早7點",q20:"今晚20點",q1h:"1小時後",rmMore:"還有{n}項",rmPast:"時間已過"});
 const ls={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 let lang=ls.get("pr_lang")||(()=>{ const n=(navigator.language||"ja").toLowerCase(); return n.startsWith("zh")?(/(tw|hk|mo|hant)/.test(n)?"zh-Hant":"zh"):n.startsWith("ja")?"ja":"en"; })();
 if(!I18N[lang]) lang="ja";
@@ -805,7 +909,8 @@ async function thumbOf(blob){
 /* ===== 状態 ===== */
 let cards=[];
 let pageBytes=0;
-async function reload(){ cards=await dbAll(); try{ pageBytes=(await pageAll()).reduce((a,p)=>a+(p.blob?p.blob.size:0),0); }catch(e){} cards.sort((a,b)=>b.created-a.created); refreshAll(); }
+let reminds=[];
+async function reload(){ const all=await dbAll(); reminds=all.filter(c=>c.kind==="remind").sort((a,b)=>a.remindAt-b.remindAt); cards=all.filter(c=>c.kind!=="remind"); try{ pageBytes=(await pageAll()).reduce((a,p)=>a+(p.blob?p.blob.size:0),0); }catch(e){} cards.sort((a,b)=>b.created-a.created); refreshAll(); }
 function refreshAll(){
   const due=cards.filter(isDue);
   renderHero(due);
@@ -862,7 +967,8 @@ async function nextCrop(){
   let img; try{ img=await uprightCanvas(f); }catch(e){ toast("Error"); return nextCrop(); }
   const W=img.naturalWidth, H=img.naturalHeight;
   crop={img,file:img,pageId:null,added:0,box:{x:W*.1,y:H*.35,w:W*.8,h:H*.22},lv:defLv(),gray:defGray(),keep:defKeep(),pv:"crop",pageEnc:null,savedKey:null};
-  renderQ();
+  renderQ(); renderRemQuick(); renderSubjects(); $("#remAt").value="";
+  setKind(addKind);
   await showCropSrc(); $("#cropMemo").value="";
   const n=cropQueue.total-cropQueue.length;
   $("#cropCount").textContent=cropQueue.total>1?` ${n}/${cropQueue.total}`:"";
@@ -972,7 +1078,7 @@ function drawPreview(){
       if(drag.h.includes("t")){ const ny=Math.min(Math.max(0,b.y+dy),b.y+b.h-min); b.h+=b.y-ny; b.y=ny; }
       if(drag.h.includes("b")){ b.h=Math.min(Math.max(min,b.h+dy),H-b.y); }
     }
-    crop.box=b; drawBox();
+    crop.box=b; crop.boxTouched=true; drawBox();
   });
   const end=()=>{ drag=null; }; box.addEventListener("pointerup",end); box.addEventListener("pointercancel",end);
   // 枠の外をなぞると、新しく囲み直せる
@@ -988,6 +1094,11 @@ $("#cropAdd").onclick=async()=>{
   $("#cropAdd").disabled=true;
   try{
     const [,q]=cropOpts(), c=cropCanvas(), blob=await new Promise(r=>c.toBlob(r,"image/jpeg",q));
+    if(crop.kind==="remind"){
+      const at=$("#remAt").value?new Date($("#remAt").value).getTime():defRemAt();
+      const rc=newCard(blob,await thumbOf(blob),null,$("#cropMemo").value.trim()); Object.assign(rc,{kind:"remind",remindAt:at,subject:"",due:8.64e15});
+      await dbPut(rc); crop.added++; $("#cropMemo").value=""; toast(t("rmSaved")); remCal(rc); return;
+    }
     let pid=null;
     if(crop.keep){
       const pe=await encodePage();
@@ -1085,7 +1196,7 @@ function streakN(){
 function doneToday(){ const s0=startOfDay(); return cards.filter(c=>c.last&&c.last>=s0).length; }
 function renderHero(due){
   const done=doneToday(), total=done+due.length, sn=streakN(), loc={ja:"ja-JP",en:"en-US",zh:"zh-CN","zh-Hant":"zh-TW"}[lang]||"ja-JP";
-  $("#streakN").textContent=sn; $("#streak").classList.toggle("zero",!sn);
+  $("#streakN").textContent=sn; $("#streak").classList.toggle("zero",!sn); renderReminds();
   $("#heroDate").textContent=new Date().toLocaleDateString(loc,{month:"numeric",day:"numeric",weekday:"short"});
   const ring=$("#ringVal"), C=326.7, frac=total?done/total:0;
   ring.style.strokeDashoffset=String(C*(1-frac));
@@ -1100,7 +1211,7 @@ function renderHero(due){
   else if(cards.length){ const nx=cards.filter(c=>!c.mastered).sort((a,b)=>a.due-b.due)[0]; sub=nx?t("heroNext",{d:dueLabel(nx)}):t("todayNone"); }
   else sub=t("todayNone");
   $("#todayText").textContent=sub;
-  $("#heroGo").hidden=!due.length; $("#hero").classList.toggle("go",!!due.length);
+
   // 今日のカードをちらっと見せる
   const pk=$("#peek"); pk.innerHTML="";
   due.slice(0,5).forEach(c=>{ const im=document.createElement("img"); im.src=c.thumb; im.alt=""; pk.appendChild(im); });
@@ -1109,13 +1220,63 @@ function renderHero(due){
   const set=new Set(daysGet()), wk=$("#week"); wk.innerHTML="";
   for(let i=6;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i);
     const on=set.has(dayKey(d)), el=document.createElement("span"); el.className="wd"+(on?" on":"")+(i===0?" today":"");
-    el.innerHTML=`<i>${on?"✓":""}</i>`; const lb=document.createElement("span"); lb.textContent=d.toLocaleDateString(loc,{weekday:"narrow"}); el.appendChild(lb); wk.appendChild(el); }
+    el.title=d.toLocaleDateString(loc,{weekday:"short"}); wk.appendChild(el); }
   // 追加タブ：最近のカード
   const rc=$("#recent"); rc.innerHTML=""; const rec=cards.slice(0,6);
   rec.forEach(c=>{ const im=document.createElement("img"); im.src=c.thumb; im.alt=""; rc.appendChild(im); });
   $("#recentPanel").hidden=!rec.length; $("#recentN").textContent=t("cntN",{n:cards.length});
 }
-$("#hero").onclick=()=>{ if(cards.some(isDue)) $("#startReview").click(); };
+
+/* ===== リマインド（写真を決めた時間に見せる） ===== */
+let addKind="review";
+document.querySelectorAll("[data-kind]").forEach(el=>el.addEventListener("click",()=>{ addKind=el.dataset.kind; }));
+function renderReminds(){
+  const box=$("#rmList"); if(!box) return; box.innerHTML="";
+  const now=Date.now(), list=reminds.slice(0,3);
+  if(!reminds.length){ const p=document.createElement("p"); p.className="rmEmpty"; p.textContent=t("rmEmpty"); box.appendChild(p); return; }
+  list.forEach(c=>{ const b=document.createElement("button"); b.className="rmItem"+(c.remindAt<now?" past":"");
+    b.innerHTML=`<img src="${c.thumb}" alt=""><span class="rt"><b></b><small></small></span><span class="tm"></span>`;
+    b.querySelector("b").textContent=c.memo||t("rmDefault");
+    b.querySelector("small").textContent=c.remindAt<now?t("rmPast"):fmtAt(c.remindAt);
+    b.querySelector(".tm").textContent=new Date(c.remindAt).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    b.onclick=()=>openRemind(c); box.appendChild(b); });
+  if(reminds.length>3){ const p=document.createElement("p"); p.className="rmEmpty"; p.textContent=t("rmMore",{n:reminds.length-3}); box.appendChild(p); }
+}
+let rmCur=null, rmURL=null;
+function openRemind(c){
+  rmCur=c; if(rmURL) URL.revokeObjectURL(rmURL); rmURL=URL.createObjectURL(c.q);
+  $("#rmSTitle").textContent=c.memo||t("rmDefault"); $("#rmSTime").textContent=fmtAt(c.remindAt); $("#rmSImg").src=rmURL;
+  openOv("#rmSheet");
+}
+function remCal(c){
+  const title=c.memo||t("rmDefault"), app=location.href.split("#")[0].split("?")[0], at=new Date(c.remindAt);
+  const ev=["BEGIN:VEVENT",`UID:${c.id}@45tools-recall`,`DTSTAMP:${icsStamp()}`,`DTSTART:${icsDate(at)}`,`DTEND:${icsDate(new Date(c.remindAt+15*60000))}`,
+    `SUMMARY:${icsText(title)}`,`DESCRIPTION:${icsText(t("rmTitle")+" — 45 Recall\n"+app)}`,`URL:${app}`,
+    "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsText(title)}`,"TRIGGER:PT0M","END:VALARM","END:VEVENT"].join("\r\n");
+  saveFile(icsWrap([ev]),`45recall-remind-${icsDate(at)}.ics`,"text/calendar");
+}
+$("#rmSCal").onclick=()=>{ if(rmCur) remCal(rmCur); };
+$("#rmSDone").onclick=async()=>{ if(!rmCur) return; await delCard(rmCur); rmCur=null; $("#rmSheet").classList.remove("show"); reload(); };
+// 切り抜き画面：復習カード／リマインド
+function defRemAt(){ const d=new Date(); d.setDate(d.getDate()+1); d.setHours(7,0,0,0); return d.getTime(); }
+function setKind(k){
+  if(!crop) return; crop.kind=k;
+  document.querySelectorAll("#kindSeg button").forEach(b=>b.classList.toggle("on",b.dataset.k===k));
+  $("#subjRow").hidden=k!=="review"; $("#remRow").hidden=k!=="remind"; $("#cropper").classList.toggle("rm",k==="remind"); requestAnimationFrame(layoutCrop);
+  if(k==="remind"){
+    if(!crop.added&&!crop.boxTouched){ crop.box={x:0,y:0,w:crop.img.naturalWidth,h:crop.img.naturalHeight}; layoutCrop(); }
+    crop.keep=false; renderQ();
+    if(!$("#remAt").value) $("#remAt").value=toLocalInput(defRemAt());
+  }
+}
+document.querySelectorAll("#kindSeg button").forEach(b=>b.onclick=()=>setKind(b.dataset.k));
+function renderRemQuick(){
+  const box=$("#remQuick"); box.innerHTML="";
+  const now=new Date(), t20=new Date(); t20.setHours(20,0,0,0); if(t20<=now) t20.setDate(t20.getDate()+1);
+  [["q7",defRemAt()],["q20",t20.getTime()],["q1h",Date.now()+3600000]].forEach(([k,v])=>{ const b=document.createElement("button"); b.className="chip"; b.textContent=t(k);
+    b.onclick=()=>{ $("#remAt").value=toLocalInput(v); }; box.appendChild(b); });
+}
+
 function celebrate(n){
   const el=$("#celebrate"); $("#celText").textContent=t("celText",{n});
   const sn=streakN(); $("#celStreak").hidden=!sn; $("#celStreak").lastChild.textContent=t("celStreak",{n:sn});
@@ -1443,7 +1604,7 @@ $("#lang").onchange=e=>{lang=e.target.value; ls.set("pr_lang",lang); applyLang()
 const b2d=b=>new Promise(r=>{const fr=new FileReader(); fr.onload=()=>r(fr.result); fr.readAsDataURL(b);});
 const d2b=async d=>(await fetch(d)).blob();
 $("#backup").onclick=async()=>{
-  const out=[]; for(const c of cards) out.push({...c,q:await b2d(c.q),a:c.a?await b2d(c.a):null});
+  const out=[]; for(const c of [...cards,...reminds]) out.push({...c,q:await b2d(c.q),a:c.a?await b2d(c.a):null});
   const name=`45recall-backup-${new Date().toISOString().slice(0,10)}.json`;
   const pages=[]; for(const p of await pageAll()) pages.push({id:p.id,created:p.created,blob:await b2d(p.blob)});
   const json=JSON.stringify({app:"photorecall",v:3,intervals:intervals(),cards:out,pages,plans:plansGet()});
