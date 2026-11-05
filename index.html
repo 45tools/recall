@@ -206,6 +206,104 @@ label.btn{cursor:pointer}
 .urlRow input{flex:1;min-width:0}
 .urlRow .btn{min-height:44px}
 .foot{text-align:center;color:var(--muted);font-size:11px;margin-top:20px}
+
+/* ===== 2026-11-05 わくわくデザイン ===== */
+:root{--hero1:#14583A;--hero2:#2C9A63;--warm:#FF7A3D;--warm2:#FFB547;--sky:#2F7BEA;--gold:#E7A400}
+html{overscroll-behavior:none;overflow-x:hidden}
+body{overflow-x:hidden;min-height:100dvh}
+body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.3px);background-size:22px 22px}
+.panel{border-radius:18px;box-shadow:0 2px 0 var(--line)}
+.btn{border-radius:12px}
+.btn.primary,.btn.pri{box-shadow:0 3px 0 #0F4A2E}
+.btn.primary:active:not(:disabled),.btn.pri:active:not(:disabled){transform:translateY(3px);box-shadow:none}
+@media (prefers-color-scheme: dark){ .btn.primary,.btn.pri{box-shadow:0 3px 0 #2C7A51} }
+.seg.modes{border-radius:14px}
+/* 復習：ヒーロー */
+.hero{position:relative;margin:8px 10px 0;border-radius:22px;padding:14px 16px 14px;color:#fff;overflow:hidden;
+  background:radial-gradient(circle at 85% 0%,rgba(255,255,255,.18),transparent 45%),linear-gradient(135deg,var(--hero1),var(--hero2));box-shadow:0 6px 18px rgba(20,88,58,.28)}
+.hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1.5px,transparent 1.6px);background-size:16px 16px;pointer-events:none}
+.hero > *{position:relative;z-index:1}
+.hero.go{cursor:pointer}
+.hero.go:active{transform:scale(.99)}
+.heroTop{display:flex;align-items:center;gap:8px;font-size:13px}
+.heroTop .sp{flex:1}
+.streak{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--warm),var(--warm2));color:#fff;border-radius:999px;padding:3px 11px 3px 7px;font-size:13px;font-weight:700;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.streak .ic{width:18px;height:18px}
+.streak b{font-size:19px;line-height:1}
+.streak.zero{background:rgba(255,255,255,.18);box-shadow:none}
+.heroDate{opacity:.85}
+.heroMain{display:flex;align-items:center;gap:14px;margin-top:10px}
+.pring{position:relative;width:118px;height:118px;flex:none}
+.pring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.pring circle{fill:none;stroke-width:11;stroke-linecap:round}
+.pring .trk{stroke:rgba(255,255,255,.2)}
+.pring .val{stroke:#FFE14D;transition:stroke-dashoffset .8s cubic-bezier(.2,.8,.2,1)}
+.pring .pc{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pring .pc b{font-size:50px;line-height:.95}
+.pring .pc span{font-size:12px;opacity:.9}
+.pring.clear .pc b{font-size:40px;color:#FFE14D}
+.heroTxt{flex:1;min-width:0}
+.heroTxt h2{margin:0 0 4px;font-size:22px;line-height:1.25}
+.heroTxt p{margin:0;font-size:13px;line-height:1.55;opacity:.92}
+.heroGo{display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:#fff;color:var(--hero1);border-radius:999px;padding:6px 14px 6px 10px;font-weight:700;font-size:14px;box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.heroGo .ic{width:18px;height:18px}
+.peek{display:flex;gap:0;margin-top:12px;min-height:0;padding:4px 0 4px 8px;overflow:hidden}
+.peek:empty{display:none}
+.peek img,.peek .more{width:58px;height:58px;border-radius:12px;object-fit:cover;border:3px solid #fff;margin-left:-8px;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.18);flex:none}
+.peek img:nth-child(odd){transform:rotate(-4deg)}.peek img:nth-child(even){transform:rotate(3deg)}
+.peek .more{display:flex;align-items:center;justify-content:center;color:var(--hero1);font-weight:700;font-size:16px}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px;background:rgba(0,0,0,.14);border-radius:14px;padding:7px 6px}
+.wd{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;opacity:.9}
+.wd i{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:13px}
+.wd.on i{background:#FFE14D;border-color:#FFE14D;color:var(--hero1);font-weight:700}
+.wd.today i{border-color:#fff;border-width:2.5px}
+.statrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 10px 0}
+.st{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:10px 8px 8px;display:flex;flex-direction:column;align-items:center;gap:2px;box-shadow:0 2px 0 var(--line)}
+.st .ic{width:30px;height:30px;border-radius:50%;padding:6px;color:#fff;margin-bottom:2px}
+.st.s1 .ic{background:var(--accent)}.st.s2 .ic{background:var(--sky)}.st.s3 .ic{background:var(--gold)}
+.st b{font-size:26px;line-height:1}
+.st span{font-size:11px;color:var(--muted)}
+/* 追加：カメラ */
+.camHero{margin:8px 10px 0;border-radius:22px;padding:16px;overflow:hidden;position:relative;color:#fff;
+  background:radial-gradient(circle at 90% 10%,rgba(255,255,255,.25),transparent 40%),linear-gradient(135deg,var(--warm),var(--warm2));box-shadow:0 6px 18px rgba(255,122,61,.3)}
+.camHero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.16) 1.5px,transparent 1.6px);background-size:16px 16px;pointer-events:none}
+.camHero > *{position:relative;z-index:1}
+.camBtn{display:flex;align-items:center;gap:14px;cursor:pointer}
+.camCircle{width:84px;height:84px;border-radius:50%;background:#fff;color:var(--warm);display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 4px 0 rgba(0,0,0,.15);position:relative}
+.camCircle::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:3px solid rgba(255,255,255,.7);animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.92);opacity:1}100%{transform:scale(1.25);opacity:0}}
+.camBtn:active .camCircle{transform:translateY(3px);box-shadow:none}
+.camCircle .ic{width:42px;height:42px}
+.camBtn b{display:block;font-size:21px;line-height:1.3}
+.camBtn small{display:block;font-size:12.5px;line-height:1.5;opacity:.95;margin-top:2px}
+.steps{display:flex;gap:6px;margin-top:14px}
+.steps > span{flex:1;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.22);border-radius:12px;padding:6px 8px;font-size:13px;font-weight:700}
+.steps b{width:22px;height:22px;border-radius:50%;background:#fff;color:var(--warm);display:inline-flex;align-items:center;justify-content:center;font-size:13px;flex:none}
+#recentPanel .peek{padding-left:8px;margin-top:6px}
+#recentPanel .peek img{border-color:var(--panel);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+/* 一覧：レベルのバー */
+.tile .lvbar{position:absolute;left:6px;right:6px;top:6px;height:5px;border-radius:3px;background:rgba(0,0,0,.25);overflow:hidden}
+.tile .lvbar i{display:block;height:100%;background:linear-gradient(90deg,#FFE14D,var(--warm2));border-radius:3px}
+.tile.master .lvbar{display:none}
+.tile .due{top:14px}
+/* 復習画面 */
+.rvProg{height:6px;margin:0 12px;border-radius:3px;background:var(--line);overflow:hidden}
+.rvProg i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),#FFE14D);transition:width .35s}
+.rv-dock .btn.primary{background:linear-gradient(135deg,var(--accent),var(--hero2))}
+.rv-dock .btn.ng{background:var(--panel)}
+/* お祝い */
+#celebrate{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(10,30,18,.55);overflow:hidden}
+#celebrate.on{display:flex}
+.celCard{position:relative;z-index:2;background:var(--panel);border-radius:24px;padding:26px 22px 18px;width:min(86vw,340px);text-align:center;animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{0%{transform:scale(.6);opacity:0}100%{transform:scale(1);opacity:1}}
+.celBig{font-size:62px;line-height:1}
+.celCard h2{margin:6px 0 4px;font-size:24px}
+.celCard p{margin:0;color:var(--muted);font-size:15px}
+.celCard .streak{margin-top:12px;font-size:15px;padding:5px 14px 5px 9px}
+.celCard .btn{width:100%;margin-top:16px;min-height:50px;font-size:17px}
+.conf{position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;z-index:1;animation:fall linear forwards}
+@keyframes fall{to{transform:translate3d(var(--dx),110vh,0) rotate(var(--r))}}
+@media (prefers-reduced-motion: reduce){ .camCircle::before,.conf{animation:none;display:none} .celCard{animation:none} }
 </style>
 </head>
 <body data-mode="review">
@@ -242,16 +340,20 @@ label.btn{cursor:pointer}
 <div class="wrap">
   <!-- 復習 -->
   <section data-pane="review">
-    <div class="panel">
-      <div class="today">
-        <div class="ring"><b class="num" id="dueNum">0</b><span data-i="dueToday"></span></div>
-        <p id="todayText"></p>
+    <div class="hero" id="hero">
+      <div class="heroTop"><span class="streak" id="streak"><i class="ic" data-ic="flame"></i><b class="num" id="streakN">0</b><span data-i="streakU"></span></span><span class="sp"></span><span class="heroDate" id="heroDate"></span></div>
+      <div class="heroMain">
+        <div class="pring" id="pring"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" id="ringVal" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
+          <div class="pc"><b class="num" id="dueNum">0</b><span id="dueLbl"></span></div></div>
+        <div class="heroTxt"><h2 id="heroTitle"></h2><p id="todayText"></p><span class="heroGo" id="heroGo" hidden><i class="ic" data-ic="play"></i><span data-i="start"></span></span></div>
       </div>
-      <div class="stats">
-        <div class="stat"><b class="num" id="sTotal">0</b><span data-i="sTotal"></span></div>
-        <div class="stat"><b class="num" id="sTomorrow">0</b><span data-i="sTomorrow"></span></div>
-        <div class="stat"><b class="num" id="sMaster">0</b><span data-i="sMaster"></span></div>
-      </div>
+      <div class="peek" id="peek"></div>
+      <div class="week" id="week"></div>
+    </div>
+    <div class="statrow">
+      <div class="st s1"><i class="ic" data-ic="grid"></i><b class="num" id="sTotal">0</b><span data-i="sTotal"></span></div>
+      <div class="st s2"><i class="ic" data-ic="clock"></i><b class="num" id="sTomorrow">0</b><span data-i="sTomorrow"></span></div>
+      <div class="st s3"><i class="ic" data-ic="star"></i><b class="num" id="sMaster">0</b><span data-i="sMaster"></span></div>
     </div>
     <p class="tip" data-i="tipReview"></p>
     <div class="panel" id="planPanel">
@@ -263,14 +365,18 @@ label.btn{cursor:pointer}
 
   <!-- 追加 -->
   <section data-pane="add">
+    <div class="camHero">
+      <label class="camBtn" for="camFile"><span class="camCircle"><i class="ic" data-ic="camera"></i></span><span><b data-i="shootPage"></b><small data-i="shootPageD"></small></span></label>
+      <div class="steps"><span><b>1</b><span data-i="step1"></span></span><span><b>2</b><span data-i="step2"></span></span><span><b>3</b><span data-i="step3"></span></span></div>
+    </div>
+    <input type="file" id="camFile" accept="image/*" capture="environment" hidden>
     <div class="panel">
-      <label class="shotbig" for="camFile"><i class="ic" data-ic="camera"></i><b data-i="shootPage"></b><small data-i="shootPageD"></small></label>
-      <input type="file" id="camFile" accept="image/*" capture="environment" hidden>
-      <div class="field"><label for="subj" data-i="subject"></label>
+      <div class="field" style="margin-top:0"><label for="subj" data-i="subject"></label>
         <input id="subj" list="subjList" autocomplete="off"><datalist id="subjList"></datalist>
         <div class="chips" id="subjChips"></div>
       </div>
     </div>
+    <div class="panel" id="recentPanel" hidden><div class="panelHead"><i class="ic" data-ic="sparkle" style="width:22px;height:22px;color:var(--warm)"></i><h2 data-i="recent"></h2><span class="muted num" id="recentN"></span></div><div class="peek" id="recent"></div></div>
     <p class="tip" data-i="tipAdd"></p>
     <div class="panel">
       <div class="panelHead"><i class="ic" data-ic="clock" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2></div>
@@ -320,6 +426,7 @@ label.btn{cursor:pointer}
     <button class="btn icon" id="rvUndo" aria-label="undo"><i class="ic" data-ic="undo"></i></button>
     <button class="btn" id="rvAnswer"></button>
   </div>
+  <div class="rvProg"><i id="rvProgBar"></i></div>
   <div class="rv-frame"><div class="rv-img" id="rvImgWrap"><img id="rvImg" alt=""></div></div>
   <div class="rv-meta" id="rvMeta"></div>
   <div class="rv-dock"><div class="dockbar">
@@ -335,6 +442,7 @@ label.btn{cursor:pointer}
     <button class="btn icon" id="cropCancel" aria-label="close"><i class="ic" data-ic="x"></i></button>
     <b data-i="cropTitle"></b><span class="num" id="cropCount" style="color:var(--muted)"></span>
     <span class="sp"></span>
+    <button class="btn icon" id="cropRotate" aria-label="rotate"><i class="ic" data-ic="rotate"></i></button>
     <button class="btn" id="cropRetake"><i class="ic" data-ic="camera"></i><span data-i="retake"></span></button>
   </div>
   <div class="cropArea" id="cropArea">
@@ -429,10 +537,11 @@ label.btn{cursor:pointer}
   <button class="btn closeb" data-close data-i="close"></button>
 </div></div>
 
+<div id="celebrate"><div class="celCard"><div class="celBig">🎉</div><h2 data-i="celTitle"></h2><p id="celText"></p><span class="streak" id="celStreak"><i class="ic" data-ic="flame"></i><span></span></span><button class="btn primary" id="celOk" data-i="celOk"></button></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VER="2026.10.29-3";
+const APP_VER="2026.11.05-1";
 /* ===== 設定 ===== */
 const SUPPORT_URL="https://ofuse.me/45tools"; // ← OFUSEのURLに差し替え
 const DEFAULT_INTERVALS=[1,3,7,14,30,60];
@@ -473,6 +582,10 @@ const ICONS={
  x:'<path d="M7 7l10 10M17 7 7 17"/>',
  bulb:'<path d="M9 17.5h6M10 20.5h4"/><path d="M12 3.5a5.5 5.5 0 0 0-3.3 9.9c.8.6 1.3 1.5 1.3 2.5v1.6h4v-1.6c0-1 .5-1.9 1.3-2.5A5.5 5.5 0 0 0 12 3.5z"/>',
  trash:'<path d="M4.5 7h15"/><path d="M9.5 7V5.3c0-.7.6-1.3 1.3-1.3h2.4c.7 0 1.3.6 1.3 1.3V7"/><path d="M6.5 7l.9 11.4c.1 1 .9 1.6 1.8 1.6h5.6c1 0 1.7-.7 1.8-1.6L17.5 7"/>',
+ flame:'<path d="M12 21c-3.9 0-6.5-2.6-6.5-6.2 0-3.4 2.4-5.4 3.6-7.6.3 1.6 1 2.7 2.1 3.3.2-2.8 1.4-5.3 3.6-7 .2 3.2 3.7 5.2 3.7 10.3C18.5 18.3 15.9 21 12 21z" fill="currentColor" stroke="none"/>',
+ star:'<path d="M12 3.8l2.5 5.2 5.6.7-4.1 3.9 1 5.6L12 16.5l-5 2.7 1-5.6-4.1-3.9 5.6-.7z" fill="currentColor" stroke="none"/>',
+ rotate:'<path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.4 4.6v3.8h3.8"/><rect x="9" y="9" width="6" height="6" rx="1"/>',
+ sparkle:'<path d="M12 3.5l1.8 5.2 5.2 1.8-5.2 1.8L12 17.5l-1.8-5.2L5 10.5l5.2-1.8z" fill="currentColor" stroke="none"/><path d="M18.5 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" fill="currentColor" stroke="none"/>'
 };
 const ico=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[n]||""}</svg>`;
 document.querySelectorAll("[data-ic]").forEach(el=>{ el.innerHTML=ico(el.dataset.ic); });
@@ -540,6 +653,10 @@ const I18N={
   restored:"已恢復 {n} 張",badgeOk:"將在圖示上顯示數量",badgeNg:"此環境不可用（iPhone 請從主螢幕開啟）",
   calTitle:"背誦複習（45 Recall）",calDesc:"開啟今日複習",count:"{a} / {b}",today:"今天",days:"{n}天后",overdue:"已過期"}
 };
+Object.assign(I18N.ja,{streakU:"日連続",heroDue:"あと{n}枚！",heroClear:"今日はクリア！",heroEmpty:"さあ、はじめよう",heroDoneN:"今日は{n}枚 復習しました。明日もこの調子で！",heroNext:"次の復習は{d}",leftLbl:"のこり",clearLbl:"クリア",step1:"撮る",step2:"囲む",step3:"くり返す",recent:"最近追加したカード",rotate:"回転",celTitle:"おつかれさま！",celText:"{n}枚 復習しました",celStreak:"{n}日連続！",celOk:"やったね！",cntN:"{n}枚"});
+Object.assign(I18N.en,{streakU:"-day streak",heroDue:"{n} to go!",heroClear:"All done today!",heroEmpty:"Let's get started",heroDoneN:"You reviewed {n} today. Keep it up tomorrow!",heroNext:"Next review: {d}",leftLbl:"left",clearLbl:"Clear!",step1:"Snap",step2:"Box",step3:"Review",recent:"Recently added",rotate:"Rotate",celTitle:"Nice work!",celText:"You reviewed {n} cards",celStreak:"{n}-day streak!",celOk:"Awesome!",cntN:"{n}"});
+Object.assign(I18N.zh,{streakU:"天连续",heroDue:"还剩{n}张！",heroClear:"今天完成了！",heroEmpty:"开始吧",heroDoneN:"今天复习了{n}张。明天继续加油！",heroNext:"下次复习：{d}",leftLbl:"剩下",clearLbl:"完成",step1:"拍照",step2:"框选",step3:"复习",recent:"最近添加",rotate:"旋转",celTitle:"辛苦了！",celText:"复习了 {n} 张",celStreak:"连续 {n} 天！",celOk:"太棒了！",cntN:"{n}张"});
+Object.assign(I18N["zh-Hant"],{streakU:"天連續",heroDue:"還剩{n}張！",heroClear:"今天完成了！",heroEmpty:"開始吧",heroDoneN:"今天複習了{n}張。明天繼續加油！",heroNext:"下次複習：{d}",leftLbl:"剩下",clearLbl:"完成",step1:"拍照",step2:"框選",step3:"複習",recent:"最近新增",rotate:"旋轉",celTitle:"辛苦了！",celText:"複習了 {n} 張",celStreak:"連續 {n} 天！",celOk:"太棒了！",cntN:"{n}張"});
 const ls={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 let lang=ls.get("pr_lang")||(()=>{ const n=(navigator.language||"ja").toLowerCase(); return n.startsWith("zh")?(/(tw|hk|mo|hant)/.test(n)?"zh-Hant":"zh"):n.startsWith("ja")?"ja":"en"; })();
 if(!I18N[lang]) lang="ja";
@@ -609,14 +726,76 @@ function loadImage(file){
 }
 async function compress(file,max,q,gray){
   if(max===undefined) [max,q,gray]=qset();
-  const img=await loadImage(file);
-  const k=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight));
-  const c=document.createElement("canvas"); c.width=Math.round(img.naturalWidth*k); c.height=Math.round(img.naturalHeight*k);
+  const img=(file instanceof HTMLCanvasElement)?file:await loadImage(file);
+  const iw=img.naturalWidth||img.width, ih=img.naturalHeight||img.height;
+  const k=Math.min(1,max/Math.max(iw,ih));
+  const c=document.createElement("canvas"); c.width=Math.round(iw*k); c.height=Math.round(ih*k);
   const ctx=c.getContext("2d"); ctx.drawImage(img,0,0,c.width,c.height);
   if(gray){ const d=ctx.getImageData(0,0,c.width,c.height), a=d.data;
     for(let i=0;i<a.length;i+=4){ const y=a[i]*.299+a[i+1]*.587+a[i+2]*.114; a[i]=a[i+1]=a[i+2]=y; }
     ctx.putImageData(d,0,0); }
   return new Promise(r=>c.toBlob(b=>r(b),"image/jpeg",q));
+}
+
+/* ===== 写真の向き（縦に撮った写真が横にならないように、最初に正しい向きの画像に描き直す） ===== */
+// JPEGのEXIFから向き（1〜8）と、回転前の幅・高さを読む
+async function exifInfo(file){
+  try{
+    const buf=new DataView(await file.slice(0,262144).arrayBuffer());
+    if(buf.getUint16(0)!==0xFFD8) return {o:1};
+    let off=2, o=1, w=0, h=0;
+    while(off+4<buf.byteLength){
+      const mk=buf.getUint16(off), len=buf.getUint16(off+2);
+      if(mk===0xFFE1&&buf.getUint32(off+4)===0x45786966){
+        const t0=off+10, le=buf.getUint16(t0)===0x4949, n=buf.getUint16(t0+buf.getUint32(t0+4,le),le);
+        for(let i=0;i<n;i++){ const e=t0+buf.getUint32(t0+4,le)+2+i*12; if(buf.getUint16(e,le)===0x0112){ o=buf.getUint16(e+8,le); break; } }
+      } else if(mk>=0xFFC0&&mk<=0xFFC3){ h=buf.getUint16(off+5); w=buf.getUint16(off+7); break; }
+      if((mk&0xFF00)!==0xFF00) break;
+      off+=2+len;
+    }
+    return {o:(o>=1&&o<=8)?o:1,w,h};
+  }catch(e){ return {o:1}; }
+}
+// このブラウザが <img> と drawImage でEXIFの向きを自動で直すかを、小さなテスト画像で確かめる
+let orientSupport=null;
+function testOrient(){
+  if(orientSupport) return orientSupport;
+  orientSupport=new Promise(res=>{
+    const im=new Image();
+    im.onload=()=>{ try{
+      const imgApplies=im.naturalWidth===8;
+      const c=document.createElement("canvas"); c.width=16; c.height=16; const x=c.getContext("2d"); x.drawImage(im,0,0);
+      const px=x.getImageData(2,12,1,1).data;   // 自動で回るなら下半分が青になる
+      res({imgApplies,drawApplies:px[2]>150&&px[3]>0});
+    }catch(e){ res({imgApplies:true,drawApplies:true}); } };
+    im.onerror=()=>res({imgApplies:true,drawApplies:true});
+    im.src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4QAiRXhpZgAATU0AKgAAAAgAAQESAAMAAAABAAYAAAAAAAD/2wBDAAIBAQEBAQIBAQECAgICAgQDAgICAgUEBAMEBgUGBgYFBgYGBwkIBgcJBwYGCAsICQoKCgoKBggLDAsKDAkKCgr/2wBDAQICAgICAgUDAwUKBwYHCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgr/wAARCAAIABADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD4vr5Door+qP2Zf/NV/wDcj/7uH9qftDP+aZ/7nf8A3UP/2Q==";
+  });
+  return orientSupport;
+}
+async function uprightCanvas(file){
+  const [img,ex,sup]=await Promise.all([loadImage(file),exifInfo(file),testOrient()]);
+  const c=document.createElement("canvas"), x=c.getContext("2d");
+  if(sup.drawApplies||ex.o===1){
+    c.width=img.naturalWidth; c.height=img.naturalHeight; x.drawImage(img,0,0,c.width,c.height);
+  } else {
+    // ブラウザが直さないときは自分で回す
+    const swap=ex.o>=5, rw=sup.imgApplies&&swap?img.naturalHeight:img.naturalWidth, rh=sup.imgApplies&&swap?img.naturalWidth:img.naturalHeight;
+    c.width=swap?rh:rw; c.height=swap?rw:rh;
+    const T={2:[-1,0,0,1,rw,0],3:[-1,0,0,-1,rw,rh],4:[1,0,0,-1,0,rh],5:[0,1,1,0,0,0],6:[0,1,-1,0,rh,0],7:[0,-1,-1,0,rh,rw],8:[0,-1,1,0,0,rw]}[ex.o];
+    x.setTransform(...T); x.drawImage(img,0,0,rw,rh); x.setTransform(1,0,0,1,0,0);
+  }
+  c.naturalWidth=c.width; c.naturalHeight=c.height;
+  return c;
+}
+function rotateCanvas(src){
+  const c=document.createElement("canvas"); c.width=src.height; c.height=src.width;
+  const x=c.getContext("2d"); x.translate(c.width,0); x.rotate(Math.PI/2); x.drawImage(src,0,0);
+  c.naturalWidth=c.width; c.naturalHeight=c.height; return c;
+}
+async function showCropSrc(){
+  const blob=await new Promise(r=>crop.img.toBlob(r,"image/jpeg",0.9));
+  const im=$("#cropImg"); if(im._u) URL.revokeObjectURL(im._u); im._u=URL.createObjectURL(blob); im.src=im._u;
 }
 async function thumbOf(blob){
   const b=await compress(blob,360,.7);
@@ -629,8 +808,7 @@ let pageBytes=0;
 async function reload(){ cards=await dbAll(); try{ pageBytes=(await pageAll()).reduce((a,p)=>a+(p.blob?p.blob.size:0),0); }catch(e){} cards.sort((a,b)=>b.created-a.created); refreshAll(); }
 function refreshAll(){
   const due=cards.filter(isDue);
-  $("#dueNum").textContent=due.length;
-  $("#todayText").textContent=due.length?t("todayText",{n:due.length}):t("todayNone");
+  renderHero(due);
   $("#intV").textContent=intervals().join("・");
 
   $("#startReview").disabled=!due.length;
@@ -681,11 +859,11 @@ $("#bulkFile").onchange=e=>{ const f=[...e.target.files]; e.target.value=""; if(
 async function startCrop(files){ cropQueue=files.slice(); cropQueue.total=files.length; await nextCrop(); }
 async function nextCrop(){
   const f=cropQueue.shift(); if(!f){ closeCrop(); return; }
-  let img; try{ img=await loadImage(f); }catch(e){ toast("Error"); return nextCrop(); }
+  let img; try{ img=await uprightCanvas(f); }catch(e){ toast("Error"); return nextCrop(); }
   const W=img.naturalWidth, H=img.naturalHeight;
-  crop={img,file:f,pageId:null,added:0,box:{x:W*.1,y:H*.35,w:W*.8,h:H*.22},lv:defLv(),gray:defGray(),keep:defKeep(),pv:"crop",pageEnc:null,savedKey:null};
+  crop={img,file:img,pageId:null,added:0,box:{x:W*.1,y:H*.35,w:W*.8,h:H*.22},lv:defLv(),gray:defGray(),keep:defKeep(),pv:"crop",pageEnc:null,savedKey:null};
   renderQ();
-  $("#cropImg").src=img.src; $("#cropMemo").value="";
+  await showCropSrc(); $("#cropMemo").value="";
   const n=cropQueue.total-cropQueue.length;
   $("#cropCount").textContent=cropQueue.total>1?` ${n}/${cropQueue.total}`:"";
   $("#cropDone").lastChild.textContent=t(cropQueue.length?"cropNext":"cropDone");
@@ -823,6 +1001,14 @@ $("#cropAdd").onclick=async()=>{
     toast(t("cropAdded",{n:crop.added})); drawPreview();
   }finally{ $("#cropAdd").disabled=false; }
 };
+$("#cropRotate").onclick=async()=>{
+  if(!crop) return;
+  const b=crop.box, H=crop.img.naturalHeight;
+  crop.img=rotateCanvas(crop.img); crop.file=crop.img; crop.pageEnc=null; crop.savedKey=null;
+  if(crop.added) crop.pageId=null;     // 回したページは別のページとして保存する
+  crop.box={x:H-b.y-b.h,y:b.x,w:b.h,h:b.w};
+  await showCropSrc(); layoutCrop();
+};
 $("#cropDone").onclick=()=>{ if(cropQueue.length) nextCrop(); else closeCrop(); };
 $("#cropCancel").onclick=()=>closeCrop();
 $("#cropRetake").onclick=()=>{ cropQueue=[]; $("#cropper").classList.remove("on"); crop=null; $("#camFile").click(); };
@@ -853,7 +1039,8 @@ function renderGrid(){
   $("#listEmpty").style.display=cards.length?"none":"block";
   list.forEach(c=>{
     const b=document.createElement("button"); b.className="tile"+(c.mastered?" master":"");
-    b.innerHTML=`<img src="${c.thumb}" alt="">${isDue(c)?'<span class="due"></span>':""}<span class="lv">${esc(c.subject||"")} ${dueLabel(c)}</span>`;
+    const pct=Math.round(Math.min(1,(c.level||0)/intervals().length)*100)||4;
+    b.innerHTML=`<img src="${c.thumb}" alt=""><span class="lvbar"><i style="width:${pct}%"></i></span>${isDue(c)?'<span class="due"></span>':""}<span class="lv">${esc(c.subject||"")} ${dueLabel(c)}</span>`;
     b.onclick=()=>openSheet(c); g.appendChild(b);
   });
 }
@@ -884,7 +1071,66 @@ async function openSheet(c0){
   $("#eDel").onclick=async()=>{if(!confirm(t("confirmDel"))) return; await delCard(c); close(); reload();};
 }
 
+
+/* ===== ヒーロー・連続日数 ===== */
+const dayKey=(d=new Date())=>`${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+function daysGet(){ try{ return JSON.parse(ls.get("pr_days")||"[]"); }catch(e){ return []; } }
+function markToday(){ const a=daysGet(), k=dayKey(); if(!a.includes(k)){ a.push(k); ls.set("pr_days",JSON.stringify(a.slice(-400))); } }
+function streakN(){
+  const set=new Set(daysGet()); let n=0; const d=new Date();
+  if(!set.has(dayKey(d))) d.setDate(d.getDate()-1);      // 今日まだでも、昨日まで続いていれば数える
+  while(set.has(dayKey(d))){ n++; d.setDate(d.getDate()-1); }
+  return n;
+}
+function doneToday(){ const s0=startOfDay(); return cards.filter(c=>c.last&&c.last>=s0).length; }
+function renderHero(due){
+  const done=doneToday(), total=done+due.length, sn=streakN(), loc={ja:"ja-JP",en:"en-US",zh:"zh-CN","zh-Hant":"zh-TW"}[lang]||"ja-JP";
+  $("#streakN").textContent=sn; $("#streak").classList.toggle("zero",!sn);
+  $("#heroDate").textContent=new Date().toLocaleDateString(loc,{month:"numeric",day:"numeric",weekday:"short"});
+  const ring=$("#ringVal"), C=326.7, frac=total?done/total:0;
+  ring.style.strokeDashoffset=String(C*(1-frac));
+  const clear=!due.length&&done>0;
+  $("#pring").classList.toggle("clear",clear);
+  $("#dueNum").textContent=clear?"✓":due.length;
+  $("#dueLbl").textContent=clear?t("clearLbl"):t("leftLbl");
+  $("#heroTitle").textContent=due.length?t("heroDue",{n:due.length}):cards.length?t("heroClear"):t("heroEmpty");
+  let sub;
+  if(due.length) sub=t("todayText",{n:due.length});
+  else if(done) sub=t("heroDoneN",{n:done});
+  else if(cards.length){ const nx=cards.filter(c=>!c.mastered).sort((a,b)=>a.due-b.due)[0]; sub=nx?t("heroNext",{d:dueLabel(nx)}):t("todayNone"); }
+  else sub=t("todayNone");
+  $("#todayText").textContent=sub;
+  $("#heroGo").hidden=!due.length; $("#hero").classList.toggle("go",!!due.length);
+  // 今日のカードをちらっと見せる
+  const pk=$("#peek"); pk.innerHTML="";
+  due.slice(0,5).forEach(c=>{ const im=document.createElement("img"); im.src=c.thumb; im.alt=""; pk.appendChild(im); });
+  if(due.length>5){ const m=document.createElement("span"); m.className="more num"; m.textContent="+"+(due.length-5); pk.appendChild(m); }
+  // 1週間のカレンダー
+  const set=new Set(daysGet()), wk=$("#week"); wk.innerHTML="";
+  for(let i=6;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i);
+    const on=set.has(dayKey(d)), el=document.createElement("span"); el.className="wd"+(on?" on":"")+(i===0?" today":"");
+    el.innerHTML=`<i>${on?"✓":""}</i>`; const lb=document.createElement("span"); lb.textContent=d.toLocaleDateString(loc,{weekday:"narrow"}); el.appendChild(lb); wk.appendChild(el); }
+  // 追加タブ：最近のカード
+  const rc=$("#recent"); rc.innerHTML=""; const rec=cards.slice(0,6);
+  rec.forEach(c=>{ const im=document.createElement("img"); im.src=c.thumb; im.alt=""; rc.appendChild(im); });
+  $("#recentPanel").hidden=!rec.length; $("#recentN").textContent=t("cntN",{n:cards.length});
+}
+$("#hero").onclick=()=>{ if(cards.some(isDue)) $("#startReview").click(); };
+function celebrate(n){
+  const el=$("#celebrate"); $("#celText").textContent=t("celText",{n});
+  const sn=streakN(); $("#celStreak").hidden=!sn; $("#celStreak").lastChild.textContent=t("celStreak",{n:sn});
+  el.querySelectorAll(".conf").forEach(x=>x.remove());
+  const cols=["#FFE14D","#FF7A3D","#2C9A63","#2F7BEA","#E04F8A","#FFB547"];
+  for(let i=0;i<70;i++){ const c=document.createElement("i"); c.className="conf";
+    c.style.left=Math.random()*100+"vw"; c.style.background=cols[i%cols.length];
+    c.style.setProperty("--dx",(Math.random()*120-60)+"px"); c.style.setProperty("--r",(Math.random()*900-450)+"deg");
+    c.style.animationDuration=(1.8+Math.random()*1.6)+"s"; c.style.animationDelay=(Math.random()*.5)+"s"; el.appendChild(c); }
+  el.classList.add("on");
+}
+$("#celOk").onclick=()=>$("#celebrate").classList.remove("on");
+$("#celebrate").onclick=e=>{ if(e.target.id==="celebrate") $("#celebrate").classList.remove("on"); };
 /* ===== 復習 ===== */
+let graded=0;
 let queue=[], qi=0, practice=false, showingAns=false, curURL=null;
 const gradeStack=[];   // 押し間違いを取り消すための記録
 $("#startReview").onclick=()=>startReview(shuffle(cards.filter(isDue)),false);
@@ -893,12 +1139,13 @@ $("#extraReview").onclick=()=>startReview(shuffle(filtered().length?filtered():c
 function shuffle(a){a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];} return a;}
 function startReview(list,isPractice){
   if(!list.length){toast(t("nothing")); return;}
-  queue=list; qi=0; practice=isPractice; $("#rvUndo").disabled=true;
+  queue=list; qi=0; practice=isPractice; graded=0; $("#rvUndo").disabled=true;
   $("#reviewer").classList.add("on"); showCard();
 }
 function showCard(){
   const c=queue[qi]; showingAns=false;
   $("#rvCount").textContent=t("count",{a:qi+1,b:queue.length});
+  $("#rvProgBar").style.width=(qi/queue.length*100)+"%";
   setImg(c.q);
   $("#rvImg").onerror=async()=>{ $("#rvImg").onerror=null; const f=await dbGet(c.id); if(f&&queue[qi]===c){ Object.assign(c,f); setImg(f.q); } };
   $("#rvAnswer").style.display=(c.a||c.pageId)?"":"none"; $("#rvAnswer").textContent=t(c.a?"showAns":"page");
@@ -933,8 +1180,9 @@ async function grade(ok,finish){
     const n=nextInfo(c,ok); Object.assign(c,{level:n.level,due:n.due===Infinity?8.64e15:n.due,mastered:n.mastered,reviews:(c.reviews||0)+1,last:Date.now()});
     await dbPut(c);
   }
+  markToday(); graded++;
   qi++;
-  if(qi>=queue.length){ endReview(); toast(t("doneAll")); } else showCard();
+  if(qi>=queue.length){ $("#rvProgBar").style.width="100%"; endReview(); if(!practice&&graded) celebrate(graded); else toast(t("doneAll")); } else showCard();
 }
 async function undoGrade(){
   const g=gradeStack.pop(); if(!g){ toast(t("undoNone")); return false; }
