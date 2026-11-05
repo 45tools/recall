@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Noto+Sans+JP:wght@500;700;900&display=swap">
 <title>45 Recall</title>
 <style>
 :root{
@@ -391,6 +391,72 @@ label.bt:active{transform:translateY(2px);box-shadow:none}
 #kindSeg .ic{width:16px;height:16px}
 body:has(#cropper.on) .toast{bottom:calc(96px + env(safe-area-inset-bottom))}
 #rmSheet img{width:100%;max-height:55vh;object-fit:contain;background:#fff;border-radius:12px;border:1px solid var(--line)}
+
+/* ===== 2026-11-05-3 C寄りの配色・固定画面・タブの選択表示 ===== */
+:root{--bg:#EEF0F3;--panel:#FFFFFF;--ink:#111418;--muted:#5F6670;--line:#E3E6EA;--soft:#EEF0F3;--accent:#14583A;--hero1:#14583A;--hero2:#14583A;--warm:#FF7A3D;--warm2:#FF7A3D;--sky:#2F7BEA;--gold:#E0A100;--tabOn:#DDEFE5}
+@media (prefers-color-scheme: dark){ :root{--bg:#0F1114;--panel:#1A1D22;--ink:#EEF0F3;--muted:#9AA1AA;--line:#2A2E35;--soft:#22262C;--accent:#58C389;--accent-ink:#0F1114;--tabOn:#1E3A2A} }
+body{font-family:"Noto Sans JP","Hiragino Sans","PingFang TC","PingFang SC",system-ui,sans-serif;background-image:none}
+.hero{background:var(--hero1);box-shadow:none;border-radius:26px}
+.hero::after{display:none}
+.bt{border:0;box-shadow:none;border-radius:26px}
+label.bt:active{transform:scale(.98)}
+.tCam,.tShoot{background:var(--warm);box-shadow:none}
+.btn{border-color:var(--line)}
+.btn.primary,.btn.pri{box-shadow:none}
+.panel{border:0;box-shadow:none;border-radius:22px}
+.heroGo{box-shadow:none}
+.tabbar .modes{border:0;box-shadow:0 6px 20px rgba(0,0,0,.08)}
+/* タブ：選んでいる所に色付きの帯 */
+.tabbar button{color:#8A9199;font-weight:500}
+.tabbar .tbi{width:58px;height:32px;border-radius:16px;align-items:center;justify-content:center;transition:background .2s}
+body[data-mode="review"] .tabbar [data-mode="review"],body[data-mode="list"] .tabbar [data-mode="list"]{color:var(--accent);font-weight:900}
+body[data-mode="review"] .tabbar [data-mode="review"] .tbi,body[data-mode="list"] .tabbar [data-mode="list"] .tbi{background:var(--tabOn)}
+.tabbar .camTab .tbi{width:60px;height:60px;border-radius:50%;background:var(--warm);box-shadow:none;border:4px solid var(--bg)}
+body[data-mode="add"] .tabbar .camTab{color:var(--warm);font-weight:900}
+body[data-mode="add"] .tabbar .camTab .tbi{box-shadow:0 0 0 3px var(--warm);border-color:var(--panel)}
+.tabbar .badge{right:4px;top:-4px}
+/* 復習・追加：画面を固定（動かない） */
+body[data-mode="review"],body[data-mode="add"]{position:fixed;inset:0;overflow:hidden;width:100%;min-height:0}
+body[data-mode="review"],body[data-mode="add"]{display:flex;flex-direction:column}
+body[data-mode="review"] .wrap,body[data-mode="add"] .wrap{flex:1;min-height:0;width:100%;padding:0;overflow:hidden;max-width:720px;margin:0 auto calc(86px + env(safe-area-inset-bottom))}
+body[data-mode="review"] .foot,body[data-mode="add"] .foot{display:none}
+body[data-mode="review"] [data-pane="review"],body[data-mode="add"] [data-pane="add"]{height:100%}
+[data-pane="review"] .bento{height:100%;box-sizing:border-box;padding-bottom:10px;margin-top:2px;grid-template-rows:auto auto minmax(0,1fr)}
+[data-pane="add"] .bento{margin-top:2px}
+.heroTop2{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.heroTop2 .sp{flex:1}
+.heroK{color:#A7E0C0;font-size:12px;display:inline}
+.hstats{display:flex;align-items:baseline;gap:4px;font-size:11px;color:#CDEBDA}
+.hstats b{font-size:16px;color:#fff;margin-right:6px}
+.hstar{color:#FFE14D}
+.pring{width:96px;height:96px}
+.pring .pc b{font-size:42px}
+.heroTxt h2{font-size:20px}
+.heroTxt p{font-size:12.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.peek{margin-top:10px}
+.peek img,.peek .more{width:46px;height:46px;border-radius:10px}
+.heroBtns{margin-top:10px}
+.tCam,.tStreak{min-height:104px;padding:12px 14px}
+.tCam .ic{width:28px;height:28px}
+.tCam b{font-size:16px}
+.tRem{display:flex;flex-direction:column;min-height:0;overflow:hidden;padding:12px 14px}
+.rmScroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;margin-top:4px}
+.rmScroll .plan{padding:8px 0}
+.rmScroll .plan .btn{min-height:36px}
+#plans:empty{display:none}
+/* 一覧：写真が多いときだけスクロール */
+body[data-mode="list"] .wrap{padding-bottom:calc(170px + env(safe-area-inset-bottom))}
+body[data-mode="list"] .foot{display:none}
+.tagline b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tagline{flex:1}
+.bar.top .sp{display:none}
+.heroTxt p{-webkit-line-clamp:1}
+.heroTxt .peek{margin-top:8px;padding-left:8px}
+.heroTxt .peek img,.heroTxt .peek .more{width:40px;height:40px;border-width:2px}
+.heroBtns > *{white-space:nowrap}
+.heroGo{flex:1 1 auto;justify-content:center}
+@media (max-width:360px){ .tagline b{font-size:13px} .heroSub span{display:none} .heroSub{padding:0 12px} .hstats span:not(.hstar){display:none} }
+@media (max-height:600px){ .heroTxt .peek{display:none} }
 @media (prefers-reduced-motion: reduce){ .camCircle::before,.conf{animation:none;display:none} .celCard{animation:none} }
 </style>
 </head>
@@ -431,12 +497,12 @@ body:has(#cropper.on) .toast{bottom:calc(96px + env(safe-area-inset-bottom))}
   <section data-pane="review">
     <div class="bento">
       <div class="hero span2" id="hero">
+        <div class="heroTop2"><span class="heroK" data-i="heroK"></span><span class="sp"></span><span class="hstats"><span data-i="sTotal"></span><b class="num" id="sTotal">0</b><span data-i="sTomorrow"></span><b class="num" id="sTomorrow">0</b><span class="hstar">★</span><b class="num" id="sMaster">0</b></span></div>
         <div class="heroMain">
           <div class="pring" id="pring"><svg viewBox="0 0 120 120"><circle class="trk" cx="60" cy="60" r="52"/><circle class="val" id="ringVal" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
             <div class="pc"><b class="num" id="dueNum">0</b><span id="dueLbl"></span></div></div>
-          <div class="heroTxt"><span class="heroK" data-i="heroK"></span><h2 id="heroTitle"></h2><p id="todayText"></p></div>
+          <div class="heroTxt"><h2 id="heroTitle"></h2><p id="todayText"></p><div class="peek" id="peek"></div></div>
         </div>
-        <div class="peek" id="peek"></div>
         <div class="heroBtns">
           <button class="heroGo" id="startReview"><i class="ic" data-ic="play"></i><span data-i="start"></span></button>
           <button class="heroSub" id="extraReview"><i class="ic" data-ic="eye"></i><span data-i="extraShort"></span></button>
@@ -450,19 +516,10 @@ body:has(#cropper.on) .toast{bottom:calc(96px + env(safe-area-inset-bottom))}
       </div>
       <div class="bt span2 tRem">
         <div class="tHead"><i class="ic" data-ic="bell"></i><b data-i="rmTitle"></b><span class="sp"></span><label class="tAdd" for="camFile" data-kind="remind" aria-label="add"><i class="ic" data-ic="plus"></i></label></div>
-        <div id="rmList"></div>
-      </div>
-      <div class="span2 minis">
-        <div class="bt mini"><small data-i="sTotal"></small><b class="num" id="sTotal">0</b></div>
-        <div class="bt mini"><small data-i="sTomorrow"></small><b class="num" id="sTomorrow" style="color:var(--sky)">0</b></div>
-        <div class="bt mini"><small data-i="sMaster"></small><b class="num" id="sMaster" style="color:var(--gold)">0</b></div>
+        <div class="rmScroll"><div id="rmList"></div><div class="plans" id="plans"></div></div>
       </div>
     </div>
-    <div class="panel" id="planPanel">
-      <div class="panelHead"><i class="ic" data-ic="clock" style="width:22px;height:22px;color:var(--accent)"></i><h2 data-i="planTitle"></h2>
-        <button class="btn icon" id="planNew2" aria-label="add"><i class="ic" data-ic="plus"></i></button></div>
-      <div class="plans" id="plans"></div>
-    </div>
+    <button id="planNew2" hidden></button>
   </section>
 
   <!-- 追加 -->
@@ -491,7 +548,7 @@ body:has(#cropper.on) .toast{bottom:calc(96px + env(safe-area-inset-bottom))}
       <div class="grid" id="grid"></div>
       <div class="empty" id="listEmpty"><i class="ic" data-ic="grid"></i><p data-i="noCards"></p></div>
     </div>
-    <p class="tip" data-i="tipList"></p>
+
   </section>
   <div class="foot">© 45tools</div>
 </div>
@@ -641,7 +698,7 @@ body:has(#cropper.on) .toast{bottom:calc(96px + env(safe-area-inset-bottom))}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VER="2026.11.05-2";
+const APP_VER="2026.11.05-3";
 /* ===== 設定 ===== */
 const SUPPORT_URL="https://ofuse.me/45tools"; // ← OFUSEのURLに差し替え
 const DEFAULT_INTERVALS=[1,3,7,14,30,60];
@@ -1400,7 +1457,7 @@ function renderPlans(){
   const box=$("#plans"); if(!box) return;
   const list=plansGet().filter(p=>!p.done).map(p=>({p,nx:planNext(p)})).sort((a,b)=>a.nx.at-b.nx.at);
   box.innerHTML="";
-  if(!list.length){ box.innerHTML=`<p class="plansEmpty">${esc(t("planNone"))}</p>`; return; }
+  if(!list.length) return;
   list.forEach(({p,nx})=>{
     const el=document.createElement("div"); el.className="plan"+(nx.past?" past":"");
     el.innerHTML=`<div class="pt"><b>${esc(fmtAt(nx.at))}${nx.n>1?` (${nx.i+1}/${nx.n})`:""}${nx.past?" ・"+esc(t("planPast")):""}</b><span>${esc(p.name||p.url)}</span>${p.memo?`<small>${esc(p.memo)}</small>`:""}</div>
