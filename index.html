@@ -390,6 +390,7 @@ label.bt:active{transform:translateY(2px);box-shadow:none}
 #kindSeg button{min-height:40px;padding:0 10px}
 #kindSeg .ic{width:16px;height:16px}
 body:has(#cropper.on) .toast{bottom:calc(96px + env(safe-area-inset-bottom))}
+#remRep{flex:0 0 auto;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px;font-size:15px;color:var(--ink)}
 #rmSheet img{width:100%;max-height:55vh;object-fit:contain;background:#fff;border-radius:12px;border:1px solid var(--line)}
 
 /* ===== 2026-11-05-3 C寄りの配色・固定画面・タブの選択表示 ===== */
@@ -610,7 +611,7 @@ body[data-mode="list"] .foot{display:none}
     <div class="qsize" id="qSize"></div>
     <div class="prevBox"><canvas id="cropCanvas"></canvas></div>
     <div id="subjRow" class="subjRow"><input id="subj" list="subjList" data-ph="subject" autocomplete="off"><datalist id="subjList"></datalist><div class="chips" id="subjChips"></div></div>
-    <div id="remRow" class="subjRow" hidden><input type="datetime-local" id="remAt" aria-label="time"><div class="chips" id="remQuick"></div></div>
+    <div id="remRow" class="subjRow" hidden><input type="datetime-local" id="remAt" aria-label="time"><select id="remRep" aria-label="repeat"><option value="" data-i="rpNone"></option><option value="DAILY" data-i="rpDAILY"></option><option value="WEEKLY" data-i="rpWEEKLY"></option><option value="MONTHLY" data-i="rpMONTHLY"></option></select><div class="chips" id="remQuick"></div></div>
     <input id="cropMemo" data-ph="memoPh" autocomplete="off">
   </div>
   <div class="rv-dock"><div class="dockbar">
@@ -701,7 +702,7 @@ body[data-mode="list"] .foot{display:none}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VER="2026.11.06-1";
+const APP_VER="2026.11.09-1";
 /* ===== 設定 ===== */
 const SUPPORT_URL="https://ofuse.me/45tools"; // ← OFUSEのURLに差し替え
 const DEFAULT_INTERVALS=[1,3,7,14,30,60];
@@ -817,10 +818,10 @@ Object.assign(I18N.ja,{streakU:"日連続",heroDue:"あと{n}枚！",heroClear:"
 Object.assign(I18N.en,{streakU:"-day streak",heroDue:"{n} to go!",heroClear:"All done today!",heroEmpty:"Let's get started",heroDoneN:"You reviewed {n} today. Keep it up tomorrow!",heroNext:"Next review: {d}",leftLbl:"left",clearLbl:"Clear!",step1:"Snap",step2:"Box",step3:"Review",recent:"Recently added",rotate:"Rotate",celTitle:"Nice work!",celText:"You reviewed {n} cards",celStreak:"{n}-day streak!",celOk:"Awesome!",cntN:"{n}"});
 Object.assign(I18N.zh,{streakU:"天连续",heroDue:"还剩{n}张！",heroClear:"今天完成了！",heroEmpty:"开始吧",heroDoneN:"今天复习了{n}张。明天继续加油！",heroNext:"下次复习：{d}",leftLbl:"剩下",clearLbl:"完成",step1:"拍照",step2:"框选",step3:"复习",recent:"最近添加",rotate:"旋转",celTitle:"辛苦了！",celText:"复习了 {n} 张",celStreak:"连续 {n} 天！",celOk:"太棒了！",cntN:"{n}张"});
 Object.assign(I18N["zh-Hant"],{streakU:"天連續",heroDue:"還剩{n}張！",heroClear:"今天完成了！",heroEmpty:"開始吧",heroDoneN:"今天複習了{n}張。明天繼續加油！",heroNext:"下次複習：{d}",leftLbl:"剩下",clearLbl:"完成",step1:"拍照",step2:"框選",step3:"複習",recent:"最近新增",rotate:"旋轉",celTitle:"辛苦了！",celText:"複習了 {n} 張",celStreak:"連續 {n} 天！",celOk:"太棒了！",cntN:"{n}張"});
-Object.assign(I18N.ja,{notifyShort:"通知",tagline:"間違えた所を写真で、くり返し復習",heroK:"今日の復習",camTile:"撮って追加",camTileD:"間違えた所・持ち物",weekLbl:"この1週間",rmTitle:"リマインド",rmEmpty:"持ち物や提出物を撮ると、決めた時間に写真で知らせます。",rmAdd:"リマインドを撮る",rmAddD:"持ち物・提出物を時間に知らせる",photoTileD:"まとめて選べます",kReview:"復習カード",kRemind:"リマインド",rmSaved:"リマインドを保存しました",rmCal:"カレンダーに登録（通知）",rmDone:"完了（消す）",rmDefault:"リマインド",q7:"明日の朝7時",q20:"今夜20時",q1h:"1時間後",rmMore:"ほか{n}件",rmPast:"時間が過ぎています"});
-Object.assign(I18N.en,{notifyShort:"Alerts",tagline:"Snap your mistakes, review them on repeat",heroK:"Today's review",camTile:"Snap & add",camTileD:"Mistakes or things to bring",weekLbl:"This week",rmTitle:"Reminders",rmEmpty:"Snap things to bring or hand in, and get the photo back at the time you choose.",rmAdd:"Snap a reminder",rmAddD:"Things to bring or hand in",photoTileD:"Pick several at once",kReview:"Review card",kRemind:"Reminder",rmSaved:"Reminder saved",rmCal:"Add to calendar (alert)",rmDone:"Done (delete)",rmDefault:"Reminder",q7:"Tomorrow 7:00",q20:"Tonight 20:00",q1h:"In 1 hour",rmMore:"+{n} more",rmPast:"Time has passed"});
-Object.assign(I18N.zh,{notifyShort:"通知",tagline:"把错题拍下来，反复复习",heroK:"今天的复习",camTile:"拍照添加",camTileD:"错题・要带的东西",weekLbl:"这一周",rmTitle:"提醒",rmEmpty:"拍下要带的东西或要交的作业，到时间用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要带的东西・要交的作业",photoTileD:"可一次选多张",kReview:"复习卡",kRemind:"提醒",rmSaved:"已保存提醒",rmCal:"加入日历（通知）",rmDone:"完成（删除）",rmDefault:"提醒",q7:"明早7点",q20:"今晚20点",q1h:"1小时后",rmMore:"还有{n}项",rmPast:"时间已过"});
-Object.assign(I18N["zh-Hant"],{notifyShort:"通知",tagline:"把錯題拍下來，反覆複習",heroK:"今天的複習",camTile:"拍照新增",camTileD:"錯題・要帶的東西",weekLbl:"這一週",rmTitle:"提醒",rmEmpty:"拍下要帶的東西或要交的作業，到時間用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要帶的東西・要交的作業",photoTileD:"可一次選多張",kReview:"複習卡",kRemind:"提醒",rmSaved:"已儲存提醒",rmCal:"加入行事曆（通知）",rmDone:"完成（刪除）",rmDefault:"提醒",q7:"明早7點",q20:"今晚20點",q1h:"1小時後",rmMore:"還有{n}項",rmPast:"時間已過"});
+Object.assign(I18N.ja,{rpNone:"1回だけ",rpDAILY:"毎日",rpWEEKLY:"毎週",rpMONTHLY:"毎月",notifyShort:"通知",tagline:"間違えた所を写真で、くり返し復習",heroK:"今日の復習",camTile:"撮って追加",camTileD:"間違えた所・持ち物",weekLbl:"この1週間",rmTitle:"リマインド",rmEmpty:"持ち物や提出物を撮ると、決めた時間に写真で知らせます。",rmAdd:"リマインドを撮る",rmAddD:"持ち物・提出物を時間に知らせる",photoTileD:"まとめて選べます",kReview:"復習カード",kRemind:"リマインド",rmSaved:"リマインドを保存しました",rmCal:"カレンダーに登録（通知）",rmDone:"完了（消す）",rmDefault:"リマインド",q7:"明日の朝7時",q20:"今夜20時",q1h:"1時間後",rmMore:"ほか{n}件",rmPast:"時間が過ぎています"});
+Object.assign(I18N.en,{rpNone:"Once",rpDAILY:"Every day",rpWEEKLY:"Every week",rpMONTHLY:"Every month",notifyShort:"Alerts",tagline:"Snap your mistakes, review them on repeat",heroK:"Today's review",camTile:"Snap & add",camTileD:"Mistakes or things to bring",weekLbl:"This week",rmTitle:"Reminders",rmEmpty:"Snap things to bring or hand in, and get the photo back at the time you choose.",rmAdd:"Snap a reminder",rmAddD:"Things to bring or hand in",photoTileD:"Pick several at once",kReview:"Review card",kRemind:"Reminder",rmSaved:"Reminder saved",rmCal:"Add to calendar (alert)",rmDone:"Done (delete)",rmDefault:"Reminder",q7:"Tomorrow 7:00",q20:"Tonight 20:00",q1h:"In 1 hour",rmMore:"+{n} more",rmPast:"Time has passed"});
+Object.assign(I18N.zh,{rpNone:"仅一次",rpDAILY:"每天",rpWEEKLY:"每周",rpMONTHLY:"每月",notifyShort:"通知",tagline:"把错题拍下来，反复复习",heroK:"今天的复习",camTile:"拍照添加",camTileD:"错题・要带的东西",weekLbl:"这一周",rmTitle:"提醒",rmEmpty:"拍下要带的东西或要交的作业，到时间用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要带的东西・要交的作业",photoTileD:"可一次选多张",kReview:"复习卡",kRemind:"提醒",rmSaved:"已保存提醒",rmCal:"加入日历（通知）",rmDone:"完成（删除）",rmDefault:"提醒",q7:"明早7点",q20:"今晚20点",q1h:"1小时后",rmMore:"还有{n}项",rmPast:"时间已过"});
+Object.assign(I18N["zh-Hant"],{rpNone:"只有一次",rpDAILY:"每天",rpWEEKLY:"每週",rpMONTHLY:"每月",notifyShort:"通知",tagline:"把錯題拍下來，反覆複習",heroK:"今天的複習",camTile:"拍照新增",camTileD:"錯題・要帶的東西",weekLbl:"這一週",rmTitle:"提醒",rmEmpty:"拍下要帶的東西或要交的作業，到時間用照片提醒你。",rmAdd:"拍照提醒",rmAddD:"要帶的東西・要交的作業",photoTileD:"可一次選多張",kReview:"複習卡",kRemind:"提醒",rmSaved:"已儲存提醒",rmCal:"加入行事曆（通知）",rmDone:"完成（刪除）",rmDefault:"提醒",q7:"明早7點",q20:"今晚20點",q1h:"1小時後",rmMore:"還有{n}項",rmPast:"時間已過"});
 const ls={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
 let lang=ls.get("pr_lang")||(()=>{ const n=(navigator.language||"ja").toLowerCase(); return n.startsWith("zh")?(/(tw|hk|mo|hant)/.test(n)?"zh-Hant":"zh"):n.startsWith("ja")?"ja":"en"; })();
 if(!I18N[lang]) lang="ja";
@@ -1028,7 +1029,7 @@ async function nextCrop(){
   let img; try{ img=await uprightCanvas(f); }catch(e){ toast("Error"); return nextCrop(); }
   const W=img.naturalWidth, H=img.naturalHeight;
   crop={img,file:img,pageId:null,added:0,box:{x:W*.1,y:H*.35,w:W*.8,h:H*.22},lv:defLv(),gray:defGray(),keep:defKeep(),pv:"crop",pageEnc:null,savedKey:null};
-  renderQ(); renderRemQuick(); renderSubjects(); $("#remAt").value="";
+  renderQ(); renderRemQuick(); renderSubjects(); $("#remAt").value=""; $("#remRep").value="";
   setKind(addKind);
   await showCropSrc(); $("#cropMemo").value="";
   const n=cropQueue.total-cropQueue.length;
@@ -1157,7 +1158,7 @@ $("#cropAdd").onclick=async()=>{
     const [,q]=cropOpts(), c=cropCanvas(), blob=await new Promise(r=>c.toBlob(r,"image/jpeg",q));
     if(crop.kind==="remind"){
       const at=$("#remAt").value?new Date($("#remAt").value).getTime():defRemAt();
-      const rc=newCard(blob,await thumbOf(blob),null,$("#cropMemo").value.trim()); Object.assign(rc,{kind:"remind",remindAt:at,subject:"",due:8.64e15});
+      const rc=newCard(blob,await thumbOf(blob),null,$("#cropMemo").value.trim()); Object.assign(rc,{kind:"remind",remindAt:at,repeat:$("#remRep").value||"",subject:"",due:8.64e15});
       await dbPut(rc); crop.added++; $("#cropMemo").value=""; toast(t("rmSaved")); remCal(rc); return;
     }
     let pid=null;
@@ -1291,29 +1292,41 @@ function renderHero(due){
 /* ===== リマインド（写真を決めた時間に見せる） ===== */
 let addKind="review";
 document.querySelectorAll("[data-kind]").forEach(el=>el.addEventListener("click",()=>{ addKind=el.dataset.kind; }));
+function nextAt(c){
+  if(!c.repeat) return c.remindAt;
+  const now=Date.now()-60000, d=new Date(c.remindAt), day=d.getDate();
+  let n=0;
+  while(d.getTime()<now&&n<5000){ n++;
+    if(c.repeat==="DAILY") d.setDate(d.getDate()+1);
+    else if(c.repeat==="WEEKLY") d.setDate(d.getDate()+7);
+    else { d.setDate(1); d.setMonth(d.getMonth()+1); d.setDate(Math.min(day,new Date(d.getFullYear(),d.getMonth()+1,0).getDate())); }
+  }
+  return d.getTime();
+}
+const repLbl=c=>c.repeat?t("rp"+c.repeat):"";
 function renderReminds(){
   const box=$("#rmList"); if(!box) return; box.innerHTML="";
-  const now=Date.now(), list=reminds.slice(0,3);
+  const now=Date.now(), list=reminds.slice().sort((a,b)=>nextAt(a)-nextAt(b)).slice(0,3);
   if(!reminds.length){ const p=document.createElement("p"); p.className="rmEmpty"; p.textContent=t("rmEmpty"); box.appendChild(p); return; }
-  list.forEach(c=>{ const b=document.createElement("button"); b.className="rmItem"+(c.remindAt<now?" past":"");
+  list.forEach(c=>{ const at=nextAt(c), past=at<now; const b=document.createElement("button"); b.className="rmItem"+(past?" past":"");
     b.innerHTML=`<img src="${c.thumb}" alt=""><span class="rt"><b></b><small></small></span><span class="tm"></span>`;
     b.querySelector("b").textContent=c.memo||t("rmDefault");
-    b.querySelector("small").textContent=c.remindAt<now?t("rmPast"):fmtAt(c.remindAt);
-    b.querySelector(".tm").textContent=new Date(c.remindAt).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    b.querySelector("small").textContent=(past?t("rmPast"):fmtAt(at))+(c.repeat?" ・"+repLbl(c):"");
+    b.querySelector(".tm").textContent=new Date(at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
     b.onclick=()=>openRemind(c); box.appendChild(b); });
   if(reminds.length>3){ const p=document.createElement("p"); p.className="rmEmpty"; p.textContent=t("rmMore",{n:reminds.length-3}); box.appendChild(p); }
 }
 let rmCur=null, rmURL=null;
 function openRemind(c){
   rmCur=c; if(rmURL) URL.revokeObjectURL(rmURL); rmURL=URL.createObjectURL(c.q);
-  $("#rmSTitle").textContent=c.memo||t("rmDefault"); $("#rmSTime").textContent=fmtAt(c.remindAt); $("#rmSImg").src=rmURL;
+  $("#rmSTitle").textContent=c.memo||t("rmDefault"); $("#rmSTime").textContent=fmtAt(nextAt(c))+(c.repeat?" ・"+repLbl(c):""); $("#rmSImg").src=rmURL;
   openOv("#rmSheet");
 }
 function remCal(c){
   const title=c.memo||t("rmDefault"), app=location.href.split("#")[0].split("?")[0], at=new Date(c.remindAt);
   const ev=["BEGIN:VEVENT",`UID:${c.id}@45tools-recall`,`DTSTAMP:${icsStamp()}`,`DTSTART:${icsDate(at)}`,`DTEND:${icsDate(new Date(c.remindAt+15*60000))}`,
     `SUMMARY:${icsText(title)}`,`DESCRIPTION:${icsText(t("rmTitle")+" — 45 Recall\n"+app)}`,`URL:${app}`,
-    "BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsText(title)}`,"TRIGGER:PT0M","END:VALARM","END:VEVENT"].join("\r\n");
+    ...(c.repeat?[`RRULE:FREQ=${c.repeat}`]:[]),"BEGIN:VALARM","ACTION:DISPLAY",`DESCRIPTION:${icsText(title)}`,"TRIGGER:PT0M","END:VALARM","END:VEVENT"].join("\r\n");
   saveFile(icsWrap([ev]),`45recall-remind-${icsDate(at)}.ics`,"text/calendar");
 }
 $("#rmSCal").onclick=()=>{ if(rmCur) remCal(rmCur); };
