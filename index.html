@@ -130,6 +130,9 @@ body[data-mode="review"] #dockReview,body[data-mode="add"] #dockAdd,body[data-mo
 #cropper .rv-dock .btn{min-width:0;padding:0 8px;font-size:15px}
 #cropper .rv-dock #cropDone,#cropper .rv-dock #cropAns{flex:0 1 auto}
 #cropper .rv-dock #cropAdd{flex:1 1 auto}
+#ansMenu{position:absolute;left:12px;right:12px;bottom:96px;z-index:30;display:flex;flex-direction:column;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+#ansMenu .btn{width:100%;min-height:52px;justify-content:flex-start;text-align:left;white-space:normal}
+#ansMenu .btn span{display:flex;flex-direction:column}#ansMenu small{font-size:12px;font-weight:400;opacity:.75}
 
 /* 追加：ページを撮る */
 .shotbig{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;border:2px dashed var(--line);border-radius:12px;background:var(--bg);color:var(--ink);text-align:center;padding:12px}
@@ -767,7 +770,7 @@ const I18N={
   intTitle:"復習の間隔",intLabel:"日数（カンマ区切り）",intText:"「できた」を押すたびに次の間隔へ進みます。最後まで進むと習得済み（★）になります。",
   dataTitle:"データ",qLabel:"写真の画質（これから撮る写真に適用）",qStd:"標準（おすすめ）",qHigh:"高画質（文字が細かい教材向け）",qEco:"省容量（白黒・小さめ）",usage:"保存中：{n}件・約{s} MB（写真はこの端末の中だけにあります）",delMastered:"習得済み（★）を削除して容量を空ける（{n}件）",confirmDelM:"習得済みの{n}件を削除しますか？（先にバックアップがおすすめです）",deletedN:"{n}件削除しました",dataText:"機種変更やブラウザのデータ削除に備えて、ときどきバックアップしてください。",
   navToday:"復習",navAdd:"撮影",navList:"一覧",navSet:"設定",
-  ansAdd:"答えも撮る",ansAddEdit:"答えの写真を追加",ansChange:"答えの写真を変える",ansDelBtn:"答えの写真を削除",ansFirst:"先に「この範囲を追加」で問題を追加してください",ansSaved:"答えの写真を付けました。復習で「答え」を押すと見られます",ansDeleted:"答えの写真を削除しました",confirmAnsDel:"このカードの答えの写真を削除しますか？",showAns:"答え",showQ:"問題",close:"閉じる",ok:"できた",ng:"まだ",nextIn:"次は{n}日後",tomorrow:"明日もう一度",mastered:"習得！",
+  ansHere:"この範囲を答えにする",ansHereD:"同じ写真の中で、黄色い枠を答えの所へ動かしてから押します",ansOther:"答えを別の写真で撮る",ansMoveBox:"黄色い枠を答えの所へ動かして、もう一度「答えも撮る」→「この範囲を答えにする」",ansAdd:"答えも撮る",ansAddEdit:"答えの写真を追加",ansChange:"答えの写真を変える",ansDelBtn:"答えの写真を削除",ansFirst:"先に「この範囲を追加」で問題を追加してください",ansSaved:"答えの写真を付けました。復習で「答え」を押すと見られます",ansDeleted:"答えの写真を削除しました",confirmAnsDel:"このカードの答えの写真を削除しますか？",showAns:"答え",showQ:"問題",close:"閉じる",ok:"できた",ng:"まだ",nextIn:"次は{n}日後",tomorrow:"明日もう一度",mastered:"習得！",
   saved:"保存しました（明日から復習）",doneAll:"今日の復習はおしまい！🎉",nothing:"今日の復習はありません",
   level:"段階",nextDue:"次回",del:"削除",confirmDel:"このカードを削除しますか？",reset:"最初から",reviewNow:"今すぐ復習",edit:"保存",
   restored:"{n}件を復元しました",badgeOk:"アイコンに件数を表示します",badgeNg:"この環境では使えません（iPhoneはホーム画面に追加して開いてください）",
@@ -782,7 +785,7 @@ const I18N={
   intTitle:"Review intervals",intLabel:"Days (comma separated)",intText:"Each “Got it” moves to the next interval. After the last one, the card is mastered (★).",
   dataTitle:"Data",qLabel:"Photo quality (applies to new photos)",qStd:"Standard (recommended)",qHigh:"High (for small print)",qEco:"Saver (B&W, smaller)",usage:"Stored: {n} cards · about {s} MB (photos stay on this device only)",delMastered:"Delete mastered (★) cards to free space ({n})",confirmDelM:"Delete {n} mastered cards? (Back up first if unsure.)",deletedN:"Deleted {n} cards",dataText:"Back up now and then, in case you change phones or clear browser data.",
   navToday:"Review",navAdd:"Snap",navList:"Cards",navSet:"Settings",
-  ansAdd:"Snap answer",ansAddEdit:"Add answer photo",ansChange:"Change answer photo",ansDelBtn:"Delete answer photo",ansFirst:"First add the question with “Add this part”",ansSaved:"Answer photo attached. Tap “Answer” in review to see it",ansDeleted:"Answer photo deleted",confirmAnsDel:"Delete this card's answer photo?",showAns:"Answer",showQ:"Question",close:"Close",ok:"Got it",ng:"Not yet",nextIn:"next in {n}d",tomorrow:"again tomorrow",mastered:"mastered!",
+  ansHere:"Use this box as the answer",ansHereD:"Move the yellow box onto the answer in this photo first",ansOther:"Snap the answer separately",ansMoveBox:"Move the yellow box onto the answer, then tap “Snap answer” → “Use this box”",ansAdd:"Snap answer",ansAddEdit:"Add answer photo",ansChange:"Change answer photo",ansDelBtn:"Delete answer photo",ansFirst:"First add the question with “Add this part”",ansSaved:"Answer photo attached. Tap “Answer” in review to see it",ansDeleted:"Answer photo deleted",confirmAnsDel:"Delete this card's answer photo?",showAns:"Answer",showQ:"Question",close:"Close",ok:"Got it",ng:"Not yet",nextIn:"next in {n}d",tomorrow:"again tomorrow",mastered:"mastered!",
   saved:"Saved (review starts tomorrow)",doneAll:"All done for today! 🎉",nothing:"Nothing due today",
   level:"Stage",nextDue:"Next",del:"Delete",confirmDel:"Delete this card?",reset:"Restart",reviewNow:"Review now",edit:"Save",
   restored:"Restored {n} cards",badgeOk:"Count will show on the icon",badgeNg:"Not available here (on iPhone, open from the home screen)",
@@ -797,7 +800,7 @@ const I18N={
   intTitle:"复习间隔",intLabel:"天数（逗号分隔）",intText:"每点一次“会了”就进入下一个间隔。全部完成后成为已掌握（★）。",
   dataTitle:"数据",qLabel:"照片画质（适用于之后拍的照片）",qStd:"标准（推荐）",qHigh:"高画质（适合字小的教材）",qEco:"省空间（黑白・较小）",usage:"已保存：{n}张・约{s} MB（照片只保存在本设备中）",delMastered:"删除已掌握（★）的卡片以释放空间（{n}张）",confirmDelM:"删除已掌握的{n}张卡片吗？（建议先备份）",deletedN:"已删除{n}张",dataText:"为防更换手机或清除浏览器数据，请定期备份。",
   navToday:"复习",navAdd:"拍照",navList:"列表",navSet:"设置",
-  ansAdd:"拍答案",ansAddEdit:"添加答案照片",ansChange:"更换答案照片",ansDelBtn:"删除答案照片",ansFirst:"请先用“添加这个范围”添加题目",ansSaved:"已添加答案照片。复习时点“答案”即可查看",ansDeleted:"已删除答案照片",confirmAnsDel:"要删除这张卡片的答案照片吗？",showAns:"答案",showQ:"题目",close:"关闭",ok:"会了",ng:"还不会",nextIn:"{n}天后",tomorrow:"明天再来",mastered:"已掌握！",
+  ansHere:"把这个范围作为答案",ansHereD:"先在同一张照片里把黄框移到答案处",ansOther:"另拍答案照片",ansMoveBox:"把黄框移到答案处，再点“拍答案”→“把这个范围作为答案”",ansAdd:"拍答案",ansAddEdit:"添加答案照片",ansChange:"更换答案照片",ansDelBtn:"删除答案照片",ansFirst:"请先用“添加这个范围”添加题目",ansSaved:"已添加答案照片。复习时点“答案”即可查看",ansDeleted:"已删除答案照片",confirmAnsDel:"要删除这张卡片的答案照片吗？",showAns:"答案",showQ:"题目",close:"关闭",ok:"会了",ng:"还不会",nextIn:"{n}天后",tomorrow:"明天再来",mastered:"已掌握！",
   saved:"已保存（明天开始复习）",doneAll:"今天的复习完成了！🎉",nothing:"今天没有要复习的",
   level:"阶段",nextDue:"下次",del:"删除",confirmDel:"删除这张卡片吗？",reset:"重新开始",reviewNow:"立即复习",edit:"保存",
   restored:"已恢复 {n} 张",badgeOk:"将在图标上显示数量",badgeNg:"此环境不可用（iPhone 请从主屏幕打开）",
@@ -812,7 +815,7 @@ const I18N={
   intTitle:"複習間隔",intLabel:"天數（逗號分隔）",intText:"每點一次「會了」就進入下一個間隔。全部完成後成為已掌握（★）。",
   dataTitle:"資料",qLabel:"照片畫質（適用於之後拍的照片）",qStd:"標準（推薦）",qHigh:"高畫質（適合字小的教材）",qEco:"省空間（黑白・較小）",usage:"已儲存：{n}張・約{s} MB（照片只儲存在本裝置中）",delMastered:"刪除已掌握（★）的卡片以釋放空間（{n}張）",confirmDelM:"刪除已掌握的{n}張卡片嗎？（建議先備份）",deletedN:"已刪除{n}張",dataText:"為防更換手機或清除瀏覽器資料，請定期備份。",
   navToday:"複習",navAdd:"拍照",navList:"列表",navSet:"設定",
-  ansAdd:"拍答案",ansAddEdit:"新增答案照片",ansChange:"更換答案照片",ansDelBtn:"刪除答案照片",ansFirst:"請先用「新增這個範圍」新增題目",ansSaved:"已新增答案照片。複習時點「答案」即可檢視",ansDeleted:"已刪除答案照片",confirmAnsDel:"要刪除這張卡片的答案照片嗎？",showAns:"答案",showQ:"題目",close:"關閉",ok:"會了",ng:"還不會",nextIn:"{n}天后",tomorrow:"明天再來",mastered:"已掌握！",
+  ansHere:"把這個範圍作為答案",ansHereD:"先在同一張照片裡把黃框移到答案處",ansOther:"另拍答案照片",ansMoveBox:"把黃框移到答案處，再點「拍答案」→「把這個範圍作為答案」",ansAdd:"拍答案",ansAddEdit:"新增答案照片",ansChange:"更換答案照片",ansDelBtn:"刪除答案照片",ansFirst:"請先用「新增這個範圍」新增題目",ansSaved:"已新增答案照片。複習時點「答案」即可檢視",ansDeleted:"已刪除答案照片",confirmAnsDel:"要刪除這張卡片的答案照片嗎？",showAns:"答案",showQ:"題目",close:"關閉",ok:"會了",ng:"還不會",nextIn:"{n}天后",tomorrow:"明天再來",mastered:"已掌握！",
   saved:"已儲存（明天開始複習）",doneAll:"今天的複習完成了！🎉",nothing:"今天沒有要複習的",
   level:"階段",nextDue:"下次",del:"刪除",confirmDel:"刪除這張卡片嗎？",reset:"重新開始",reviewNow:"立即複習",edit:"儲存",
   restored:"已恢復 {n} 張",badgeOk:"將在圖示上顯示數量",badgeNg:"此環境不可用（iPhone 請從主螢幕開啟）",
@@ -1193,7 +1196,19 @@ async function attachAnswer(id){
   const c=await dbGet(id); if(!c) return false;
   const [max,q]=qset(); c.a=await compress(f,max,q,false); await dbPut(c); toast(t("ansSaved")); return true;
 }
-$("#cropAns").onclick=async()=>{ if(!crop||!crop.lastId){ toast(t("ansFirst")); return; } await attachAnswer(crop.lastId); };
+async function answerFromBox(id){
+  const c=await dbGet(id); if(!c) return;
+  const [,q]=cropOpts(), cv=cropCanvas(); c.a=await new Promise(r=>cv.toBlob(r,"image/jpeg",q)); await dbPut(c); toast(t("ansSaved"));
+}
+$("#cropAns").onclick=()=>{
+  if(!crop||!crop.lastId){ toast(t("ansFirst")); return; }
+  let m=$("#ansMenu"); if(m){ m.remove(); return; }
+  m=document.createElement("div"); m.id="ansMenu";
+  m.innerHTML=`<button class="btn" id="amHere"><span><b>${t("ansHere")}</b><small>${t("ansHereD")}</small></span></button><button class="btn" id="amOther">${t("ansOther")}</button>`;
+  $("#cropper").appendChild(m);
+  $("#amHere").onclick=async()=>{ m.remove(); await answerFromBox(crop.lastId); };
+  $("#amOther").onclick=async()=>{ m.remove(); await attachAnswer(crop.lastId); };
+};
 $("#cropDone").onclick=()=>{ if(cropQueue.length) nextCrop(); else closeCrop(); };
 $("#cropCancel").onclick=()=>closeCrop();
 $("#cropRetake").onclick=()=>{ cropQueue=[]; $("#cropper").classList.remove("on"); crop=null; $("#camFile").click(); };
