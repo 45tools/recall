@@ -692,6 +692,7 @@ body[data-mode="list"] .foot{display:none}
 <div class="overlay" id="helpSheet"><div class="sheet">
   <h2 data-i="howTitle"></h2>
   <div class="help" id="howText"></div>
+  <a class="btn" id="guideLink" target="_blank" rel="noopener" style="margin-top:12px;display:flex;justify-content:center;text-decoration:none"></a>
   <p class="muted" data-i="dataText" style="margin-top:12px"></p>
   <button class="btn closeb" data-close data-i="close"></button>
 </div></div>
@@ -710,7 +711,11 @@ body[data-mode="list"] .foot{display:none}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_VER="2026.11.09-1";
+const APP_VER="2026.11.18-1";
+// 使い方リンク：日本語→note、英語→英語ショート、中国語→繁体字ショート
+const GUIDE={ja:["https://note.com/45tools/n/nf68a11a43875","くわしい使い方（note）"],en:["https://youtube.com/shorts/3T1jNawntKk","How to use (video)"],zh:["https://youtube.com/shorts/OCgyIDyByQ4","使用說明（影片）"]};
+function setGuide(){const a=document.getElementById("guideLink");if(!a)return;const g=GUIDE[lang==="ja"?"ja":lang.startsWith("zh")?"zh":"en"];a.href=g[0];a.textContent=g[1];}
+
 /* ===== 設定 ===== */
 const SUPPORT_URL="https://ofuse.me/45tools"; // ← OFUSEのURLに差し替え
 const DEFAULT_INTERVALS=[1,3,7,14,30,60];
@@ -1018,7 +1023,7 @@ document.querySelectorAll(".overlay:not(#sheet)").forEach(o=>o.addEventListener(
 $("#remMenuBtn").onclick=()=>openOv("#remSheet");
 $("#heroBell").onclick=()=>openOv("#remSheet");
 $("#intMenuBtn").onclick=()=>openOv("#intSheet");
-$("#helpBtn").onclick=()=>openOv("#helpSheet");
+$("#helpBtn").onclick=()=>{setGuide();openOv("#helpSheet");};
 $("#restoreFile").addEventListener("change",()=>openMenu(false));
 
 /* ===== 追加 ===== */
